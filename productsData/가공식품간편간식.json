@@ -1,0 +1,46 @@
+[
+  {
+    "detail_url": "https://smartstore.naver.com/freshmentor/products/237282553",
+    "id": "237282553",
+    "thumbnail": "https://shop-phinf.pstatic.net/20220701_267/165665856343901m2R_JPEG/57794452139301970_2003198049.jpg?type=f295_381",
+    "title": "새벽에 짠 프리미엄 수제 요거트 요구르트 5종",
+    "price": 1690,
+    "rating": 4.9,
+    "tags": ["가공식품", "간편간식"],
+    "description": "맛있는 수제 요거트 새벽에 짜낸 원유로 만든 아침엔요거 일반적인 유가공품의 경우 착유-운송-가공-판매까지 여러날이 소요되어 그 신선함이 떨어지는 반면에, 저희 아침엔요거는 매일 새",
+    "isSoldOut": false
+  },
+  {
+    "detail_url": "https://smartstore.naver.com/freshmentor/products/498095918",
+    "id": "498095918",
+    "thumbnail": "https://shop-phinf.pstatic.net/20170628_80/freshmentor_1498633037109JYULu_JPEG/21939337734133316_-2137717967.jpg?type=f295_381",
+    "title": "달지 않은 팥 찐빵 호빵 호구빵 4개입",
+    "price": 5900,
+    "rating": 4.6,
+    "tags": ["가공식품", "간편간식"],
+    "description": "영동호두와 단팥가득 호구빵 고소한 영동호두와 달달한 단팥 가득 찐빵 단팥 가득! 달콤,든든했던 그 옛날 찐빵이 그리우셨나요? 추운 날씨에 손가락 튕겨가며 호호 불어먹던 단팥 가득한",
+    "isSoldOut": false
+  },
+  {
+    "detail_url": "https://smartstore.naver.com/freshmentor/products/374068231",
+    "id": "374068231",
+    "thumbnail": "https://shop-phinf.pstatic.net/20170526_182/freshmentor_1495760031047tbB6U_JPEG/19067224687916310_-1536682354.jpg?type=f295_381",
+    "title": "전국 3대 순대 병천순대 1kg 스팀방식으로 쪄낸 전통순대",
+    "price": 6900,
+    "rating": 4.6,
+    "tags": ["가공식품", "간편간식"],
+    "description": "병천 순대 스팀 방식으로 맛있게 쪄낸 병천의 명물 전통 순대는 일반 순대와 달리 소나 돼지 내장에 채소와 선지를 넣어 맛이 담백해 전국적으로 유명해진 지역명물 순대입니다. 순대 본",
+    "isSoldOut": false
+  },
+  {
+    "detail_url": "https://smartstore.naver.com/freshmentor/products/605700240",
+    "id": "605700240",
+    "thumbnail": "https://shop-phinf.pstatic.net/20200115_259/1579075937027E27dh_JPEG/16437479463738423_963550085.jpg?type=f295_381",
+    "title": "[무료배송] 제주 감귤 수제 한과 과즐",
+    "price": 30900,
+    "rating": 4.7,
+    "tags": ["가공식품", "간편간식"],
+    "description": "선물용 박스가 준비되어 있습니다. 과즐을 선물하신다면, 선물용 포장을 선택해주세요! 수제 제주 감귤 과즐 바삭하고 달콤한 제주 감귤 수제 한과 과즐 01 배송안내 평일 오전 9시 ",
+    "isSoldOut": false
+  }
+]
