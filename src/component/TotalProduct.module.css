@@ -1,0 +1,60 @@
+.total {
+  width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title {
+  font-size: 28px;
+}
+.btn_wrap {
+  position: relative;
+  display: inline-block;
+  padding: 0 12px;
+}
+.btn_wrap::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 0;
+  height: 15px;
+  width: 1px;
+  background-color: #888;
+}
+
+.btn {
+  font-size: 13px;
+  line-height: 27px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0 12px;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url('../img/spSs_icon_svg.svg') no-repeat -196px -119px;
+  width: 14px;
+  height: 10px;
+  display: none;
+  margin: 9px 5px 0 0;
+  vertical-align: top;
+}
+.btn:focus {
+  padding-left: 20px;
+  color: black;
+  font-weight: bold;
+}
+.btn:focus::before {
+  display: inline-block;
+}
+.product_wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
