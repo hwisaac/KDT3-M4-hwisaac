@@ -10,6 +10,7 @@ function App() {
       <div className="App">
         <TotalProduct />
       </div>
+      
       <SignUp />
       {/* <LogIn /> */}
     </>
