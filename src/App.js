@@ -1,11 +1,10 @@
-import Header from './components/Header';
+import Slider from './components/KV/Slider';
 
 function App() {
   return (
-    <>
-      <Header />
-    </>
+    <div>
+      <Slider />
+    </div>
   );
 }
-
 export default App;
