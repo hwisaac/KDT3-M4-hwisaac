@@ -2,63 +2,46 @@ header {
   background-color: #6b90dc;
 }
 header .inner {
-
+  display: flex;
 }
-header .inner .logoUtil{
+header .inner .logoUtil {
   height: 37px;
   display: flex;
 }
-header .inner .logoUtil .logo{
-  
+header .inner .logoUtil .logo {
 }
-header .inner .logoUtil .logo .naver{
-  
+header .inner .logoUtil .logo .naver {
 }
-header .inner .logoUtil .logo .shopping{
-  
+header .inner .logoUtil .logo .shopping {
 }
-header .inner .logoUtil .util{
-  
+header .inner .logoUtil .util {
 }
-header .inner .logoUtil .util .myPage{
-  
+header .inner .logoUtil .util .myPage {
 }
-header .inner .logoUtil .util .myCart{
-  
+header .inner .logoUtil .util .myCart {
 }
-header .inner .seller{
+header .inner .seller {
   display: flex;
 }
-header .inner .seller .sellerInfo{
-  
+header .inner .seller .sellerInfo {
 }
-header .inner .seller .sellerInfo .curation{
-  
+header .inner .seller .sellerInfo .curation {
 }
-header .inner .seller .sellerInfo .curation .imgBox{
-  
+header .inner .seller .sellerInfo .curation .imgBox {
 }
-header .inner .seller .sellerInfo .curation .imgBox img{
-  
+header .inner .seller .sellerInfo .curation .imgBox img {
 }
-header .inner .seller .sellerInfo .curation .imgBox p{
-  
+header .inner .seller .sellerInfo .curation .imgBox p {
 }
-header .inner .seller .sellerInfo .customerNumber{
-  
+header .inner .seller .sellerInfo .customerNumber {
 }
-header .inner .seller .sellerInfo .inputBox{
-  
+header .inner .seller .sellerInfo .inputBox {
 }
-header .inner .seller .sellerInfo .inputBox input{
-  
+header .inner .seller .sellerInfo .inputBox input {
 }
-header .inner .mainLogo{
-
+header .inner .mainLogo {
 }
-header .inner .mainLogo .imgBox{
-  
+header .inner .mainLogo .imgBox {
 }
-header .inner .mainLogo .imgBox img{
-  
+header .inner .mainLogo .imgBox img {
 }

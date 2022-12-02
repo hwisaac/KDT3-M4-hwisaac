@@ -1,10 +1,5 @@
 import React from 'react';
 
 export default function MyPage() {
-  return (
-    <div>
-      My page
-    </div>
-  );
+  return <h2>My page</h2>;
 }
-
