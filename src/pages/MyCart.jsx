@@ -1,5 +1,9 @@
 import React from 'react';
 
 export default function MyCart() {
-  return <h2>My cart</h2>;
+  return (
+    <main>
+      <h2>My cart</h2>
+    </main>
+  );
 }

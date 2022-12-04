@@ -1,0 +1,8 @@
+.footer {
+  /* display: none; */
+  border: 3px solid teal;
+}
+
+.title {
+  background-color: var(--color-red);
+}

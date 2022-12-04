@@ -1,6 +1,7 @@
 import React from 'react';
 import style from './Product.module.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Product = ({ title, img }) => {
   const [heart, setHeart] = useState(false);
@@ -11,7 +12,7 @@ const Product = ({ title, img }) => {
 
   return (
     <li className={style.wrap}>
-      <a className={style.link} href="#">
+      <Link className={style.link} href="#">
         <img className={style.img} src={img} alt={title} />
         <div className={style.btns}>
           <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
@@ -31,7 +32,7 @@ const Product = ({ title, img }) => {
             <span className={style.sale}>30%</span>
           </p>
         </div>
-      </a>
+      </Link>
       <p className={style.rating}>평점 4.7 • 리뷰 6,842</p>
     </li>
   );

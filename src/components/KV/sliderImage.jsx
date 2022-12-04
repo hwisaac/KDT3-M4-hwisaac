@@ -4,10 +4,11 @@ import Third from '../../assets/image-3.jpeg';
 import Fourth from '../../assets/image-4.jpeg';
 import Fifth from '../../assets/image-5.jpeg';
 
-export default [
+const imgArr = [
   { url: First, title: 'First Slide' },
   { url: Second, title: 'Second Slide' },
   { url: Third, title: 'Third Slide' },
   { url: Fourth, title: 'Fourth Slide' },
   { url: Fifth, title: 'Fifth Slide' },
 ];
+export default imgArr;
