@@ -25,7 +25,11 @@ function LogIn() {
     const json = await res.json();
     const userName = json.user.displayName;
     const accessToken = json.accessToken;
-    console.log(userName, accessToken);
+    // console.log(userName, accessToken);
+
+    document.cookie = `user=${userName};  path=/; max-age=3600; secure`;
+    document.cookie = `token=${accessToken}; path=/; max-age=3600; secure`;
+    console.log(document.cookie);
   };
 
   return (
