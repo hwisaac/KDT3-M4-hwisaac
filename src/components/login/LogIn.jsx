@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { authUrl, Headers } from '../data/authApi';
-import styles from './LogIn.module.css';
+import { authUrl, Headers } from '../../data/authApi';
+import style from './LogIn.module.css';
+import { Link } from 'react-router-dom';
 
 function LogIn() {
   const [inputs, setInputs] = useState({
@@ -30,19 +31,20 @@ function LogIn() {
 
   return (
     <>
-      <header>
+      <Link to="/" className={style.header}>
         <h1>NAVER</h1>
-        {/* 나중에 홈으로 링크 */}
-      </header>
-      <div className={styles.formContainer}>
-        <form action="/" onSubmit={onSubmit}>
-          <div className={styles.inputContainer}>
-            {/* <div className={styles.text}>이메일 로그인</div> */}
-            <input name="email" type="text" value={email} onChange={onChange}></input>
-            <input name="password" type="password" value={password} onChange={onChange}></input>
+      </Link>
+      {/* 나중에 홈으로 링크 */}
+
+      <div className={style.formContainer}>
+        <form action="/" onSubmit={onSubmit} className={style.form}>
+          <div className={style.inputContainer}>
+            {/* <div className={style.text}>이메일 로그인</div> */}
+            <input className={style.input} name="email" type="text" value={email} onChange={onChange}></input>
+            <input className={style.input} name="password" type="password" value={password} onChange={onChange}></input>
           </div>
 
-          <input type="submit" value="로그인" className={styles.btn} />
+          <input type="submit" value="로그인" className={`${style.input} ${style.btn}`} />
         </form>
       </div>
     </>

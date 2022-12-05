@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './TotalProduct.module.css';
-import productData from '../data/product.json';
+import productData from '../../data/product.json';
 import Product from './Product';
 
 const TotalProduct = () => {
@@ -29,8 +29,8 @@ const TotalProduct = () => {
       </ul>
 
       <ul className={style.product_wrap}>
-        {productData.map((pro) => (
-          <Product key={pro.id} title={pro.title} img={pro.thumbnailUrl} />
+        {productData.map((product) => (
+          <Product key={product.id} title={product.title} img={product.thumbnailUrl} />
         ))}
       </ul>
     </div>

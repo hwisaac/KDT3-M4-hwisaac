@@ -8,11 +8,14 @@
 .title {
   font-size: 28px;
 }
+.btns {
+}
 .btn_wrap {
   position: relative;
   display: inline-block;
   padding: 0 12px;
 }
+
 .btn_wrap::after {
   content: '';
   position: absolute;
@@ -39,7 +42,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: url('../img/spSs_icon_svg.svg') no-repeat -196px -119px;
+  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -196px -119px;
   width: 14px;
   height: 10px;
   display: none;
@@ -57,4 +60,10 @@
 .product_wrap {
   display: flex;
   flex-wrap: wrap;
+  border: 1px solid green;
+}
+
+.dv {
+  display: block;
+  border: 3px solid orange;
 }

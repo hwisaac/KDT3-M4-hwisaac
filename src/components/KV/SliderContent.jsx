@@ -1,5 +1,6 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import style from './Slider.module.css';
 
 export default function SliderContent({ activeIndex, sliderImage, direction }) {
   const variants = {
@@ -18,8 +19,11 @@ export default function SliderContent({ activeIndex, sliderImage, direction }) {
   return (
     <section>
       {sliderImage.map((slide, slideIndex) => (
-        <div key={slideIndex} className={slideIndex === activeIndex ? 'slides active' : 'inactive'}>
-          <img src={slide.url} className="slide-image" alt="" />
+        <div
+          key={slideIndex}
+          className={slideIndex === activeIndex ? `${style.slides} ${style.active}` : `${style.inactive}`}
+        >
+          <img src={slide.url} className={style.slideImage} alt="" />
         </div>
         // <AnimatePresence initial={false} custom={direction}>
         //   <motion.img

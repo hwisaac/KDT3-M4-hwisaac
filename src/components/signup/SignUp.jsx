@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { authUrl, Headers } from '../data/authApi';
-import styles from './SignUp.module.css';
+import { authUrl, Headers } from '../../data/authApi';
+import style from './SignUp.module.css';
+import { Link } from 'react-router-dom';
 
 function SignUp() {
   const [inputs, setInputs] = useState({
@@ -29,32 +30,32 @@ function SignUp() {
   };
 
   return (
-    <>
-      <header>
+    <section className={style.signUpSection}>
+      <Link to="/" className={style.header}>
         <h1>NAVER</h1>
         {/* 나중에 홈으로 링크 */}
-      </header>
-      <form onSubmit={onSubmit}>
-        <div>
+      </Link>
+      <form onSubmit={onSubmit} className={style.form}>
+        <div className={style.div}>
           이메일
-          <input name="email" type="text" value={email} onChange={onChange}></input>
+          <input name="email" type="text" value={email} onChange={onChange} className={style.input}></input>
         </div>
 
-        <div>
+        <div className={style.div}>
           비밀번호
-          <input name="password" type="text" value={password} onChange={onChange}></input>
+          <input name="password" type="text" value={password} onChange={onChange} className={style.input}></input>
         </div>
 
-        <div>
+        <div className={style.div}>
           아이디
-          <input name="displayName" type="text" value={displayName} onChange={onChange}></input>
+          <input name="displayName" type="text" value={displayName} onChange={onChange} className={style.input}></input>
         </div>
 
-        <div>
-          <input type="submit" value="가입하기" className={styles.btn} />
+        <div className={style.div}>
+          <input type="submit" value="가입하기" className={`${style.input} ${style.btn}`} />
         </div>
       </form>
-    </>
+    </section>
   );
 }
 
