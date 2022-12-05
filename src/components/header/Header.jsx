@@ -50,6 +50,11 @@ export default function Header() {
             <input type="search" placeholder="검색어를 입력해보세요" />
           </div>
         </div>
+        <div className={style.mainLogo}>
+          <Link to='/'>
+            <img src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640" alt="FRESH MENTOR" />
+          </Link>
+        </div>
       </div>
     </header>
   );
