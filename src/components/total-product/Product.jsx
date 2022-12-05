@@ -3,7 +3,7 @@ import style from './Product.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Product = ({ title, img }) => {
+const Product = ({ id, title, img, price }) => {
   const [heart, setHeart] = useState(false);
 
   function onClick() {
@@ -12,7 +12,7 @@ const Product = ({ title, img }) => {
 
   return (
     <li className={style.wrap}>
-      <Link className={style.link} href="#">
+      <Link to={`/detail/${id}`} className={style.link}>
         <img className={style.img} src={img} alt={title} />
         <div className={style.btns}>
           <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
@@ -27,13 +27,12 @@ const Product = ({ title, img }) => {
           </button>
 
           <p>
-            <span className={style.rower_price}>13,900원</span>
+            <span className={style.rower_price}>{price.toLocaleString()}원</span>
             <span className={style.price}>20,000원</span>
             <span className={style.sale}>30%</span>
           </p>
         </div>
       </Link>
-      <p className={style.rating}>평점 4.7 • 리뷰 6,842</p>
     </li>
   );
 };
