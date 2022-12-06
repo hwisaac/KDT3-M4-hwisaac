@@ -1,6 +1,6 @@
 .wrap {
   width: 234px;
-  margin-right: 20px;
+  /* margin-right: 20px; */
   list-style: none;
   margin-bottom: 30px;
 }
@@ -118,8 +118,4 @@
   color: #6b90dc;
   font-weight: bolder;
   margin-left: 10px;
-}
-.rating {
-  font-size: 13px;
-  color: #888;
 }

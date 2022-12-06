@@ -8,9 +8,7 @@
 .title {
   font-size: 28px;
 }
-.btns {
-}
-.btn_wrap {
+.btns li {
   position: relative;
   display: inline-block;
   padding: 0 12px;
@@ -58,8 +56,9 @@
   display: inline-block;
 }
 .product_wrap {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
   border: 1px solid green;
 }
 

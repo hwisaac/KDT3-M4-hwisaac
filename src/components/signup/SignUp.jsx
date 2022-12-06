@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authUrl, Headers } from '../../data/authApi';
+import { authUrl, Headers } from '../../data/API';
 import style from './SignUp.module.css';
 import { Link } from 'react-router-dom';
 
