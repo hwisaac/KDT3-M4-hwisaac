@@ -17,7 +17,6 @@ export default function SliderContent({ activeIndex, sliderImage, direction }) {
   return (
     <section>
       {sliderImage.map((slide, slideIndex) => (
-<<<<<<< HEAD
         <div
           key={slideIndex}
           className={slideIndex === activeIndex ? `${style.slides} ${style.active}` : `${style.inactive}`}
@@ -36,23 +35,6 @@ export default function SliderContent({ activeIndex, sliderImage, direction }) {
         //     custom={direction}
         //   />
         // </AnimatePresence>
-=======
-        // <div key={slideIndex} className={slideIndex === activeIndex ? 'slides active' : 'inactive'}>
-        //   <img src={slide.url} className="slide-image" alt="" />
-        // </div>
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.img
-            variants={variants}
-            animate="animate"
-            initial="initial"
-            exit="exit"
-            src={slide.url}
-            key={slideIndex}
-            className={slideIndex === activeIndex ? 'slides active' : 'inactive'}
-            custom={direction}
-          />
-        </AnimatePresence>
->>>>>>> 3a53d42 (fix: slide)
       ))}
     </section>
   );
