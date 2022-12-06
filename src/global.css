@@ -2,6 +2,10 @@
   --height: 50vh;
   --width: 100%;
   --color-red: orangered;
+  --color-green: #09ae4f;
+  --color-white: #ffffff;
+  --color-grey: #444444;
+  --color-light-grey: #c7c7c7;
 }
 
 .inner {
