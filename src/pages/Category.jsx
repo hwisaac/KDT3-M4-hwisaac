@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Product from '../components/total-product/Product';
-import { getProducts } from '../fetch';
+import { getCategorizedProducts } from '../components/total-product/fetch';
+import style from './Category.module.css';
 
 export default function Category() {
   const { tag } = useParams();
@@ -11,15 +12,16 @@ export default function Category() {
   const searchTags = [tag];
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    const productsData = getProducts(searchText, searchTags);
+    const productsData = getCategorizedProducts(searchText, searchTags);
     productsData.then((data) => setProducts(data));
   }, [tag]);
+
   return (
     <main>
-      <h2>{tag}</h2>
-      <ul>
+      <h2 className={style.h2}>{tag}</h2>
+      <ul className={style.product_wrap}>
         {products.map((product) => (
-          <Product key={product.id} title={product.title} img={product.thumbnailUrl} />
+          <Product id={product.id} title={product.title} img={product.thumbnail} price={product.price} />
         ))}
       </ul>
     </main>

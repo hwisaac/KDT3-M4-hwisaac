@@ -1,2 +1,12 @@
 .nav {
+  position: relative;
+}
+.nav .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  height: 72px;
+  background-color: pink;
+  margin: auto;
 }

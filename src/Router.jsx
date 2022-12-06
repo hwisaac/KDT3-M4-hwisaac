@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import LogIn from './components/login/LogIn';
 import SignUp from './components/signup/SignUp';
 import Slider from './components/KV/Slider';
+import Detail from './pages/Detail';
 import Category from './pages/Category';
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: 'category/:tag',
         element: <Category />,
+      },
+      {
+        path: 'detail/:id',
+        element: <Detail />,
       },
     ],
   },
