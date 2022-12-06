@@ -3,8 +3,7 @@ import SliderContent from './SliderContent';
 import Arrows from './Arrows';
 import Dots from './Dots';
 import sliderImage from './sliderImage';
-import './slider.css';
-// import styles from './slider.module.css';
+import style from './Slider.module.css';
 
 export default function Slider() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,7 +25,7 @@ export default function Slider() {
   }, [activeIndex]);
 
   return (
-    <div className="slider-container">
+    <div className={style.sliderContainer}>
       <SliderContent activeIndex={activeIndex} sliderImage={sliderImage} />
       <Arrows prevSlide={prevSlide} nextSlide={nextSlide} />
       <Dots

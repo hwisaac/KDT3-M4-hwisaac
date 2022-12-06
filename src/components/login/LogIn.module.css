@@ -1,7 +1,4 @@
-body {
-  background-color: white;
-}
-header {
+.header {
   text-align: center;
   font-size: 2rem;
   height: 1rem;
@@ -18,7 +15,7 @@ header {
   padding: 20px 0;
 }
 
-form {
+.form {
   height: 100%;
   width: 100%;
   display: flex;
@@ -41,12 +38,12 @@ form {
   top: -2rem;
   color: #dadada;
 }
-input {
+.input {
   height: 100%;
   border: none;
   background: transparent;
 }
-input:first-child {
+.input:first-child {
   border-bottom: solid 1px #dadada;
 }
 .btn {
