@@ -2,6 +2,7 @@
   border: 1px solid black;
   background-color: #6b90dc;
 }
+
 .inner {
   display: flex;
   width: 1200px;

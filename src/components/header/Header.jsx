@@ -24,7 +24,7 @@ export default function Header() {
             <Link to="/mycart" className="myCart">
               장바구니
             </Link>
-            <Link to="/login" className="myCart">
+            <Link to="/login" className="login">
               로그인
             </Link>
             <Link to="/signup" className="myCart">
