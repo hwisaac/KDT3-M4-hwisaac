@@ -8,6 +8,7 @@ import SignUp from './components/signup/SignUp';
 import Slider from './components/KV/Slider';
 import Detail from './pages/Detail';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
