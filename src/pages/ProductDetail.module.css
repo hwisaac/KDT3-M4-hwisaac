@@ -19,7 +19,7 @@
 .title {
   font-size: 1.6rem;
   font-weight: bold;
-  padding-bottom: 1rem;
+  padding-bottom: 1.3rem;
 }
 
 .price {
@@ -28,6 +28,11 @@
   font-weight: bold;
   border-bottom: 1px solid var(--color-grey);
   text-align: right;
+}
+
+.description {
+  font-size: 1rem;
+  padding: 0.5rem 0;
 }
 
 .btns {
