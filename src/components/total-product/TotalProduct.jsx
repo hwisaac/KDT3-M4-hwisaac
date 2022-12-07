@@ -10,6 +10,7 @@ const TotalProduct = () => {
   useEffect(() => {
     const productsData = getProducts();
     productsData.then((data) => {
+      // console.log('fetching...');
       setProducts(data);
     });
   }, []);

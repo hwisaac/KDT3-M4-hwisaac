@@ -4,9 +4,7 @@ import style from './Slider.module.css';
 
 export default function SliderContent({ activeIndex, sliderImage, direction }) {
   const variants = {
-    initial: (direction) => {
-      return { x: direction > 0 ? 1000 : -1000, opacity: 0 };
-    },
+    initial: { x: -1000, opacity: 0 },
     animate: {
       x: 0,
       opacity: 1,
