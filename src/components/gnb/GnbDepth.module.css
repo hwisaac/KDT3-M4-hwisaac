@@ -1,11 +1,1 @@
-.displayBox {
-  /* display: none; */
-  position: absolute;
-  background-color: skyblue;
-  top: 65%;
-  left: 20%;
-}
-.displayBox .inner{
-  display: flex;
-  gap: 50px;
-}
+
