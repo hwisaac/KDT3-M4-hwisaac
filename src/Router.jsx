@@ -7,6 +7,7 @@ import LogIn from './components/login/LogIn';
 import SignUp from './components/signup/SignUp';
 import Slider from './components/kv/Slider';
 import ProductDetail from './pages/ProductDetail';
+import Category from './pages/Category';
 
 const router = createBrowserRouter([
   {
@@ -38,8 +39,8 @@ const router = createBrowserRouter([
         element: <Slider />,
       },
       {
-        path: 'products/:id',
-        element: <ProductDetail />,
+        path: 'detail/:id',
+        element: <Detail />,
       },
     ],
   },
