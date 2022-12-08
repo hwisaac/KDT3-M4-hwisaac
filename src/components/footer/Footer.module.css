@@ -1,0 +1,15 @@
+.footer {
+  /* display: none; */
+  border: 3px solid teal;
+}
+
+.title {
+  background-color: var(--color-red);
+}
+
+.inner {
+  display: flex;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}

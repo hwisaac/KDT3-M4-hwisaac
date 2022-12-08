@@ -1,0 +1,80 @@
+.sliderContainer {
+  height: var(--height);
+  width: var(--width);
+  position: relative;
+  margin: auto;
+  overflow: hidden;
+  background-color: #6b90dc;
+}
+
+.active {
+  display: inline-block;
+}
+
+.inactive {
+  display: none;
+}
+
+.slides {
+  height: var(--height);
+  width: var(--width);
+  position: relative;
+  object-fit: cover;
+}
+
+.slideImage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+}
+
+.prev,
+.next {
+  cursor: pointer;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 1rem;
+  margin-top: -3rem;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.next {
+  right: 0;
+}
+
+.prev:hover,
+.next:hover {
+  color: #6b90dc;
+  transition: all 0.5s;
+}
+
+.allDots {
+  width: 100%;
+
+  position: absolute;
+  display: flex;
+  bottom: 5%;
+  justify-content: center;
+  z-index: 2;
+}
+
+.dot {
+  cursor: pointer;
+  height: 0.7rem;
+  width: 0.7rem;
+  margin: 0px 3px;
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.activeDot,
+.dot:hover {
+  background-color: #fff;
+}

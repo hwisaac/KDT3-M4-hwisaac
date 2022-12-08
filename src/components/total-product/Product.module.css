@@ -1,0 +1,121 @@
+.wrap {
+  width: 234px;
+  /* margin-right: 20px; */
+  list-style: none;
+  margin-bottom: 30px;
+}
+.link {
+  font-size: 13px;
+  text-decoration: none;
+  position: relative;
+}
+.link:hover .btns {
+  visibility: visible;
+  opacity: 1;
+}
+.img {
+  width: 100%;
+  height: 302px;
+}
+.btns {
+  position: absolute;
+  bottom: 100px;
+  left: 70px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.btn_heart {
+  outline: none;
+  border: none;
+  background-image: url('../../imgs/spSs_icon_svg.svg');
+  background-repeat: no-repeat;
+  background-position: -111px -188px;
+  background-color: white;
+  width: 37px;
+  height: 37px;
+  font-size: 0;
+  border-radius: 50px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.btn_heart__red {
+  outline: none;
+  border: none;
+  background-image: url('../../imgs/spSs_icon_svg.svg');
+  background-repeat: no-repeat;
+  background-position: -156px -188px;
+  background-color: white;
+  width: 37px;
+  height: 37px;
+  font-size: 0;
+  border-radius: 50px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.btn_detail {
+  outline: none;
+  border: none;
+  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -264px -184px;
+  width: 37px;
+  height: 37px;
+  background-color: white;
+  font-size: 0;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.txt {
+  position: relative;
+}
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #222;
+  font-weight: bold;
+  padding-right: 20px;
+}
+.heart {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 0;
+  background-image: url(../../imgs/icon_heart_15x13_gray.412edbc4.svg);
+  width: 15px;
+  height: 13px;
+  cursor: pointer;
+}
+.heart__red {
+  background-image: url(../../imgs/icon_heart_15x13_red.7c83f183.svg);
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 0;
+  background-image: url(../../imgs/icon_heart_15x13_red.7c83f183.svg);
+  width: 15px;
+  height: 13px;
+  cursor: pointer;
+}
+
+.rower_price {
+  color: #222;
+  font-weight: bold;
+}
+.price {
+  font-size: 12px;
+  color: #888;
+  text-decoration: line-through;
+  margin-left: 5px;
+}
+.sale {
+  color: #6b90dc;
+  font-weight: bolder;
+  margin-left: 10px;
+}

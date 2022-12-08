@@ -1,0 +1,24 @@
+:root {
+  --height: 50vh;
+  --width: 100%;
+  --color-red: orangered;
+  --color-green: #09ae4f;
+  --color-white: #ffffff;
+  --color-grey: #444444;
+  --color-light-grey: #c7c7c7;
+}
+
+.inner {
+  display: flex;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+}
