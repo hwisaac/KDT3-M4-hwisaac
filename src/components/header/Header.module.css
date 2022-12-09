@@ -1,6 +1,7 @@
 .header {
   background-color: #6b90dc;
 }
+<<<<<<< HEAD
 .header .headerLogoUtil::before {
   content: "";
   height: 1px;
@@ -17,6 +18,10 @@
 }
 .header .headerLogoUtil .inner {
   height: 37px;
+=======
+
+.inner {
+>>>>>>> 13d8967b6e0d0a79c6b6a3e97cf2879010d19aab
   display: flex;
   justify-content: space-between;
   align-items: center;
