@@ -31,10 +31,9 @@ export default function ProductDetail() {
         <h2 className={style.title}>{detail.title}</h2>
         <p className={style.price}>{detail.price?.toLocaleString() || Number(detail.price).toLocaleString()}원</p>
         <p className={style.description}>{detail.description}</p>
-        <button className={style.btn}>구매하기</button>
         <div className={style.btns}>
+          <Button text="구매하기" onClick={handleClick} />
           <Button text="장바구니" onClick={handleClick} />
-          <Button text="찜하기" onClick={handleClick} />
         </div>
       </div>
     </section>
