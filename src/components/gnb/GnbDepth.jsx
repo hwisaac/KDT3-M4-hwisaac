@@ -6,6 +6,7 @@ import { useState } from 'react';
 const GnbDepth = ({targetGnb, links}) => {
   const [selected, setSelected] = useState(null);
   const handleMouseOver = (i) => {
+    //각 리스트 별로 출력해야하기 때문에
     // if(selected === i){
     //   return setSelected(i)
     // }
