@@ -6,15 +6,19 @@ function GnbDepth(props) {
   //   console.log(props.category.subCategory)
   // }
 
-  return(
+  return (
     <>
-      {
-        props.links.mainLink === props.targetGnb ? 
-        props.links.subLink && props.links.subLink.map((link, i)=>{
-                    return <Link to={`/category/${link}`} key={i}>{link}</Link>
-                  }) : ''
-      }
+      {props.links.mainLink === props.targetGnb
+        ? props.links.subLink &&
+          props.links.subLink.map((link, i) => {
+            return (
+              <Link to={`/category/${link}`} state={{ name: props.links.subName[i] }} key={i}>
+                {props.links.subName[i]}
+              </Link>
+            );
+          })
+        : ''}
     </>
-  )
+  );
 }
 export default GnbDepth;

@@ -1,8 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { loginState, userInfoState } from '../../data/LoginData';
 import style from './Header.module.css';
 
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  if (document.cookie) {
+    setIsLoggedIn(true);
+  }
+  function getCookie(name) {
+    let matches = document.cookie.match(
+      new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'),
+    );
+    return matches ? decodeURIComponent(matches[1]) : null;
+  }
+  console.log(getCookie('email'));
+  // const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  // setUserInfo(({ user: { email, displayName, profileImg }, accessToken } = {}) => {
+  //   email = getCookie('email') ? getCookie('email') : null;
+  //   displayName = getCookie('displayName');
+  //   profileImg = getCookie('profileImg');
+  //   accessToken = getCookie('accessToken');
+  // });
   return (
     <header className={style.header}>
       <div className={style.header__top}>
@@ -24,15 +44,21 @@ export default function Header() {
             <Link to="/mycart" className="myCart">
               장바구니
             </Link>
-            <Link to="/login" className="login">
-              로그인
-            </Link>
-            <Link to="/signup" className="myCart">
-              회원가입
-            </Link>
-            <Link to="/slider" className="myCart">
-              (슬라이더)
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <span>{userInfo?.user?.displayName}님</span>
+                <button>Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="login">
+                  로그인
+                </Link>
+                <Link to="/signup" className="myCart">
+                  회원가입
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -51,8 +77,11 @@ export default function Header() {
           </div>
         </div>
         <div className={style.mainLogo}>
-          <Link to='/'>
-            <img src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640" alt="FRESH MENTOR" />
+          <Link to="/">
+            <img
+              src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
+              alt="FRESH MENTOR"
+            />
           </Link>
         </div>
       </div>

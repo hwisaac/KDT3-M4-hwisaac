@@ -19,6 +19,7 @@
 .header__top .col {
   display: flex;
   border: 3px solid red;
+  gap: 5px;
 }
 .header__top__col:nth-child(1) {
   display: flex;
