@@ -18,8 +18,19 @@
 }
 .header__top .col {
   display: flex;
+  align-items: center;
   border: 3px solid red;
   gap: 5px;
+}
+.image {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+.button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 .header__top__col:nth-child(1) {
   display: flex;

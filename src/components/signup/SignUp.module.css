@@ -32,7 +32,29 @@
   background-color: white;
   border: solid 1px #dadada;
 }
+.file {
+  width: 75%;
+  height: 100%;
+  margin-top: 5px;
+}
+.label {
+  height: 100%;
 
+  color: black;
+  border: solid 1px #dadada;
+  border-radius: 5px;
+  padding: 13px 10px;
+  cursor: pointer;
+  margin-left: 18px;
+}
+.hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
 .btn {
   color: aliceblue;
   font-size: 1rem;

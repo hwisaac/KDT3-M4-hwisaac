@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { authUrl, Headers } from '../../data/API';
+import { authUrl, HEADERS_USER } from '../../data/API';
 import style from './LogIn.module.css';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../data/LoginData';
 
 function LogIn() {
@@ -10,8 +10,9 @@ function LogIn() {
     email: '',
     password: '',
   });
+
   const setLoginState = useSetRecoilState(loginState);
-  const setUserInfo = useSetRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { email, password } = inputs;
   const onChange = (event) => {
     const { value, name } = event.target;
@@ -25,7 +26,7 @@ function LogIn() {
     try {
       const res = await fetch(`${authUrl}/login`, {
         method: 'POST',
-        headers: Headers,
+        headers: HEADERS_USER,
         body: JSON.stringify({ email, password }),
       });
       const json = await res.json();
@@ -33,23 +34,17 @@ function LogIn() {
         user: { displayName, profileImg },
         accessToken,
       } = json;
-
+      console.log(json);
       setLoginState(true);
       setUserInfo({
         user: { email, displayName, profileImg },
         accessToken,
       });
-      document.cookie = `email=${email};  path=/; max-age=3600; secure`;
-      document.cookie = `displayName=${displayName};  path=/; max-age=3600; secure`;
-      document.cookie = `profileImg=${profileImg};  path=/; max-age=3600; secure`;
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; secure`;
-      console.log(document.cookie);
       document.location.href = '/';
     } catch (error) {
       console.error(error.message);
     }
   };
-
   return (
     <>
       <Link to="/" className={style.header}>
@@ -58,7 +53,7 @@ function LogIn() {
       {/* 나중에 홈으로 링크 */}
 
       <div className={style.formContainer}>
-        <form action="/" onSubmit={onSubmit} className={style.form}>
+        <form onSubmit={onSubmit} className={style.form}>
           <div className={style.inputContainer}>
             {/* <div className={style.text}>이메일 로그인</div> */}
             <input
