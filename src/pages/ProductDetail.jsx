@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Button from '../components/button/Button';
 import style from './ProductDetail.module.css';
 import { getProductDetail } from '../components/total-product/fetch';
 import { useState, useEffect } from 'react';
+import Button from '../components/ui/button/Button';
 
 export default function ProductDetail() {
   const {
