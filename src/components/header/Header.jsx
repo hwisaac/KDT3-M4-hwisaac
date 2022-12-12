@@ -23,11 +23,7 @@ export default function Header() {
             <Link to="/mycart" className={style.myCart}>
               장바구니
             </Link>
-<<<<<<< HEAD
             <Link to="/login" className={style.login}>
-=======
-            <Link to="/login" className="login">
->>>>>>> 13d8967b6e0d0a79c6b6a3e97cf2879010d19aab
               로그인
             </Link>
             <Link to="/signup" className={style.signup}>

@@ -11,9 +11,7 @@ function App() {
     <>
       <Header />
       <GNB />
-
       <Outlet />
-
       <Footer />
     </>
   );

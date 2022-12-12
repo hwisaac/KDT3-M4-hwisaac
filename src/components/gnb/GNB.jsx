@@ -53,7 +53,7 @@ const GNB = () => {
                 {link.mainLink}
               </Link>
               {isHovering ? (
-                <GnbDepth targetGnb={targetGnb} links={link} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}/>
+                <GnbDepth targetGnb={targetGnb} links={link}/>
               ) : (
                 ''
               )}
@@ -64,5 +64,5 @@ const GNB = () => {
     </nav>
   );
 };
-export default GNB;
 
+export default GNB;
