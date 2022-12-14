@@ -17,7 +17,7 @@ export default function Administrator() {
           <Link to="sales">판매내역</Link>
         </li>
         <li>
-          <Link to="transaction">거래 내역</Link>
+          <Link to="transactions">거래 내역</Link>
         </li>
       </ul>
       <Outlet />
