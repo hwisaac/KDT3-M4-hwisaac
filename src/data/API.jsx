@@ -1,9 +1,9 @@
 export const authUrl = 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth';
 
-export const Headers = {
+export const HEADERS_USER = {
   'content-type': 'application/json',
   apikey: 'FcKdtJs202209',
-  username: 'kdt3_KangHaeKyung',
+  username: 'KDT3_TEAM-4',
 };
 
 export const HEADERS = {
