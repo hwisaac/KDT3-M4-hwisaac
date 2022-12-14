@@ -1,19 +1,19 @@
 import React from 'react';
 import style from './CartItem.module.css';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdOutlineClear } from 'react-icons/md';
 import { addOrUpdateToCart, removeFromCart } from '../../api/firebase';
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 
-export default function CartItem({ product, product: { productId, quantity, title, price, photo }, username }) {
+export default function CartItem({ product, product: { productId, quantity, title, price, photo }, userName }) {
   const queryClient = useQueryClient();
 
-  const addOrUpdateItem = useMutation((product) => addOrUpdateToCart(username, product), {
-    onSuccess: () => queryClient.invalidateQueries(['carts', username]),
+  const addOrUpdateItem = useMutation((product) => addOrUpdateToCart(userName, product), {
+    onSuccess: () => queryClient.invalidateQueries(['carts', userName]),
   });
 
-  const removeItem = useMutation((productId) => removeFromCart(username, productId), {
-    onSuccess: () => queryClient.invalidateQueries(['carts', username]),
+  const removeItem = useMutation((productId) => removeFromCart(userName, productId), {
+    onSuccess: () => queryClient.invalidateQueries(['carts', userName]),
   });
 
   const handleMinus = () => {
