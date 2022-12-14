@@ -5,32 +5,25 @@ import { getProductDetail } from '../components/total-product/fetch';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/button/Button';
 import { addOrUpdateToCart } from '../api/firebase';
-import { login } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { loginState, userInfoState } from '../data/LoginData';
 
 export default function ProductDetail() {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const userName = userInfo.user.displayName;
+
   const navigate = useNavigate();
   const {
     state: { id },
   } = useLocation();
-  const [detail, setDetail] = useState([]);
-  const [user, setUser] = useState();
 
-  useEffect(() => {
-    const cookie = document.cookie;
-    const userInfo = cookie.split(';');
-    console.log('userInfo:', userInfo);
-    const email = userInfo[1].split('=')[1];
-    const password = userInfo[2].split('=')[1];
-    console.log('password', password);
-    login(email, password).then((data) => setUser(data));
-  }, []);
+  const [detail, setDetail] = useState([]);
 
   useEffect(() => {
     const details = getProductDetail(id);
     details.then((data) => {
-      console.log('fetching...');
-      console.log('data:', data);
       setDetail(data);
     });
   }, [id]);
@@ -39,8 +32,12 @@ export default function ProductDetail() {
   const { id: productId, title, photo, price, description } = detail;
 
   const handleClick = (e) => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
+      window.location = '/login';
+    }
     const product = { productId, title, photo, price, quantity: 1 };
-    addOrUpdateToCart(user.displayName, product);
+    addOrUpdateToCart(userName, product);
     console.log('장바구니 추가');
     navigate(`/mycart`);
   };

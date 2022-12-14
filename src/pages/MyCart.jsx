@@ -6,13 +6,19 @@ import PriceCard from '../components/PriceCard/PriceCard';
 import { BiPlus } from 'react-icons/bi';
 import { GrHome } from 'react-icons/gr';
 import styles from './MyCart.module.css';
-import Button from '../components/ui/button/Button';
+import { useRecoilState } from 'recoil';
+import { loginState, userInfoState } from '../data/LoginData';
 
 const SHIPPING = 3000;
 
 export default function MyCart() {
-  const username = 'no1';
-  const { isLoading, data: products } = useQuery(['carts'], () => getCart(username));
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const userName = userInfo.user.displayName;
+
+  const { isLoading, data: products } = useQuery(['carts', userName || ''], () => getCart(userName), {
+    enabled: !!userName,
+  });
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -33,7 +39,7 @@ export default function MyCart() {
           </div>
           <ul>
             {products &&
-              products.map((product) => <CartItem key={product.productId} product={product} username={username} />)}
+              products.map((product) => <CartItem key={product.productId} product={product} userName={userName} />)}
           </ul>
           <div className={styles.totalPrice}>
             <PriceCard text="선택상품금액" price={totalPrice} />
