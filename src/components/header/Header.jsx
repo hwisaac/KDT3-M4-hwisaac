@@ -1,18 +1,12 @@
-<<<<<<< HEAD
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../data/API';
 import { loginState, userInfoState } from '../../data/LoginData';
-=======
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
 import style from './Header.module.css';
-import { BiSearch } from "react-icons/bi"
+import { BiSearch } from 'react-icons/bi';
 
 export default function Header() {
-<<<<<<< HEAD
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const onClick = async () => {
@@ -39,7 +33,6 @@ export default function Header() {
     }
   };
 
-=======
   const [value, setValue] = useState('');
 
   const onKeyDown = (event) => {
@@ -56,7 +49,6 @@ export default function Header() {
   // form 으로 보낼 주소 확인
   const URL = useLocation();
 
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
   return (
     <header className={style.header}>
       <div className={style.headerLogoUtil}>
@@ -70,16 +62,15 @@ export default function Header() {
             </Link>
           </div>
           <div className={style.util}>
-            <Link to="/mypage" className={style.myPage}>
+            <Link to="/mypage" className={style.util_list}>
               마이페이지
             </Link>
-            <Link to="/mycart" className={style.myCart}>
+            <Link to="/mycart" className={style.util_list}>
               장바구니
             </Link>
-<<<<<<< HEAD
             {isLoggedIn ? (
               <>
-                <span>{userInfo.user.displayName}님</span>
+                <span className={style.util_list}>{userInfo.user.displayName}님</span>
                 <img
                   src={
                     userInfo.user.profileImg
@@ -88,28 +79,20 @@ export default function Header() {
                   }
                   className={style.image}
                 ></img>
-                <button className={style.button} onClick={onClick}>
+                <span className={style.util_list} onClick={onClick}>
                   로그아웃
-                </button>
+                </span>
               </>
             ) : (
               <>
-                <Link to="/login" className="login">
+                <Link to="/login" className={style.util_list}>
                   로그인
                 </Link>
-                <Link to="/signup" className="myCart">
+                <Link to="/signup" className={style.util_list}>
                   회원가입
                 </Link>
               </>
             )}
-=======
-            <Link to="/login" className={style.login}>
-              로그인
-            </Link>
-            <Link to="/signup" className={style.signup}>
-              회원가입
-            </Link>
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
           </div>
         </div>
       </div>
@@ -117,9 +100,9 @@ export default function Header() {
         <div className={`${style.inner}`}>
           <div className={`${style.linkBox}`}>
             <img
-                src="https://shop-phinf.pstatic.net/20191031_145/1572507325623D6htg_PNG/9868064258605110_767066992.png?type=m120"
-                alt="장바구니"
-              />
+              src="https://shop-phinf.pstatic.net/20191031_145/1572507325623D6htg_PNG/9868064258605110_767066992.png?type=m120"
+              alt="장바구니"
+            />
             <p>맛그레이드하세요↗ 식품전문가 프레시멘토의 큐레이션 서비스</p>
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
@@ -137,6 +120,7 @@ export default function Header() {
             />
           </Link>
         </div>
+      </div>
     </header>
   );
 }

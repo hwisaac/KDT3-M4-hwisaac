@@ -24,88 +24,43 @@ const GNB = () => {
 
   const [isHovering, setIsHovering] = useState(false);
   const [targetGnb, setTargetGnb] = useState('');
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(null);
 
   const handleMouseOver = (event) => {
-<<<<<<< HEAD
-    setIsHovering(true);
-    // console.log(e.target.nodeName);
-    // if (event.target.nodeName === 'A') {
-    // } else return;
-    if (event.target.dataset.link === undefined) return;
-    setTargetGnb(event.target.dataset.link);
-    // console.log(event.target.dataset.link);
-    const {
-      currentTarget: {
-        dataset: { link },
-      },
-    } = event;
-    console.log(link);
-    // console.log(targetSubMenu);
-    // setTargetSubMenu(e.target.dataset.catetoryItem);
-    // console.log(e.target.dataset.catetoryItem)
-    // console.log('호버되었습니다')
-  };
-
-  // console.log('targetGnb',targetGnb);
-
-=======
     // if(event.target.nodeName === 'A'){
     //   setTargetGnb(event.target.dataset.link)
     // } else return
-    if(targetGnb){
+    if (targetGnb) {
       setIsHovering(true);
     }
-    if(!event.target.dataset.link) return
-    setTargetGnb(event.target.dataset.link)
+    if (!event.target.dataset.link) return;
+    setTargetGnb(event.target.dataset.link);
   };
-  
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
+
   const handleMouseOut = (event) => {
     setIsHovering(false);
   };
-<<<<<<< HEAD
-  console.log(isHovering);
+
+  const handleChange = (i) => {
+    setSelected(i);
+  };
+
   return (
     <nav className={style.nav}>
-      <ul className={style.inner}>
+      <ul className={style.inner} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
         {LINKS.map((link, i) => {
           return (
             <li
-              className={style.gnbList}
+              className={selected === i ? style.selectedGnbList : style.gnbList}
               key={i}
-              data-link={link.mainLink}
-              onMouseOver={handleMouseOver}
-              onMouseOut={handleMouseOut}
+              onMouseOver={() => {
+                handleChange(i);
+              }}
             >
-              <Link to={`/category/${link.mainLink}`} data-link={link.mainLink}>
+              <Link className={style.gnbLink} to={`/category/${link.mainLink}`} data-link={link.mainLink} key={i}>
                 {link.mainLink}
               </Link>
-              {isHovering ? (
-                <ul className={style.twoDep} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-                  <GnbDepth targetGnb={targetGnb} links={link} />
-                </ul>
-=======
-
-  const handleChange = (i) => {
-    setSelected(i)
-  }
-  
-  return (
-    <nav className={style.nav}>
-      <ul className={style.inner} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
-        {LINKS.map((link, i) => {
-          return (
-            <li className={selected === i ? style.selectedGnbList :style.gnbList} key={i} onMouseOver={()=>{handleChange(i)}}>
-              <Link className={style.gnbLink} to={`/category/${link.mainLink}`} data-link ={link.mainLink} key={i}>
-                {link.mainLink}
-              </Link>
-              {isHovering ? (
-                <GnbDepth targetGnb={targetGnb} links={link}/>
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
-              ) : (
-                ''
-              )}
+              {isHovering ? <GnbDepth targetGnb={targetGnb} links={link} /> : ''}
             </li>
           );
         })}
@@ -113,9 +68,5 @@ const GNB = () => {
     </nav>
   );
 };
-<<<<<<< HEAD
-export default GNB;
-=======
 
 export default GNB;
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7

@@ -3,10 +3,10 @@
   position: relative;
 }
 .nav::after {
-  content: "";
+  content: '';
   height: 1px;
   width: 100%;
-  background-color: rgba(0,0,0,.07);
+  background-color: rgba(0, 0, 0, 0.07);
   position: absolute;
   top: 73px;
   right: 0;
@@ -23,46 +23,32 @@
   padding: 29px 35px;
   position: relative;
 }
-<<<<<<< HEAD
-.gnbList a {
-  padding: 20px 20px;
-  background-color: red;
-=======
 .selectedGnbList {
   padding: 29px 35px;
   position: relative;
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
 }
-.nav .inner .gnbList .gnbLink{
+.nav .inner .gnbList .gnbLink {
   padding: 29px 35px;
   font-size: 14px;
   color: #000;
 }
-.selectedGnbList .gnbLink{
+.selectedGnbList .gnbLink {
   padding: 29px 35px;
   font-size: 14px;
-  color: #6B90DC;
+  color: #6b90dc;
 }
-.nav .inner .gnbList .twoDep{
+.nav .inner .gnbList .twoDep {
   width: 182px;
   height: 187px;
   padding: 8px 0;
   border: 1px solid #d7d7d7;
   background-color: #fff;
   position: absolute;
-<<<<<<< HEAD
-  top: 30px;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-=======
   top: 50px;
-  left: calc(50% - 91px)
->>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
+  left: calc(50% - 91px);
 }
 
-.twoDep{
+.twoDep {
   z-index: 1;
   width: 182px;
   height: 187px;
