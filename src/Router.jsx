@@ -8,6 +8,11 @@ import SignUp from './components/signup/SignUp';
 import Slider from './components/kv/Slider';
 import ProductDetail from './pages/ProductDetail';
 import Category from './pages/Category';
+import Administrator from './pages/Admininstartor';
+import NotFound from './pages/NotFound';
+import ProductManagement from './components/administrator/ProductManagement';
+import SalesDetails from './components/administrator/SalesDetails';
+import TransactionDetails from './components/administrator/TransactionDetails';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +50,21 @@ const router = createBrowserRouter([
       {
         path: 'products/:id',
         element: <ProductDetail />,
+      },
+      {
+        path: 'admin',
+        element: <Administrator />,
+        children: [
+          { path: 'products', element: <ProductManagement /> },
+          {
+            path: 'sales',
+            element: <SalesDetails />,
+          },
+          {
+            path: 'transaction',
+            element: <TransactionDetails />,
+          },
+        ],
       },
     ],
   },
