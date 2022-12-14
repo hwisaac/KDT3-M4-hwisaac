@@ -5,7 +5,7 @@ import MyCart from './pages/MyCart';
 import Home from './pages/Home';
 import LogIn from './components/login/LogIn';
 import SignUp from './components/signup/SignUp';
-import Slider from './components/KV/Slider';
+import Slider from './components/kv/Slider';
 import ProductDetail from './pages/ProductDetail';
 import Category from './pages/Category';
 import Search from './pages/Search';
