@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import style from './Header.module.css';
-import { BiSearch } from "react-icons/bi"
+import { BiSearch } from 'react-icons/bi';
 
 export default function Header() {
   const [value, setValue] = useState('');
@@ -16,9 +16,6 @@ export default function Header() {
       }
     }
   };
-
-  // form 으로 보낼 주소 확인
-  const URL = useLocation();
 
   return (
     <header className={style.header}>
@@ -52,26 +49,25 @@ export default function Header() {
         <div className={`${style.inner}`}>
           <div className={`${style.linkBox}`}>
             <img
-                src="https://shop-phinf.pstatic.net/20191031_145/1572507325623D6htg_PNG/9868064258605110_767066992.png?type=m120"
-                alt="장바구니"
-              />
+              src="https://shop-phinf.pstatic.net/20191031_145/1572507325623D6htg_PNG/9868064258605110_767066992.png?type=m120"
+              alt="장바구니"
+            />
             <p>맛그레이드하세요↗ 식품전문가 프레시멘토의 큐레이션 서비스</p>
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
-          <div className={style.col}>
-            <form action={URL.pathname.includes('search') ? `${value}` : `search/${value}`}>
-              <input onKeyDown={onKeyDown} type="search" placeholder="검색어를 입력해보세요" />
-            </form>
-          </div>
+          <form action="/search">
+            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해보세요" />
+          </form>
         </div>
-        <div className={style.mainLogo}>
-          <Link to="/">
-            <img
-              src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
-              alt="FRESH MENTOR"
-            />
-          </Link>
-        </div>
+      </div>
+      <div className={style.mainLogo}>
+        <Link to="/">
+          <img
+            src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
+            alt="FRESH MENTOR"
+          />
+        </Link>
+      </div>
     </header>
   );
 }
