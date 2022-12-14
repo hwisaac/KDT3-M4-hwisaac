@@ -22,43 +22,38 @@ const GNB = () => {
 
   const [isHovering, setIsHovering] = useState(false);
   const [targetGnb, setTargetGnb] = useState('');
+  const [selected, setSelected] = useState(null)
 
   const handleMouseOver = (event) => {
-    setIsHovering(true);
-    // console.log(e.target.nodeName);
-    if(event.target.nodeName === 'A'){
-      setTargetGnb(event.target.dataset.link)
-    } else return
-    // console.log(targetSubMenu);
-    // setTargetSubMenu(e.target.dataset.catetoryItem);
-    // console.log(e.target.dataset.catetoryItem)
-    // console.log('호버되었습니다')
+    // if(event.target.nodeName === 'A'){
+    //   setTargetGnb(event.target.dataset.link)
+    // } else return
+    if(targetGnb){
+      setIsHovering(true);
+    }
+    if(!event.target.dataset.link) return
+    setTargetGnb(event.target.dataset.link)
   };
-
-  // console.log('targetGnb',targetGnb);
   
   const handleMouseOut = (event) => {
     setIsHovering(false);
-    // if(e.target.nodeName === 'A' || 'LI'){
-    //   setIsHovering(true);
-    // }
-    // setIsHovering(false);
-    // setTargetGnb('')
   };
-  console.log(isHovering)
+
+  const handleChange = (i) => {
+    setSelected(i)
+  }
+  
   return (
     <nav className={style.nav}>
-      <ul className={style.inner} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+      <ul className={style.inner} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
         {LINKS.map((link, i) => {
           return (
-            <li className={style.gnbList} key={i}>
-              <Link to={`/category/${link.mainLink}`} data-link ={link.mainLink}>
+            <li className={selected === i ? style.selectedGnbList :style.gnbList} key={i} onMouseOver={()=>{handleChange(i)}}>
+              <Link className={style.gnbLink} to={`/category/${link.mainLink}`} data-link ={link.mainLink} key={i}>
                 {link.mainLink}
               </Link>
               {isHovering ? (
-                <ul className={style.twoDep} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-                  <GnbDepth targetGnb={targetGnb} links={link}/>
-                </ul>
+                <GnbDepth targetGnb={targetGnb} links={link}/>
               ) : (
                 ''
               )}
@@ -69,5 +64,5 @@ const GNB = () => {
     </nav>
   );
 };
-export default GNB;
 
+export default GNB;
