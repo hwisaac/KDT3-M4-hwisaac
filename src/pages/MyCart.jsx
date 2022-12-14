@@ -6,13 +6,15 @@ import PriceCard from '../components/PriceCard/PriceCard';
 import { BiPlus } from 'react-icons/bi';
 import { GrHome } from 'react-icons/gr';
 import styles from './MyCart.module.css';
-import Button from '../components/ui/button/Button';
 
 const SHIPPING = 3000;
 
 export default function MyCart() {
   const username = 'no1';
-  const { isLoading, data: products } = useQuery(['carts'], () => getCart(username));
+
+  const { isLoading, data: products } = useQuery(['carts', username || ''], () => getCart(username), {
+    enabled: !!username,
+  });
 
   if (isLoading) return <p>Loading...</p>;
 

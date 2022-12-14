@@ -19,10 +19,8 @@ export default function ProductDetail() {
   useEffect(() => {
     const cookie = document.cookie;
     const userInfo = cookie.split(';');
-    console.log('userInfo:', userInfo);
-    const email = userInfo[1].split('=')[1];
-    const password = userInfo[2].split('=')[1];
-    console.log('password', password);
+    const email = 'example@gmail.com';
+    const password = 'abcdefg12';
     login(email, password).then((data) => setUser(data));
   }, []);
 

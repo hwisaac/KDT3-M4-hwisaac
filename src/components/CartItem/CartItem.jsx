@@ -1,17 +1,28 @@
 import React from 'react';
 import style from './CartItem.module.css';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdOutlineClear } from 'react-icons/md';
 import { addOrUpdateToCart, removeFromCart } from '../../api/firebase';
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 
 export default function CartItem({ product, product: { productId, quantity, title, price, photo }, username }) {
+  const queryClient = useQueryClient();
+
+  const addOrUpdateItem = useMutation((product) => addOrUpdateToCart(username, product), {
+    onSuccess: () => queryClient.invalidateQueries(['carts', username]),
+  });
+
+  const removeItem = useMutation((productId) => removeFromCart(username, productId), {
+    onSuccess: () => queryClient.invalidateQueries(['carts', username]),
+  });
+
   const handleMinus = () => {
     if (quantity < 2) return;
-    addOrUpdateToCart(username, { ...product, quantity: quantity - 1 });
+    addOrUpdateItem.mutate({ ...product, quantity: quantity - 1 }, { onSuccess: () => console.log('success!!!') });
   };
-  const handlePlus = () => addOrUpdateToCart(username, { ...product, quantity: quantity + 1 });
+  const handlePlus = () => addOrUpdateItem.mutate({ ...product, quantity: quantity + 1 });
 
-  const handleDelete = () => removeFromCart(username, productId);
+  const handleDelete = () => removeItem.mutate(productId);
 
   const handleClick = () => {
     // 해당 아이템 구매페이지로 이동
