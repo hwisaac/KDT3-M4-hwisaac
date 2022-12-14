@@ -2,10 +2,10 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, get, remove } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDzb5aj4VYGm8wiXwRF92gSqMt6_im5GJc',
-  authDomain: 'kdt-m4.firebaseapp.com',
-  databaseURL: 'https://kdt-m4-default-rtdb.asia-southeast1.firebasedatabase.app',
-  projectId: 'kdt-m4',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
