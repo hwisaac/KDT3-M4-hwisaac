@@ -24,8 +24,10 @@ const GNB = () => {
 
   const [isHovering, setIsHovering] = useState(false);
   const [targetGnb, setTargetGnb] = useState('');
+  const [selected, setSelected] = useState(null)
 
   const handleMouseOver = (event) => {
+<<<<<<< HEAD
     setIsHovering(true);
     // console.log(e.target.nodeName);
     // if (event.target.nodeName === 'A') {
@@ -47,14 +49,22 @@ const GNB = () => {
 
   // console.log('targetGnb',targetGnb);
 
+=======
+    // if(event.target.nodeName === 'A'){
+    //   setTargetGnb(event.target.dataset.link)
+    // } else return
+    if(targetGnb){
+      setIsHovering(true);
+    }
+    if(!event.target.dataset.link) return
+    setTargetGnb(event.target.dataset.link)
+  };
+  
+>>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
   const handleMouseOut = (event) => {
     setIsHovering(false);
-    // if(e.target.nodeName === 'A' || 'LI'){
-    //   setIsHovering(true);
-    // }
-    // setIsHovering(false);
-    // setTargetGnb('')
   };
+<<<<<<< HEAD
   console.log(isHovering);
   return (
     <nav className={style.nav}>
@@ -75,6 +85,24 @@ const GNB = () => {
                 <ul className={style.twoDep} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
                   <GnbDepth targetGnb={targetGnb} links={link} />
                 </ul>
+=======
+
+  const handleChange = (i) => {
+    setSelected(i)
+  }
+  
+  return (
+    <nav className={style.nav}>
+      <ul className={style.inner} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
+        {LINKS.map((link, i) => {
+          return (
+            <li className={selected === i ? style.selectedGnbList :style.gnbList} key={i} onMouseOver={()=>{handleChange(i)}}>
+              <Link className={style.gnbLink} to={`/category/${link.mainLink}`} data-link ={link.mainLink} key={i}>
+                {link.mainLink}
+              </Link>
+              {isHovering ? (
+                <GnbDepth targetGnb={targetGnb} links={link}/>
+>>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7
               ) : (
                 ''
               )}
@@ -85,4 +113,9 @@ const GNB = () => {
     </nav>
   );
 };
+<<<<<<< HEAD
 export default GNB;
+=======
+
+export default GNB;
+>>>>>>> a3b63b1452ba61deac4cd10551cbe0ec75ff1ca7

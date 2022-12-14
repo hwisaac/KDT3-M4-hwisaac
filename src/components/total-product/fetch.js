@@ -35,3 +35,19 @@ export async function getCategorizedProducts(searchText, searchTags) {
   const json = await res.json();
   return json;
 }
+
+// 검색
+export async function getSearch(title = '', tags = '') {
+  const res = await fetch(API_URL + 'products/search', {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({
+      searchText: `${title}`,
+      searchTags: [`${tags}`],
+    }),
+  });
+
+  const json = await res.json();
+  // console.log('getProducts >> ', json);
+  return json;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Product.module.css';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Product = ({ id, title, img, price }) => {
   const [heart, setHeart] = useState(false);
