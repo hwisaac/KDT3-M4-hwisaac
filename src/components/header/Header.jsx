@@ -1,3 +1,4 @@
+
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../data/API';
 import { loginState, userInfoState } from '../../data/LoginData';
@@ -45,9 +46,6 @@ export default function Header() {
       }
     }
   };
-
-  // form 으로 보낼 주소 확인
-  const URL = useLocation();
 
   return (
     <header className={style.header}>
@@ -106,20 +104,18 @@ export default function Header() {
             <p>맛그레이드하세요↗ 식품전문가 프레시멘토의 큐레이션 서비스</p>
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
-          <div className={style.col}>
-            <form action={URL.pathname.includes('search') ? `${value}` : `search/${value}`}>
-              <input onKeyDown={onKeyDown} type="search" placeholder="검색어를 입력해보세요" />
-            </form>
-          </div>
+          <form action="/search">
+            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해보세요" />
+          </form>
         </div>
-        <div className={style.mainLogo}>
-          <Link to="/">
-            <img
-              src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
-              alt="FRESH MENTOR"
-            />
-          </Link>
-        </div>
+      </div>
+      <div className={style.mainLogo}>
+        <Link to="/">
+          <img
+            src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
+            alt="FRESH MENTOR"
+          />
+        </Link>
       </div>
     </header>
   );
