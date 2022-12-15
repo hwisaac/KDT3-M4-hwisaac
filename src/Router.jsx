@@ -14,6 +14,7 @@ import ProductManagement from './components/administrator/ProductManagement';
 import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
+import AddModal from './components/administrator/AddModal';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,12 @@ const router = createBrowserRouter([
           {
             path: 'products',
             element: <ProductManagement />,
+            children: [
+              {
+                path: 'add',
+                element: <AddModal />,
+              },
+            ],
           },
           {
             path: 'sales',
