@@ -14,6 +14,7 @@ export const HEADERS = {
 };
 
 export const API_URL = 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/';
+export const ACCOUNT_URL = `https://asia-northeast3-heropy-api.cloudfunctions.net/api/account`;
 
 // 함수들
 export async function getProducts() {
