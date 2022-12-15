@@ -11,7 +11,7 @@ function SignUp() {
     password: '',
     displayName: '',
   });
-  const setLoginState = useSetRecoilState(loginState);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const setUserInfo = useSetRecoilState(userInfoState);
 
   const [profileImgBase64, setProfileImg] = useState('');
@@ -36,26 +36,28 @@ function SignUp() {
   const onSubmit = async (event) => {
     event.preventDefault();
     console.log(email, password, displayName, profileImgBase64);
-
+    let json;
     try {
       const res = await fetch(`${authUrl}/signup`, {
         method: 'POST',
         headers: HEADERS_USER,
         body: JSON.stringify({ email, password, displayName, profileImgBase64 }),
       });
-      const json = await res.json();
+      json = await res.json();
       const {
         user: { profileImg },
         accessToken,
       } = json;
-      setLoginState(true);
+      setIsLoggedIn(true);
       setUserInfo({
-        user: { email, displayName, profileImg },
-        accessToken,
+        email,
+        displayName,
+        profileImg,
       });
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
       document.location.href = '/';
     } catch {
-      console.log('error');
+      alert(json);
     }
   };
 

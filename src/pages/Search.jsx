@@ -1,14 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { getSearch } from '../components/total-product/fetch';
-import { useParams } from 'react-router-dom';
 import SearchItem from './SearchItem';
 import style from './Search.module.css';
+import { useSearchParams } from 'react-router-dom';
 
 const Search = () => {
   const [search, setSearch] = useState([]);
   const [loading, setLoading] = useState(true);
-  let { title } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const title = searchParams.get('s');
 
   const TAGS = [
     '농산물',
