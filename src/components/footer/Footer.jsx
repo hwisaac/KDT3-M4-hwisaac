@@ -8,6 +8,7 @@ const Footer = (props) => {
     <footer className={style.footer}>
       <div className={style.inner}></div>
       <h2 className={style.title}>Footer</h2>
+      <Link to="/admin/products"> 관리자 페이지 </Link>
     </footer>
   );
 };
