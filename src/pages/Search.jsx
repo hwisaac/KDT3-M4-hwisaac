@@ -1,15 +1,17 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { getSearch } from '../components/total-product/fetch';
+import { useSearchParams } from 'react-router-dom';
 import SearchItem from './SearchItem';
 import style from './Search.module.css';
-import { useSearchParams } from 'react-router-dom';
 
 const Search = () => {
   const [search, setSearch] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const title = searchParams.get('s');
+
+  // location 의 ?s=title 가져오기
+  let [searchParams, setSearchParams] = useSearchParams();
+  let title = searchParams.get('s');
 
   const TAGS = [
     '농산물',
@@ -35,7 +37,7 @@ const Search = () => {
   if (title.includes(' ')) {
     titleArr = title.split(' ');
     tag = TAGS.find((tag) => titleArr.includes(tag));
-    findTitle = titleArr.find((title) => TAGS.find((tag) => tag !== title));
+    findTitle = titleArr.find((t) => t !== tag);
   } else if (!title.includes(' ') && tag) {
     title = tag;
   }

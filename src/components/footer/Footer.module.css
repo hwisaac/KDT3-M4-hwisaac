@@ -6,7 +6,6 @@
 .title {
   background-color: var(--color-red);
 }
-
 .inner {
   display: flex;
   width: 1200px;

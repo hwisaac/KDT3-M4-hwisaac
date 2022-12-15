@@ -1,27 +1,23 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 import Product from '../components/total-product/Product';
-import { getCategorizedProducts } from '../components/total-product/fetch';
 import style from './Category.module.css';
+import SortButton from '../components/button/SortButton';
+import useProducts from '../hooks/use-products';
 
 export default function Category() {
-  const { tag } = useParams();
-  const searchText = '';
-  const searchTags = [tag];
-  const location = useLocation();
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    const productsData = getCategorizedProducts(searchText, searchTags);
-    productsData.then((data) => setProducts(data));
-  }, [tag]);
-
+  const [loading, error, products, filters, filter, setFilter, filtered, tag] = useProducts('category')
+  if(loading) return <p>Loading...</p>
+  if(error) return <p>Error ...</p>
   return (
     <main>
-      <h2 className={style.h2}>{location.state?.name ? location.state.name : tag}</h2>
+      <h2 className={style.h2}>{tag}</h2>
+      <SortButton 
+        filter={filter}
+        filters={filters}
+        onFilterChange={(filter) => setFilter(filter)}
+        />
       <ul className={style.product_wrap}>
-        {products.map((product) => (
+        {filtered.map((product) => (
           <Product id={product.id} title={product.title} img={product.thumbnail} price={product.price} />
         ))}
       </ul>
