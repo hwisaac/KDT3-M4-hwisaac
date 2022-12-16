@@ -15,6 +15,7 @@ import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
 import AddModal from './components/administrator/AddModal';
+import MyBuy from './pages/MyBuy';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'mycart',
         element: <MyCart />,
+      },
+      {
+        path: 'mybuy',
+        element: <MyBuy />,
       },
       {
         path: 'login',
