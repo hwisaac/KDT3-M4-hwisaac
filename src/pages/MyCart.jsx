@@ -14,7 +14,7 @@ const SHIPPING = 3000;
 export default function MyCart() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const userName = userInfo.user.displayName;
+  const userName = userInfo.displayName;
 
   const { isLoading, data: products } = useQuery(['carts', userName || ''], () => getCart(userName), {
     enabled: !!userName,

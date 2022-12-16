@@ -12,7 +12,7 @@ import { loginState, userInfoState } from '../data/LoginData';
 export default function ProductDetail() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const userName = userInfo.user.displayName;
+  const userName = userInfo.displayName;
 
   const navigate = useNavigate();
   const {
@@ -28,7 +28,7 @@ export default function ProductDetail() {
     });
   }, [id]);
 
-  console.log('detail:', detail);
+  // console.log('detail:', detail);
   const { id: productId, title, photo, price, description } = detail;
 
   const handleClick = (e) => {
@@ -42,6 +42,17 @@ export default function ProductDetail() {
     navigate(`/mycart`);
   };
 
+  // 구매하기
+  const handleClickBuy = (e) => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
+      window.location = '/login';
+    }
+    const product = { productId, title, photo, price, quantity: 1 };
+    // addOrUpdateToCart(userName, product);
+    navigate(`/mybuy`, { state: { product } });
+  };
+
   return (
     <section className={style.item}>
       <img className={style.img} src={photo} alt={title} />
@@ -50,7 +61,7 @@ export default function ProductDetail() {
         <p className={style.price}>{price?.toLocaleString() || Number(price).toLocaleString()}원</p>
         <p className={style.description}>{description}</p>
         <div className={style.btns}>
-          <Button text="구매하기" onClick={handleClick} />
+          <Button text="구매하기" onClick={handleClickBuy} />
           <Button text="장바구니" onClick={handleClick} />
         </div>
       </div>
