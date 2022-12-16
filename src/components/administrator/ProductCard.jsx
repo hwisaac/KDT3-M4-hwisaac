@@ -2,7 +2,6 @@ import React from 'react';
 import style from './ProductCard.module.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ProductButton from './ProductButton';
 
 const ProductCard = ({ index, id, title, price, description, tags, isSoldOut, thumbnail }) => {
   // const [heart, setHeart] = useState(false);

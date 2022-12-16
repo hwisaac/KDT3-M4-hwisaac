@@ -6,9 +6,12 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useState, useEffect } from 'react';
 
 const MyBuy = () => {
-  const {
-    state: { product },
-  } = useLocation();
+  const { state: buyProduct } = useLocation();
+  // buyProduct가 여러개일 경우 products로 할당함, 아닐 경우 product에 할당
+  const products = buyProduct && buyProduct.length > 0 && buyProduct;
+  const product = buyProduct && buyProduct.length === undefined && buyProduct;
+  console.log('products:', products);
+  console.log('product:', product);
 
   const accessToken = getCookie('accessToken');
   const [accountData, setAccountData] = useState([]);
@@ -83,13 +86,13 @@ const MyBuy = () => {
           <p>금액</p>
         </li>
         <li>
-          <p>
+          <div>
             <img style={{ width: 150 }} src={product.photo} alt={product.title} />
             <div>
               <p>[스마트스토어] 프레시멘토</p>
               <p>{product.title}</p>
             </div>
-          </p>
+          </div>
           <p>프레시멘토</p>
           <p>1개(quantity)</p>
           <p>{product.price?.toLocaleString()}원</p>
