@@ -9,6 +9,7 @@ import Slider from './components/kv/Slider';
 import ProductDetail from './pages/ProductDetail';
 import Category from './pages/Category';
 import Search from './pages/Search';
+import MyBuy from './pages/MyBuy';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: 'mycart',
         element: <MyCart />,
+      },
+      {
+        path: 'mybuy',
+        element: <MyBuy />,
       },
       {
         path: 'login',
