@@ -32,6 +32,7 @@ export default function MyPage() {
 
   return (
     <main className={style.main}>
+      <h2 className={style.h2}>마이페이지</h2>
       <div className={style.left}>
         <div className={style.profile}>
           <img src={userInfo.profileImg ? userInfo.profileImg : alternativeImg} className={style.image}></img>
@@ -46,11 +47,11 @@ export default function MyPage() {
         <button className={style.button}>계좌 추가 연결하기</button>
       </div>
 
-      <ul className={style.account}>
-        <h2 className={style.h2}> {userInfo.displayName}님의 연결된 계좌</h2>
+      <ul className={style.right}>
+        <p className={style.p}> {userInfo.displayName}님의 연결된 계좌</p>
         {myAccount.accounts ? (
           myAccount.accounts.map((account, index) => (
-            <ul key={account.id}>
+            <ul key={account.id} className={style.account}>
               {index + 1}
               <li>{account.bankName}</li>
               <li>{account.accountNumber}</li>
@@ -60,7 +61,6 @@ export default function MyPage() {
         ) : (
           <p>연결된 계좌가 없습니다. 계좌를 연결해 주세요.</p>
         )}
-        <h2 className={style.h2}>계좌 연결하기</h2>
       </ul>
       <form></form>
     </main>

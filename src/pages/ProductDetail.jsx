@@ -12,7 +12,7 @@ import { loginState, userInfoState } from '../data/LoginData';
 export default function ProductDetail() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const userName = userInfo.user.displayName;
+  const userName = userInfo.displayName;
 
   const navigate = useNavigate();
   const {
