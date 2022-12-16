@@ -15,7 +15,6 @@ export async function getCart(username) {
   return get(ref(database, `carts/${username}`)) //
     .then((snapshot) => {
       const items = snapshot.val() || {};
-      console.log('items:', items);
       return Object.values(items);
     });
 }
