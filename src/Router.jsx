@@ -63,6 +63,10 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
+        path: 'mybuy',
+        element: <MyBuy />,
+      },
+      {
         path: 'admin',
         element: <Administrator />,
         children: [

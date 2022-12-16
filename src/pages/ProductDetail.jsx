@@ -41,6 +41,7 @@ export default function ProductDetail() {
     navigate(`/mycart`);
   };
 
+  // 구매하기
   const handleClickBuy = (e) => {
     if (!isLoggedIn) {
       alert('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
