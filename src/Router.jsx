@@ -14,6 +14,7 @@ import ProductManagement from './components/administrator/ProductManagement';
 import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
+import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'mycart',
         element: <MyCart />,
+      },
+      {
+        path: 'mybuy',
+        element: <MyBuy />,
       },
       {
         path: 'login',
