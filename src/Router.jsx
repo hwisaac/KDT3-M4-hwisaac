@@ -16,6 +16,7 @@ import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
 import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
+import MyBuy from './pages/MyBuy';
 
 const router = createBrowserRouter([
   {

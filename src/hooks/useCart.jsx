@@ -6,7 +6,7 @@ import { loginState, userInfoState } from '../data/LoginData';
 export default function useCart() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const userName = userInfo.user.displayName;
+  const userName = userInfo.displayName;
   const queryClient = useQueryClient();
 
   const cartQuery = useQuery(['carts', userName || ''], () => getCart(userName), {
