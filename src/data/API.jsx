@@ -17,6 +17,9 @@ export const API_URL = 'https://asia-northeast3-heropy-api.cloudfunctions.net/ap
 export const ACCOUNT_URL = `https://asia-northeast3-heropy-api.cloudfunctions.net/api/account`;
 
 // 함수들
+/**
+ * @returns 상품 데이터 객체가 담긴 리스트
+ */
 export async function getProducts() {
   const res = await fetch(API_URL + 'products', {
     method: 'GET',
@@ -28,7 +31,7 @@ export async function getProducts() {
   return json;
 }
 
-// 상품 상세페이지 정보
+/**  상품 상세페이지 정보 */
 export async function getProductDetail(id) {
   const res = await fetch(`${API_URL}products/${id}`, {
     method: 'GET',
@@ -80,10 +83,16 @@ export async function deleteProduct(id) {
     console.log('에러 발생', e);
   }
 }
-async function updateProduct(id, payload) {
+
+/**
+ *
+ * @param {*} id: string
+ * @param {*} payload :obj { title, price, description, tags, thumbnailBase64, photoBase64, isSoldOut }
+ * @returns : void
+ */
+export async function updateProduct(id, payload) {
   const { title, price, description, tags, thumbnailBase64, photoBase64, isSoldOut } = payload;
 
-  const editedURL = API_URL + `/${id}`;
   const res = await fetch(API_URL + `products/${id}`, {
     method: 'PUT',
     headers: HEADERS,
@@ -91,7 +100,6 @@ async function updateProduct(id, payload) {
   });
   const json = await res.json();
   console.log('updateProduct >> ', json);
-  return json;
 }
 
 export const deleteAll = async () => {
@@ -116,7 +124,7 @@ const getDetailProduct = async (id) => {
 export async function encodeImageFileAsURL(files, setPreview) {
   if (files.length === 0) {
     setPreview('');
-    return;
+    return '아무것도 들어오지 않았습니다.';
   }
   let file = files[0];
   let reader = new FileReader();

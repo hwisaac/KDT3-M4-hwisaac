@@ -4,6 +4,7 @@ import style from './ProductManagement.module.css';
 import { useLocation, useNavigate, useMatch, Link, Outlet } from 'react-router-dom';
 import { getProducts } from '../../data/API';
 import { useState, useEffect } from 'react';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const ProductManagement = () => {
   // const { products } = useLocation().state;
@@ -34,6 +35,7 @@ const ProductManagement = () => {
         <div>
           <span>전체선택</span>
           <span>선택삭제</span>
+          <span>상품초기화</span>
         </div>
 
         <Link to="add" state={{ background: location }}>

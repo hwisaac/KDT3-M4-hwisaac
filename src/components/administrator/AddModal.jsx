@@ -45,6 +45,7 @@ const AddModal = ({ setAddModalOpen }) => {
       navigate('/admin/products');
     }
   };
+  /** submit 이 유효한 경우 작동하는 함수. (handleSubmit에 등록돼 있다.)  */
   const onValid = async ({ title, price, description, thumbnail, photo }) => {
     // console.log(tags);
     // thumbnailPreview

@@ -30,7 +30,7 @@ const ProductCard = ({ index, id, title, price, description, tags, isSoldOut, th
         </div>
       </div>
       <div className={style.right}>
-        <Link to={`edit/${id}`} state={{ id }}>
+        <Link to={`edit/${id}`} state={{ index, id, title, price, description, tags, isSoldOut, thumbnail }}>
           <button className={style.btn}>수정</button>
         </Link>
         <button className={style.btn} onClick={() => deleteProduct(id)}>
