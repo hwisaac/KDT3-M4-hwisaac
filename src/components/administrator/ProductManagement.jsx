@@ -46,6 +46,7 @@ const ProductManagement = () => {
         return (
           <ProductCard
             key={`productCard-${id}`}
+            id={id}
             index={index}
             title={title}
             price={price}

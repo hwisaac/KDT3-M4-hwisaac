@@ -1,12 +1,16 @@
 import React from 'react';
-import style from './AddModal.module.css';
-import { useNavigate, Link } from 'react-router-dom';
+import style from './EditModal.module.css';
+import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { addProduct, encodeImageFileAsURL } from '../../data/API';
 
-const AddModal = ({ setAddModalOpen }) => {
+const EditModal = () => {
+  const location = useLocation();
+  console.log(location);
+  const { id } = useParams();
+  console.log('parmas: ', id);
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
   const [tagValue, setTagValue] = useState('');
@@ -69,7 +73,7 @@ const AddModal = ({ setAddModalOpen }) => {
     <div className={style.wrapper} onClick={onWrapperClick}>
       <div className={style.modal}>
         <div className={style.modalHeader}>
-          <h2 className={style.headTitle}>상품 추가하기</h2>
+          <h2 className={style.headTitle}>상품 수정하기</h2>
 
           {/* <div> */}
           <Link to="/admin/products">
@@ -82,30 +86,15 @@ const AddModal = ({ setAddModalOpen }) => {
           <ul className={style.inputs}>
             <li>
               <span className={style.listName}>상품명 *</span>
-              <input
-                {...register('title', { required: '상품명은 필수입니다.' })}
-                type="text"
-                placeholder="상품명(필수)"
-              />
-              <span className={style.errorMessage}>{errors?.title?.message}</span>
+              <input {...register('title')} type="text" placeholder="상품명" />
             </li>
             <li>
-              <span className={style.listName}>가격 *</span>
-              <input
-                {...register('price', { required: '가격은 필수입니다.' })}
-                type="number"
-                placeholder="제품 가격(필수)"
-              />
-              <span className={style.errorMessage}>{errors?.price?.message}</span>
+              <span className={style.listName}>가격</span>
+              <input {...register('price')} type="number" placeholder="제품 가격" />
             </li>
             <li>
-              <span className={style.listName}>상품설명 *</span>
-              <textarea
-                {...register('description', { required: '상품설명은 필수입니다.' })}
-                type="text"
-                placeholder="상품 설명(필수)"
-              />
-              <span className={style.errorMessage}>{errors?.description?.message}</span>
+              <span className={style.listName}>상품설명</span>
+              <textarea {...register('description')} type="text" placeholder="상품 설명" />
             </li>
             <li>
               <span className={style.listName}>태그 </span>
@@ -154,7 +143,7 @@ const AddModal = ({ setAddModalOpen }) => {
           </ul>
 
           <div className={style.modalFooter}>
-            <button className={style.btn}>추가</button>
+            <button className={style.btn}>수정</button>
             <Link to="/admin/products">
               <button className={style.btn}>취소</button>
             </Link>
@@ -165,4 +154,4 @@ const AddModal = ({ setAddModalOpen }) => {
   );
 };
 
-export default AddModal;
+export default EditModal;

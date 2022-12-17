@@ -15,6 +15,7 @@ import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
 import AddModal from './components/administrator/AddModal';
+import EditModal from './components/administrator/EditModal';
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
               {
                 path: 'add',
                 element: <AddModal />,
+              },
+              {
+                path: 'edit/:id',
+                element: <EditModal />,
               },
             ],
           },
