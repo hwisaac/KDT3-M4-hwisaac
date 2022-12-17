@@ -12,6 +12,7 @@ const SHIPPING = 3000;
 
 export default function MyCart() {
   const [allChecked, setAllChecked] = useState(true);
+  // const [childChecked, setChildChecked] = useState(true);
 
   const {
     cartQuery: { isLoading, data: products },
@@ -25,19 +26,13 @@ export default function MyCart() {
   const hasProducts = products && products.length > 0;
   const totalPrice = products && products.reduce((prev, current) => prev + current.price * current.quantity, 0);
 
-  // products && products.forEach((product) => addOrUpdateItem.mutate({ ...product, isChecked: true }))();
-
   const handleChecked = () => {
     console.log('totalClicked - clicked');
     setAllChecked((prev) => !prev);
-    products.forEach((product) => addOrUpdateItem.mutate({ ...product, isChecked: !allChecked }));
   };
 
-  // const getChecked = (child) => {
-  //   setAllChecked(child);
-  // };
-
   const totalChecked = products && products.filter((product) => product.isChecked).length;
+  const isAllChecked = totalChecked === products.length;
 
   const handleToBuy = () => {
     const buyItem = products.filter((product) => product.isChecked === true);
@@ -65,11 +60,7 @@ export default function MyCart() {
             <input
               type="checkbox"
               id="title"
-              checked={
-                (totalChecked === products.length && allChecked) || (!allChecked && totalChecked === products.length)
-                  ? true
-                  : false
-              }
+              checked={(isAllChecked && allChecked) || (!allChecked && isAllChecked)}
               onChange={handleChecked}
             />
             <label htmlFor="title">프레시멘토</label>
@@ -77,14 +68,7 @@ export default function MyCart() {
           </div>
           <ul>
             {products &&
-              products.map((product) => (
-                <CartItem
-                  key={product.productId}
-                  product={product}
-                  allChecked={allChecked}
-                  // getChecked={getChecked}
-                />
-              ))}
+              products.map((product) => <CartItem key={product.productId} product={product} allChecked={allChecked} />)}
           </ul>
           <div className={style.totalPrice}>
             <PriceCard text="선택상품금액" price={totalPrice} />
