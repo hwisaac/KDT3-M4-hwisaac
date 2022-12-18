@@ -4,28 +4,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
-
-// image -> base64
-async function encodeImageFileAsURL(files, setPreview) {
-  if (files.length === 0) {
-    setPreview('');
-    return;
-  }
-  let file = files[0];
-  let reader = new FileReader();
-
-  reader.onloadend = async function () {
-    await setPreview(reader.result);
-    console.log('read.result 구했음');
-    return reader.result;
-  };
-  console.log('readAsDataURL~~');
-  reader.readAsDataURL(file);
-}
-//
+import { addProduct, encodeImageFileAsURL } from '../../data/API';
 
 const AddModal = ({ setAddModalOpen }) => {
   const navigate = useNavigate();
+  const [tags, setTags] = useState([]);
+  const [tagValue, setTagValue] = useState('');
   const [thumbnailPreview, setThumbnailPreview] = useState('');
   const [photoPreview, setPhotoPreview] = useState('');
   const {
@@ -34,7 +18,17 @@ const AddModal = ({ setAddModalOpen }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const onChangeTagValue = (event) => {
+    let value = event.currentTarget.value;
+    setTagValue(value);
 
+    const tags = value
+      .replaceAll('#', ',')
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== '');
+    setTags([...tags]);
+  };
   const onChangeThumbnail = async (event) => {
     const res = await encodeImageFileAsURL(event.currentTarget.files, setThumbnailPreview);
     // console.log(res);
@@ -48,22 +42,24 @@ const AddModal = ({ setAddModalOpen }) => {
 
   const onWrapperClick = (event) => {
     if (event.target === event.currentTarget) {
-      console.log('바깥 클릭');
       navigate('/admin/products');
     }
   };
-  const onValid = ({ title, price, description, tags, thumbnail, photo }) => {
-    // console.log(photo);
-    if (thumbnailPreview === '') {
-      console.log('섬네일 비어있음');
-    } else {
-      console.log('섬네일 존재');
-    }
-    if (photoPreview === '') {
-      console.log('포토 비어있음');
-    } else {
-      console.log('포토 존재');
-    }
+  /** submit 이 유효한 경우 작동하는 함수. (handleSubmit에 등록돼 있다.)  */
+  const onValid = async ({ title, price, description, thumbnail, photo }) => {
+    // console.log(tags);
+    // thumbnailPreview
+
+    navigate('/admin/products');
+    const res = await addProduct({
+      title,
+      price: Number(price),
+      description,
+      tags,
+      thumbnailBase64: thumbnailPreview,
+      photoBase64: photoPreview,
+    });
+    console.log('onValid에서의 res: ', res);
   };
   const onInValid = (data) => {
     console.log('inValid Errors: ', errors);
@@ -86,30 +82,53 @@ const AddModal = ({ setAddModalOpen }) => {
         <form className={style.modalBody} onSubmit={handleSubmit(onValid, onInValid)}>
           <ul className={style.inputs}>
             <li>
-              <span className={style.listName}>상품명 </span>
+              <span className={style.listName}>상품명 *</span>
               <input
-                {...register('title', { required: '상품명은 필수입니다' })}
+                {...register('title', { required: '상품명은 필수입니다.' })}
                 type="text"
                 placeholder="상품명(필수)"
               />
               <span className={style.errorMessage}>{errors?.title?.message}</span>
             </li>
             <li>
-              <span className={style.listName}>가격 </span>
+              <span className={style.listName}>가격 *</span>
               <input
-                {...register('price', { required: '가격은 필수입니다' })}
-                type="text"
+                {...register('price', { required: '가격은 필수입니다.' })}
+                type="number"
                 placeholder="제품 가격(필수)"
               />
               <span className={style.errorMessage}>{errors?.price?.message}</span>
             </li>
             <li>
-              <span className={style.listName}>상품설명 </span>
-              <textarea {...register('description')} type="text" placeholder="상품 설명" />
+              <span className={style.listName}>상품설명 *</span>
+              <textarea
+                {...register('description', { required: '상품설명은 필수입니다.' })}
+                type="text"
+                placeholder="상품 설명(필수)"
+              />
+              <span className={style.errorMessage}>{errors?.description?.message}</span>
             </li>
             <li>
               <span className={style.listName}>태그 </span>
-              <input {...register('tags')} type="text" placeholder="제품 태그 (#으로 구분)" />
+              <div>
+                <input
+                  className={style.tagInput}
+                  {...register('tag')}
+                  type="text"
+                  value={tagValue}
+                  onChange={onChangeTagValue}
+                />
+              </div>
+
+              <div className={style.tagContainer}>
+                {tags.length > 0
+                  ? tags.map((tag, index) => (
+                      <span className={style.tagItem} key={`${tag}${index}`}>
+                        {tag}
+                      </span>
+                    ))
+                  : null}
+              </div>
             </li>
             <li>
               <span className={style.listName}>썸네일 </span>
