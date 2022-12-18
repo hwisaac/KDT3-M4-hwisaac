@@ -1,13 +1,13 @@
 import React from 'react';
 import style from './Slider.module.css';
 
-export default function Dots({ activeIndex, onclick, sliderImage }) {
+export default function Dots({ activeIndex, onclick, sliderImages }) {
   return (
-    <div className="all-dots">
-      {sliderImage.map((slide, index) => (
+    <div className={style.allDots}>
+      {sliderImages.map((slide, index) => (
         <span
-          key={index}
-          className={activeIndex === index ? `${style.dot} ${style.activeDot}` : `{style.dot}`}
+          key={`dots-${index}`}
+          className={activeIndex === index ? `${style.dot} ${style.activeDot}` : `${style.dot}`}
           onClick={() => onclick(index)}
         ></span>
       ))}

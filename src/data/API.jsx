@@ -87,10 +87,11 @@ export async function deleteProduct(id) {
 /**
  *
  * @param {*} id: string
- * @param {*} payload :obj { title, price, description, tags, thumbnailBase64, photoBase64, isSoldOut }
+ * @param {*} payload =: { title, price, description, tags, thumbnailBase64, photoBase64, isSoldOut }
  * @returns : void
  */
 export async function updateProduct(id, payload) {
+  console.log(payload);
   const { title, price, description, tags, thumbnailBase64, photoBase64, isSoldOut } = payload;
 
   const res = await fetch(API_URL + `products/${id}`, {
@@ -131,6 +132,8 @@ export async function encodeImageFileAsURL(files, setPreview) {
 
   reader.onloadend = async function () {
     await setPreview(reader.result);
+    console.log(reader.result);
+
     return reader.result;
   };
   reader.readAsDataURL(file);

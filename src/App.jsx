@@ -14,7 +14,7 @@ function App() {
       <GNB />
       <Outlet />
       <Footer />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }

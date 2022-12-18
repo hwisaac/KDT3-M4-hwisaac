@@ -4,7 +4,7 @@ import style from './Slider.module.css';
 
 export default function Arrows({ prevSlide, nextSlide }) {
   return (
-    <div className="arrows">
+    <div>
       <div className={style.prev} onClick={prevSlide}>
         <BsFillArrowLeftCircleFill />
       </div>

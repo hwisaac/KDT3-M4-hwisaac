@@ -4,7 +4,8 @@ import style from './ProductManagement.module.css';
 import { useLocation, useNavigate, useMatch, Link, Outlet } from 'react-router-dom';
 import { getProducts } from '../../data/API';
 import { useState, useEffect } from 'react';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { useQuery } from '@tanstack/react-query';
+import LoadingModal from '../loading/LoadingModal.jsx';
 
 const ProductManagement = () => {
   // const { products } = useLocation().state;
@@ -32,6 +33,7 @@ const ProductManagement = () => {
   return (
     <ul className={style.productList}>
       <li className={style.listHeader}>
+        <LoadingModal />
         <div>
           <span>전체선택</span>
           <span>선택삭제</span>
