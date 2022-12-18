@@ -1,14 +1,15 @@
-import First from '../../assets/image-1.jpeg';
-import Second from '../../assets/image-2.jpeg';
-import Third from '../../assets/image-3.jpeg';
-import Fourth from '../../assets/image-4.jpeg';
-import Fifth from '../../assets/image-5.jpeg';
+import First from '../../assets/서귀포감귤.jpeg';
+import Second from '../../assets/꿀고구마.jpeg';
+import Third from '../../assets/새꼬막.jpeg';
+import Fourth from '../../assets/홍가리비.jpeg';
+import Fifth from '../../assets/생굴.jpeg';
 
 const imgArr = [
-  { url: First, title: 'First Slide' },
-  { url: Second, title: 'Second Slide' },
-  { url: Third, title: 'Third Slide' },
-  { url: Fourth, title: 'Fourth Slide' },
-  { url: Fifth, title: 'Fifth Slide' },
+  { url: First, title: '서귀포감귤', id: '43oFYlby0eEYPqdRfqMf' },
+  { url: Second, title: '꿀고구마', id: 'ArEi2eIKUTXGrggaq1QX' },
+  { url: Third, title: '새꼬막', id: '3RJPjgMdatDAJKujeUrM' },
+  { url: Fourth, title: '홍가리비', id: '3jgtpqIboBovZfnNJPtG' },
+  { url: Fifth, title: '생굴', id: '9AI0uZPTl1QqbDBNEWm0' },
 ];
+
 export default imgArr;

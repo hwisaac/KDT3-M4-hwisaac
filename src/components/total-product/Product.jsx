@@ -14,7 +14,7 @@ const Product = ({ id, title, img, price }) => {
     <li
       className={style.wrap}
       onClick={() => {
-        navigate(`/products/${id}`, { state: { id, title, img, price } });
+        navigate(`/products/${id}`);
       }}
     >
       <img className={style.img} src={img} alt={title} />

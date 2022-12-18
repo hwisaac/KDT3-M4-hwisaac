@@ -34,7 +34,7 @@ export default function CartItem({
 
   const handleChecked = () => {
     setChecked((prev) => !prev);
-    addOrUpdateItem.mutate({ ...product, isChecked: !checked }, { onError: console.log('onError') });
+    addOrUpdateItem.mutate({ ...product, isChecked: !checked });
     console.log('child - clicked!!!!');
   };
 

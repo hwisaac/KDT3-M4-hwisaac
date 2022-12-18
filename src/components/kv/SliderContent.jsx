@@ -1,40 +1,20 @@
 import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 import style from './Slider.module.css';
 
-export default function SliderContent({ activeIndex, sliderImage, direction }) {
-  const variants = {
-    initial: { x: -1000, opacity: 0 },
-    animate: {
-      x: 0,
-      opacity: 1,
-      transition: 'ease-in',
-    },
-    exit: (direction) => {
-      return { x: direction > 0 ? -1000 : 1000, opacity: 0, transition: 'ease-in' };
-    },
-  };
+export default function SliderContent({ activeIndex, sliderImage }) {
+  const navigate = useNavigate();
   return (
     <section>
       {sliderImage.map((slide, slideIndex) => (
         <div
-          key={slideIndex}
+          key={slide.id}
           className={slideIndex === activeIndex ? `${style.slides} ${style.active}` : `${style.inactive}`}
+          onClick={() => navigate(`/products/${slide.id}`)}
         >
-          <img src={slide.url} className={style.slideImage} alt="" />
+          {console.log('slide:', slide.id)}
+          <img src={slide.url} className={style.slideImage} alt={slide.title} />
         </div>
-        // <AnimatePresence initial={false} custom={direction}>
-        //   <motion.img
-        //     variants={variants}
-        //     animate="animate"
-        //     initial="initial"
-        //     exit="exit"
-        //     src={slide.url}
-        //     key={slideIndex}
-        //     className={slideIndex === activeIndex ? 'slides active' : 'inactive'}
-        //     custom={direction}
-        //   />
-        // </AnimatePresence>
       ))}
     </section>
   );

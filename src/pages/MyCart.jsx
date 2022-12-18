@@ -12,7 +12,6 @@ const SHIPPING = 3000;
 
 export default function MyCart() {
   const [allChecked, setAllChecked] = useState(true);
-  // const [childChecked, setChildChecked] = useState(true);
 
   const {
     cartQuery: { isLoading, data: products },
@@ -38,8 +37,7 @@ export default function MyCart() {
     const buyItem = products.filter((product) => product.isChecked === true);
     if (buyItem.length === 0) {
       alert('주문하실 상품을 선택해 주세요.');
-    }
-    navigate('/mybuy', { state: buyItem });
+    } else navigate('/mybuy', { state: buyItem });
   };
 
   return (
