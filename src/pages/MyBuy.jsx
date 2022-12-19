@@ -16,9 +16,12 @@ const MyBuy = () => {
   const [accountData, setAccountData] = useState([]);
   const [accountId, setAccountId] = useState('');
 
-  const quantity = products.for;
+  // const quantity = new Array();
+  // for (let p of products) {
+  //   quantity.push(p.quantity);
+  // }
 
-  console.log('products 의 개수:', quantity);
+  // console.log('products 의 개수:', quantity);
 
   // console.log('products:', products);
   // console.log('product:', product);
@@ -77,13 +80,15 @@ const MyBuy = () => {
   const onClickBuy = async () => {
     if (products) {
       products.forEach(async (product) => {
-        await getBuy(product.productId, accountId);
+        let quantity = product.quantity;
+        while (quantity > 0) {
+          await getBuy(product.productId, accountId);
+          console.log(product.title, quantity);
+          quantity--;
+        }
       });
       alert('결제가 완료되었습니다.');
-    }
-    // else if (products && ) {
-    // }
-    else {
+    } else {
       await getBuy(product.id, accountId);
       alert('결제가 완료되었습니다.');
     }
