@@ -1,26 +1,32 @@
 import React from 'react';
 import style from './EditModal.module.css';
-import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { addProduct, encodeImageFileAsURL, getProductDetail, getProducts, updateProduct } from '../../data/API';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { myAtom } from '../../data/atoms.js';
+import LoadingModal from '../loading/LoadingModal.jsx';
 
 const EditModal = () => {
+  const atom = useRecoilValue(myAtom);
+
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { isLoading, data } = useQuery([id], () => getProductDetail(id));
   const editProduct = useMutation(([id, payload]) => updateProduct(id, payload), {
-    // 성공하면 닫기
+    // 성공하면 닫고 데이터 refetch
     onSuccess: () => {
       navigate('/admin/products');
+      atom.myFn(); // refetch 함수
     },
   });
 
-  const [tags, setTags] = useState([]);
   // const [tagValue, setTagValue] = useState('');
+  const [tags, setTags] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState('');
   const [photoPreview, setPhotoPreview] = useState('');
   const {
@@ -46,7 +52,7 @@ const EditModal = () => {
   };
   const onChangeThumbnail = async (event) => {
     const res = await encodeImageFileAsURL(event.currentTarget.files, setThumbnailPreview);
-    console.log('res', res);
+
     // console.log('thumbnailPreview >>', thumbnailPreview);
     // setValue('thumbnail', event.currentTarget.files);
   };
@@ -57,10 +63,6 @@ const EditModal = () => {
     // setValue('photo', event.currentTarget.files);
   };
 
-  useEffect(() => {
-    console.log('photo', watch('photo')[0]?.size);
-    console.log('thumbnail', watch('thumbnail')[0]?.size);
-  }, [watch('photo'), watch('thumbnail')]);
   const onWrapperClick = (event) => {
     if (event.target === event.currentTarget) {
       navigate('/admin/products');
@@ -79,9 +81,7 @@ const EditModal = () => {
       .filter((tag) => tag !== '');
     console.log('현재 더티필드', dirtyFields);
     console.log('data{} = ', { title, price, description, tag, thumbnail, photo, isSoldOut });
-    // let ept = ''
-    // const testObj = { t: epy ? 'yes' : undefined };
-    // console.log(testObj);
+
     // console.log( `  ${dirtyFields.photo? }   `)
     editProduct.mutate([
       id,
@@ -117,7 +117,7 @@ const EditModal = () => {
     <div className={style.wrapper} onClick={onWrapperClick}>
       <div className={style.modal}>
         <div className={style.modalHeader}>
-          <h2 className={style.headTitle}>{editProduct.isLoading ? '수정 대기중' : null}</h2>
+          <h2 className={style.headTitle}>{editProduct.isLoading ? <LoadingModal /> : null}</h2>
           <Link to="/admin/products">
             <AiFillCloseCircle className={style.AiFillCloseCircle} />
           </Link>
