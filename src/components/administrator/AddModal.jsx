@@ -1,17 +1,30 @@
 import React from 'react';
 import style from './AddModal.module.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { addProduct, encodeImageFileAsURL } from '../../data/API';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useMutation } from '@tanstack/react-query';
+import { myAtom } from '../../data/atoms.js';
+import LoadingModal from '../loading/LoadingModal';
 
-const AddModal = ({ setAddModalOpen }) => {
+const AddModal = () => {
+  const atom = useRecoilValue(myAtom);
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
   const [tagValue, setTagValue] = useState('');
   const [thumbnailPreview, setThumbnailPreview] = useState('');
   const [photoPreview, setPhotoPreview] = useState('');
+  const postProduct = useMutation((payload) => addProduct(payload), {
+    // 성공하면 닫고 데이터 refetch
+    onSuccess: () => {
+      navigate('/admin/products');
+      atom.myFn(); // refetch 함수
+    },
+  });
+
   const {
     register,
     watch,
@@ -49,9 +62,8 @@ const AddModal = ({ setAddModalOpen }) => {
   const onValid = async ({ title, price, description, thumbnail, photo }) => {
     // console.log(tags);
     // thumbnailPreview
-
     navigate('/admin/products');
-    const res = await addProduct({
+    postProduct.mutate({
       title,
       price: Number(price),
       description,
@@ -59,7 +71,7 @@ const AddModal = ({ setAddModalOpen }) => {
       thumbnailBase64: thumbnailPreview,
       photoBase64: photoPreview,
     });
-    console.log('onValid에서의 res: ', res);
+    // const res = await addProduct();
   };
   const onInValid = (data) => {
     console.log('inValid Errors: ', errors);
@@ -71,7 +83,7 @@ const AddModal = ({ setAddModalOpen }) => {
       <div className={style.modal}>
         <div className={style.modalHeader}>
           <h2 className={style.headTitle}>상품 추가하기</h2>
-
+          {postProduct.isLoading ? <LoadingModal /> : null}
           {/* <div> */}
           <Link to="/admin/products">
             <AiFillCloseCircle className={style.AiFillCloseCircle} />
@@ -133,24 +145,42 @@ const AddModal = ({ setAddModalOpen }) => {
             <li>
               <span className={style.listName}>썸네일 </span>
               <input
-                {...register('thumbnail')}
+                {...register('thumbnail', {
+                  onChange: onChangeThumbnail,
+                  validate: (files) => {
+                    if (files[0]?.size > 1000000) {
+                      return `(현재:${(files[0]?.size / 1000000).toFixed(2)}MB) 1MB 이하여야 합니다.`;
+                    } else {
+                      return true;
+                    }
+                  },
+                })}
                 type="file"
                 placeholder="썸네일 이미지"
                 accept="image/*"
-                onChange={onChangeThumbnail}
               />
               {thumbnailPreview === '' ? null : <img src={thumbnailPreview} className={style.preview} />}
+              <span>{errors?.thumbnail?.message}</span>
             </li>
             <li>
               <span className={style.listName}>사진 </span>
               <input
-                {...register('photo')}
+                {...register('photo', {
+                  onChange: onChangePhoto,
+                  validate: (files) => {
+                    if (files[0]?.size > 4000000) {
+                      return `(현재:${(files[0]?.size / 4000000).toFixed(2)}MB) 4MB 이하여야 합니다.`;
+                    } else {
+                      return true;
+                    }
+                  },
+                })}
                 type="file"
                 placeholder="제품 이미지"
                 accept="image/*"
-                onChange={onChangePhoto}
               />
               {photoPreview === '' ? null : <img src={photoPreview} className={style.preview} />}
+              <span>{errors?.photo?.message}</span>
             </li>
           </ul>
 

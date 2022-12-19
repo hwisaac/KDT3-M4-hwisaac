@@ -6,61 +6,71 @@ import { getProducts } from '../../data/API';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../loading/LoadingModal.jsx';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { myAtom } from '../../data/atoms.js';
 
 const ProductManagement = () => {
-  // const { products } = useLocation().state;
-  const location = useLocation();
-  const navigate = useNavigate();
-  const addMatch = useMatch('/admin/products/add');
-  // console.log('addMatch: ', addMatch);
-  const [products, setProducts] = useState([]);
-
+  const { isLoading: gettingProducts, data: products, refetch } = useQuery(['products'], getProducts);
+  const setterFn = useSetRecoilState(myAtom);
   useEffect(() => {
-    const products = getProducts();
-    products.then((data) => {
-      setProducts(data);
+    setterFn({
+      myFn: () => {
+        console.log('refetching..');
+        refetch();
+      },
     });
   }, []);
-
-  // 모달창 노출 여부 state
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const showModal = () => {
-    navigate('add');
-    // console.log('modal 창 오픈!');
-    setAddModalOpen(true);
+  const [checkList, setCheckList] = useState({});
+  const assignCheckList = (id, isChecked) => {
+    const newObj = {};
+    newObj[id] = isChecked;
+    setCheckList((prev) => Object.assign(prev, newObj));
+  };
+  const handleSelectDelete = (event) => {
+    for (let key of Object.keys(checkList)) {
+      if (checkList[key]) {
+        console.log('key:', key);
+        console.log('checkList[key]', checkList[key]);
+      }
+    }
   };
 
   return (
     <ul className={style.productList}>
       <li className={style.listHeader}>
-        <LoadingModal />
         <div>
           <span>전체선택</span>
-          <span>선택삭제</span>
+          <span onClick={handleSelectDelete}>선택삭제</span>
           <span>상품초기화</span>
         </div>
 
-        <Link to="add" state={{ background: location }}>
+        <Link to="add">
           <button className={style.btn}>Add</button>
         </Link>
         <Outlet />
       </li>
-      {products.map((product, index) => {
-        const { id, title, price, description, tags, isSoldOut, thumbnail } = product;
-        return (
-          <ProductCard
-            key={`productCard-${id}`}
-            id={id}
-            index={index}
-            title={title}
-            price={price}
-            description={description}
-            tags={tags}
-            isSoldOut={isSoldOut}
-            thumbnail={thumbnail}
-          />
-        );
-      })}
+      {gettingProducts ? (
+        <LoadingModal />
+      ) : (
+        products.map((product, index) => {
+          const { id, title, price, description, tags, isSoldOut, thumbnail } = product;
+          return (
+            <ProductCard
+              key={`productCard-${id}`}
+              id={id}
+              index={index}
+              title={title}
+              price={price}
+              description={description}
+              tags={tags}
+              isSoldOut={isSoldOut}
+              thumbnail={thumbnail}
+              assignCheckList={assignCheckList}
+              checkList={checkList}
+            />
+          );
+        })
+      )}
     </ul>
   );
 };

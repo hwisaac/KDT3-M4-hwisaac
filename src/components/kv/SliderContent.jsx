@@ -12,7 +12,7 @@ const imgVariants = {
   start: {
     opacity: 1,
     transition: {
-      duration: 1,
+      duration: 0.5,
     },
   },
   end: {

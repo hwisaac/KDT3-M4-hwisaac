@@ -6,7 +6,7 @@ import sliderImages from './sliderImages';
 import style from './Slider.module.css';
 
 export default function Slider() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const prevSlide = () => {
     setDirection(-1);
