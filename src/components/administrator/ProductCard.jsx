@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './ProductCard.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteProduct } from '../../data/API';
 import { MdHideImage } from 'react-icons/md';
@@ -20,6 +20,7 @@ const ProductCard = ({
   thumbnail,
   assignCheckList,
   checkList,
+  selectAll,
 }) => {
   const atom = useRecoilValue(myAtom);
   const removeProduct = useMutation((id) => deleteProduct(id), {
@@ -29,16 +30,24 @@ const ProductCard = ({
     },
   });
   const handleChange = (event) => {
+    setChecked((prev) => !prev);
     console.log(id, event.currentTarget.checked);
     assignCheckList(id, event.currentTarget.checked);
   };
+  const [checked, setChecked] = useState(false);
+
+  // 전체박스 체크유무에 의존한 체킹
+  useEffect(() => {
+    setChecked(selectAll);
+    assignCheckList(id, selectAll);
+  }, [selectAll]);
 
   return (
-    <li className={style.item}>
+    <li className={`${style.item} ${checked ? style.checked : null}`}>
       {removeProduct.isLoading ? <LoadingModal /> : null}
-      {isSoldOut ? <div className={style.soldOut}></div> : null}
+      {isSoldOut ? <div className={`${style.soldOut}`}></div> : null}
       <div className={style.left}>
-        <input type="checkbox" onChange={handleChange} />
+        <input type="checkbox" onChange={handleChange} checked={checked} />
         <span className={style.index}>{index + 1}</span>
         {thumbnail ? (
           <img className={style.thumbnail} src={thumbnail} alt={title} />
