@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import style from './Slider.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function SliderContent({ activeIndex, sliderImage }) {
+export default function SliderContent({ activeIndex, sliderImages, direction }) {
   const navigate = useNavigate();
   const imgVariants = {
     initial: {
@@ -16,7 +16,6 @@ export default function SliderContent({ activeIndex, sliderImage }) {
       opacity: 1,
       transition: {
         duration: 1,
-        duration: 0.5,
       },
     },
     end: {
@@ -26,40 +25,25 @@ export default function SliderContent({ activeIndex, sliderImage }) {
       },
     },
   };
-  // return (
-  //   <section>
-  //     <AnimatePresence initial={false} custom={direction}>
-  //       {sliderImages.map((slide, slideIndex) =>
-  //         activeIndex === slideIndex ? (
-  //           <motion.img
-  //             key={`slide-${slideIndex}`}
-  //             variants={imgVariants}
-  //             initial="initial"
-  //             animate="start"
-  //             exit="end"
-  //             src={slide.url}
-  //             className={style.slideImages}
-  //             alt=""
-  //           />
-  //         ) : null,
-  //       )}
-  //     </AnimatePresence>
-  //   </section>
-  // );
   return (
     <section>
-      {sliderImage.map((slide, slideIndex) =>
-        activeIndex === slideIndex ? (
-          <div
-            key={slide.id}
-            className={slideIndex === activeIndex ? `${style.slides} ${style.active}` : `${style.inactive}`}
-            onClick={() => navigate(`/products/${slide.id}`)}
-          >
-            {console.log('slide:', slide.id)}
-            <img src={slide.url} className={style.slideImage} alt={slide.title} />
-          </div>
-        ) : null,
-      )}
+      <AnimatePresence initial={false} custom={direction}>
+        {sliderImages.map((slide, slideIndex) =>
+          activeIndex === slideIndex ? (
+            <motion.img
+              key={`slide-${slideIndex}`}
+              variants={imgVariants}
+              initial="initial"
+              animate="start"
+              exit="end"
+              src={slide.url}
+              className={style.slideImage}
+              alt={slide.title}
+              onClick={() => navigate(`/products/${slide.id}`)}
+            />
+          ) : null,
+        )}
+      </AnimatePresence>
     </section>
   );
 }

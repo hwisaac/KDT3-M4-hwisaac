@@ -4,7 +4,7 @@ import Third from '../../assets/새꼬막.jpeg';
 import Fourth from '../../assets/홍가리비.jpeg';
 import Fifth from '../../assets/생굴.jpeg';
 
-const imgArr = [
+const sliderImages = [
   { url: First, title: '서귀포감귤', id: '43oFYlby0eEYPqdRfqMf' },
   { url: Second, title: '꿀고구마', id: 'ArEi2eIKUTXGrggaq1QX' },
   { url: Third, title: '새꼬막', id: '3RJPjgMdatDAJKujeUrM' },
@@ -12,4 +12,4 @@ const imgArr = [
   { url: Fifth, title: '생굴', id: '9AI0uZPTl1QqbDBNEWm0' },
 ];
 
-export default imgArr;
+export default sliderImages;
