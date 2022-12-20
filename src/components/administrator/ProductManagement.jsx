@@ -25,6 +25,8 @@ const ProductManagement = () => {
       },
     });
   }, []);
+
+  // 체크리스트
   const [checkList, setCheckList] = useState({});
   const assignCheckList = (id, isChecked) => {
     const newObj = {};
@@ -41,7 +43,8 @@ const ProductManagement = () => {
    * 선택삭제를 누르면 확인창을 띄운다
    */
   const handleSelectDelete = (event) => {
-    setOpenConfirmModal(true);
+    console.log(checkList);
+    // setOpenConfirmModal(true);
   };
   /** 확인창에서 answer = true 가 세팅되면 체크된 제품의 삭제를 진행한다 */
   useEffect(() => {
@@ -92,10 +95,9 @@ const ProductManagement = () => {
         <LoadingModal />
       ) : (
         products.map((product, index) => {
-          const { id, title, price, description, tags, isSoldOut, thumbnail } = product;
+          const { id, title, price, description, tags, isSoldOut, thumbnail, isC } = product;
           return (
             <ProductCard
-              selectAll={selectAll}
               key={`productCard-${id}`}
               id={id}
               index={index}
@@ -105,8 +107,10 @@ const ProductManagement = () => {
               tags={tags}
               isSoldOut={isSoldOut}
               thumbnail={thumbnail}
+              selectAll={selectAll}
               assignCheckList={assignCheckList}
               checkList={checkList}
+              isC={isC}
             />
           );
         })

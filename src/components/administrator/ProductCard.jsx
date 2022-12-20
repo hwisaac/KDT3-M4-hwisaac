@@ -21,6 +21,7 @@ const ProductCard = ({
   assignCheckList,
   checkList,
   selectAll,
+  isC,
 }) => {
   const atom = useRecoilValue(myAtom);
   const removeProduct = useMutation((id) => deleteProduct(id), {
@@ -33,13 +34,16 @@ const ProductCard = ({
     setChecked((prev) => !prev);
     console.log(id, event.currentTarget.checked);
     assignCheckList(id, event.currentTarget.checked);
+    console.log(title);
   };
+  // 카드의 체크여부
   const [checked, setChecked] = useState(false);
 
   // 전체박스 체크유무에 의존한 체킹
   useEffect(() => {
     setChecked(selectAll);
     assignCheckList(id, selectAll);
+    console.log(checked);
   }, [selectAll]);
 
   return (
