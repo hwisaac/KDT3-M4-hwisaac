@@ -1,37 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './CartItem.module.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdOutlineClear } from 'react-icons/md';
-import { addOrUpdateToCart, removeFromCart } from '../../api/firebase';
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
+import { useNavigate } from 'react-router-dom';
+import useCart from '../../hooks/useCart';
 
-export default function CartItem({ product, product: { productId, quantity, title, price, photo }, userName }) {
-  const queryClient = useQueryClient();
+export default function CartItem({
+  product,
+  product: { productId, quantity, title, price, photo, isChecked },
+  allChecked,
+}) {
+  const [checked, setChecked] = useState(true);
+  const { addOrUpdateItem, removeItem } = useCart();
 
-  const addOrUpdateItem = useMutation((product) => addOrUpdateToCart(userName, product), {
-    onSuccess: () => queryClient.invalidateQueries(['carts', userName]),
-  });
-
-  const removeItem = useMutation((productId) => removeFromCart(userName, productId), {
-    onSuccess: () => queryClient.invalidateQueries(['carts', userName]),
-  });
+  const navigate = useNavigate();
 
   const handleMinus = () => {
     if (quantity < 2) return;
-    addOrUpdateItem.mutate({ ...product, quantity: quantity - 1 }, { onSuccess: () => console.log('success!!!') });
+    addOrUpdateItem.mutate({ ...product, quantity: quantity - 1 });
   };
   const handlePlus = () => addOrUpdateItem.mutate({ ...product, quantity: quantity + 1 });
 
   const handleDelete = () => removeItem.mutate(productId);
 
   const handleClick = () => {
-    // 해당 아이템 구매페이지로 이동
+    navigate('/mybuy', { state: product });
   };
 
+  const handleChecked = () => {
+    console.log('child - clicked!!!!');
+    setChecked((prev) => !prev);
+    addOrUpdateItem.mutate({ ...product, isChecked: !checked });
+  };
+  console.log('ischecked', isChecked);
   return (
     <li className={style.item}>
       <div className={style.itme__info}>
-        <input type="checkbox" name="" id="" />
+        <input type="checkbox" checked={isChecked} onChange={handleChecked} />
         <img className={style.image} src={photo} alt={title} />
         <div className={style.card}>
           <div>

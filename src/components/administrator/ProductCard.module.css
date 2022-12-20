@@ -4,10 +4,13 @@
   align-items: center;
   justify-content: space-between;
   color: #666;
+  position: relative;
 }
 .item .left {
   display: flex;
   align-items: center;
+}
+.item .right {
 }
 .index {
   margin: 10px;
@@ -22,11 +25,19 @@
   -webkit-box-shadow: 0px 3px 8px -1px rgba(0, 0, 0, 0.81);
   box-shadow: 0px 3px 8px -1px rgba(0, 0, 0, 0.81);
 }
-
 .title {
   margin-left: 30px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
+  position: relative;
+  z-index: 0;
+}
+.title .id {
+  position: absolute;
+  left: 0px;
+  top: -15px;
+  font-size: 10px;
+  opacity: 0.5;
 }
 .tags {
   margin-left: 10px;
@@ -35,7 +46,7 @@
 }
 .tags .tag {
   margin-left: 5px;
-  color: #ccc;
+  color: #66a6ff;
 }
 .btn {
   border: none;
@@ -47,9 +58,34 @@
   font-family: 'Lato', sans-serif;
   color: white;
   border-radius: 4px;
-  transition: 1s;
+  transition: 0.3s;
 }
 .btn:hover {
   background-color: #1f727b;
   cursor: pointer;
+}
+
+.noThumbnail {
+  width: 80px;
+  height: 80px;
+  color: var(--color-primary);
+  margin: 10px;
+}
+
+.soldOut {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../imgs/sold-out.png);
+  background-size: 90px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.soldOut .soldOutIcon {
+  position: absolute;
 }

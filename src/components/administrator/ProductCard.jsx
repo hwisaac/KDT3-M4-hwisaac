@@ -2,21 +2,53 @@ import React from 'react';
 import style from './ProductCard.module.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ProductButton from './ProductButton';
+import { deleteProduct } from '../../data/API';
+import { MdHideImage } from 'react-icons/md';
+import { useMutation } from '@tanstack/react-query';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { myAtom } from '../../data/atoms.js';
+import LoadingModal from '../loading/LoadingModal';
 
-const ProductCard = ({ index, id, title, price, description, tags, isSoldOut, thumbnail }) => {
-  // const [heart, setHeart] = useState(false);
-  // const navigate = useNavigate();
-  // function onClick() {
-  //   setHeart((prev) => !prev);
-  // }
+const ProductCard = ({
+  index,
+  id,
+  title,
+  price,
+  description,
+  tags,
+  isSoldOut,
+  thumbnail,
+  assignCheckList,
+  checkList,
+}) => {
+  const atom = useRecoilValue(myAtom);
+  const removeProduct = useMutation((id) => deleteProduct(id), {
+    // 성공하면 닫고 데이터 refetch
+    onSuccess: () => {
+      atom.myFn(); // refetch 함수
+    },
+  });
+  const handleChange = (event) => {
+    console.log(id, event.currentTarget.checked);
+    assignCheckList(id, event.currentTarget.checked);
+  };
+
   return (
     <li className={style.item}>
+      {removeProduct.isLoading ? <LoadingModal /> : null}
+      {isSoldOut ? <div className={style.soldOut}></div> : null}
       <div className={style.left}>
-        <input type="checkbox" />
+        <input type="checkbox" onChange={handleChange} />
         <span className={style.index}>{index + 1}</span>
-        <img className={style.thumbnail} src={thumbnail} alt={title} />
-        <p className={style.title}>{title}</p>
+        {thumbnail ? (
+          <img className={style.thumbnail} src={thumbnail} alt={title} />
+        ) : (
+          <MdHideImage className={style.noThumbnail} />
+        )}
+        <p className={style.title}>
+          {title}
+          <span className={style.id}>{id}</span>
+        </p>
         <div className={style.tags}>
           {tags.map((tag) => (
             <span className={style.tag} key={`${id}-${tag}`}>{`#${tag}`}</span>
@@ -24,8 +56,12 @@ const ProductCard = ({ index, id, title, price, description, tags, isSoldOut, th
         </div>
       </div>
       <div className={style.right}>
-        <button className={style.btn}>수정</button>
-        <button className={style.btn}>삭제</button>
+        <Link to={`edit/${id}`} state={{ index, id, title, price, description, tags, isSoldOut, thumbnail }}>
+          <button className={style.btn}>수정</button>
+        </Link>
+        <button className={style.btn} onClick={() => removeProduct.mutate(id)}>
+          삭제
+        </button>
       </div>
     </li>
   );

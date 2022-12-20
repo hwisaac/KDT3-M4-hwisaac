@@ -12,7 +12,7 @@ export function LogIn() {
     password: '',
   });
 
-  const setLoginState = useSetRecoilState(loginState);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { email, password } = inputs;
   const onChange = (event) => {
@@ -24,26 +24,28 @@ export function LogIn() {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
+    let json;
     try {
       const res = await fetch(`${authUrl}/login`, {
         method: 'POST',
         headers: HEADERS_USER,
         body: JSON.stringify({ email, password }),
       });
-      const json = await res.json();
+      json = await res.json();
       const {
         user: { displayName, profileImg },
         accessToken,
       } = json;
-      console.log(json);
-      setLoginState(true);
+      setIsLoggedIn(true);
       setUserInfo({
-        user: { email, displayName, profileImg },
-        accessToken,
+        email,
+        displayName,
+        profileImg,
       });
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
       document.location.href = '/';
     } catch (error) {
-      console.error(error.message);
+      alert(json);
     }
   };
   return (
