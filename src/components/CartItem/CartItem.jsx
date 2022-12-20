@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import style from './CartItem.module.css';
 import { MdOutlineClear } from 'react-icons/md';
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
@@ -10,11 +10,11 @@ export default function CartItem({
   product: { productId, quantity, title, price, photo, isChecked },
   allChecked,
 }) {
-  const [checked, setChecked] = useState(true);
   const { addOrUpdateItem, removeItem } = useCart();
 
   useEffect(() => {
-    addOrUpdateItem.mutate({ ...product, isChecked: allChecked });
+    let newAllChecked = allChecked;
+    addOrUpdateItem.mutate({ ...product, isChecked: newAllChecked });
   }, [allChecked]);
 
   const navigate = useNavigate();
@@ -33,8 +33,8 @@ export default function CartItem({
   };
 
   const handleChecked = () => {
-    setChecked((prev) => !prev);
-    addOrUpdateItem.mutate({ ...product, isChecked: !checked });
+    let newChecked = !product.isChecked;
+    addOrUpdateItem.mutate({ ...product, isChecked: newChecked });
     console.log('child - clicked!!!!');
   };
 

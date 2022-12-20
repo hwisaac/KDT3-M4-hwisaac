@@ -8,15 +8,27 @@
 }
 
 .active {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 1s;
+  animation: fadeIn 2s ease-out;
+  /* visibility: visible; */
+  /* opacity: 1; */
+  /* transition: opacity 1s; */
 }
 
 .inactive {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s 1s, opacity 1s ease-in-out;
+  /* visibility: hidden; */
+  /* opacity: 0; */
+  /* transition: visibility 0s 1s, opacity 1s; */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.5;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .slides {

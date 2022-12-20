@@ -13,9 +13,9 @@ export default function ProductDetail() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const userName = userInfo.displayName;
+  console.log('userInfo:', userInfo);
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [detail, setDetail] = useState([]);
 
   useEffect(() => {

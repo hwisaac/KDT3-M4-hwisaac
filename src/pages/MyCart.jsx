@@ -12,7 +12,6 @@ const SHIPPING = 3000;
 
 export default function MyCart() {
   const [allChecked, setAllChecked] = useState(true);
-
   const {
     cartQuery: { isLoading, data: products },
     addOrUpdateItem,
@@ -25,9 +24,11 @@ export default function MyCart() {
   const hasProducts = products && products.length > 0;
   const totalPrice = products && products.reduce((prev, current) => prev + current.price * current.quantity, 0);
 
-  const handleChecked = () => {
+  const handleAllChecked = () => {
     console.log('totalClicked - clicked');
     setAllChecked((prev) => !prev);
+    // const newAllChecked = !allChecked;
+    // products.map((product) => addOrUpdateItem.mutate({ ...product, isChecked: newAllChecked }));
   };
 
   const totalChecked = products && products.filter((product) => product.isChecked).length;
@@ -59,7 +60,7 @@ export default function MyCart() {
               type="checkbox"
               id="title"
               checked={(isAllChecked && allChecked) || (!allChecked && isAllChecked)}
-              onChange={handleChecked}
+              onChange={handleAllChecked}
             />
             <label htmlFor="title">프레시멘토</label>
             <GrHome />
