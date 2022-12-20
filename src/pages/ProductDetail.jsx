@@ -41,11 +41,13 @@ export default function ProductDetail() {
     navigate(`/mycart`);
   };
 
+  // 구매하기
   const handleClickBuy = (e) => {
     if (!isLoggedIn) {
       alert('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
       window.location = '/login';
     }
+    navigate(`/mybuy`, { state: detail });
     // detail받아와서
     // product를 구매하기 페이지로 넘어가게 해줄 수 있는 함수
     // navigate(`/butpage`); -> 구매하기 페이지로 이동

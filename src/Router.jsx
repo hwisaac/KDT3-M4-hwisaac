@@ -14,7 +14,9 @@ import ProductManagement from './components/administrator/ProductManagement';
 import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
+import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
+import EditModal from './components/administrator/EditModal';
 import AddAccount from './components/mypage/AddAccount';
 
 const router = createBrowserRouter([
@@ -41,6 +43,10 @@ const router = createBrowserRouter([
         element: <MyCart />,
       },
       {
+        path: 'mybuy',
+        element: <MyBuy />,
+      },
+      {
         path: 'login',
         element: <LogIn />,
       },
@@ -65,6 +71,10 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
+        path: 'mybuy',
+        element: <MyBuy />,
+      },
+      {
         path: 'admin',
         element: <Administrator />,
         children: [
@@ -75,6 +85,10 @@ const router = createBrowserRouter([
               {
                 path: 'add',
                 element: <AddModal />,
+              },
+              {
+                path: 'edit/:id',
+                element: <EditModal />,
               },
             ],
           },

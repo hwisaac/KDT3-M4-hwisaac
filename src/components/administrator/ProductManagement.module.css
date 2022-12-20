@@ -10,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
 }
 .productList .listHeader div span {
   margin-right: 15px;
@@ -28,4 +29,12 @@
 
 .productList .listHeader .btn:hover {
   background-color: #0e436c;
+}
+
+.interfaceMenu {
+  cursor: pointer;
+}
+
+.selectAll {
+  margin-right: 30px;
 }

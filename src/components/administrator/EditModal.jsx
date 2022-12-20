@@ -1,23 +1,23 @@
 import React from 'react';
-import style from './AddModal.module.css';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import style from './EditModal.module.css';
+import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { addProduct, encodeImageFileAsURL } from '../../data/API';
+import { addProduct, encodeImageFileAsURL, getProductDetail, getProducts, updateProduct } from '../../data/API';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useMutation } from '@tanstack/react-query';
 import { myAtom } from '../../data/atoms.js';
-import LoadingModal from '../loading/LoadingModal';
+import LoadingModal from '../loading/LoadingModal.jsx';
 
-const AddModal = () => {
+const EditModal = () => {
   const atom = useRecoilValue(myAtom);
+
   const navigate = useNavigate();
-  const [tags, setTags] = useState([]);
-  const [tagValue, setTagValue] = useState('');
-  const [thumbnailPreview, setThumbnailPreview] = useState('');
-  const [photoPreview, setPhotoPreview] = useState('');
-  const postProduct = useMutation((payload) => addProduct(payload), {
+  const { id } = useParams();
+
+  const { isLoading, data } = useQuery([id], () => getProductDetail(id));
+  const editProduct = useMutation(([id, payload]) => updateProduct(id, payload), {
     // 성공하면 닫고 데이터 refetch
     onSuccess: () => {
       navigate('/admin/products');
@@ -25,15 +25,23 @@ const AddModal = () => {
     },
   });
 
+  // const [tagValue, setTagValue] = useState('');
+  const [tags, setTags] = useState([]);
+  const [thumbnailPreview, setThumbnailPreview] = useState('');
+  const [photoPreview, setPhotoPreview] = useState('');
   const {
     register,
+    setValue,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm();
+
   const onChangeTagValue = (event) => {
     let value = event.currentTarget.value;
-    setTagValue(value);
+    // let value = watch().tag;
+    setValue('tag', value);
+    // setTagValue(value);
 
     const tags = value
       .replaceAll('#', ',')
@@ -44,13 +52,15 @@ const AddModal = () => {
   };
   const onChangeThumbnail = async (event) => {
     const res = await encodeImageFileAsURL(event.currentTarget.files, setThumbnailPreview);
-    // console.log(res);
-    console.log('res', res);
+
     // console.log('thumbnailPreview >>', thumbnailPreview);
+    // setValue('thumbnail', event.currentTarget.files);
   };
-  const onChangePhoto = (event) => {
-    encodeImageFileAsURL(event.currentTarget.files, setPhotoPreview);
-    console.log('photopreview >> ', photoPreview);
+  const onChangePhoto = async (event) => {
+    const res = await encodeImageFileAsURL(event.currentTarget.files, setPhotoPreview);
+    // console.log('photo로 setvalue 한 값은: ', event.currentTarget.files);
+    // console.log('photopreview >> ', photoPreview);
+    // setValue('photo', event.currentTarget.files);
   };
 
   const onWrapperClick = (event) => {
@@ -58,78 +68,85 @@ const AddModal = () => {
       navigate('/admin/products');
     }
   };
-  /** submit 이 유효한 경우 작동하는 함수. (handleSubmit에 등록돼 있다.)  */
-  const onValid = async ({ title, price, description, thumbnail, photo }) => {
-    // console.log(tags);
-    // thumbnailPreview
-    navigate('/admin/products');
-    postProduct.mutate({
-      title,
-      price: Number(price),
-      description,
-      tags,
-      thumbnailBase64: thumbnailPreview,
-      photoBase64: photoPreview,
-    });
-    // const res = await addProduct();
+  /**
+   * @param payload 상품 데이터
+   * @param { string } payload.title 제품명
+   * @param { number } payload.price 제품가격
+   * @param { string } payload.description 제품설명
+   * @param { string[] } payload.tag 태그
+   * @param { string } payload.thumbnail  섬네일이미지 url
+   * @param { string } payload.photo 사진이미지 url
+   * @param { boolean } payload.isSoldOut 매진유무
+   * @return {void}
+   */
+  const onValid = async ({ title, price, description, tag, thumbnail, photo, isSoldOut }) => {
+    // { title, price, description, thumbnail, photo }
+    let tags = tag
+      .replaceAll('#', ',')
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== '');
+    console.log('현재 더티필드', dirtyFields);
+    console.log('data{} = ', { title, price, description, tag, thumbnail, photo, isSoldOut });
+
+    // console.log( `  ${dirtyFields.photo? }   `)
+    editProduct.mutate([
+      id,
+      {
+        title,
+        price,
+        description,
+        tags,
+        thumbnailBase64: thumbnailPreview,
+        photoBase64: photoPreview,
+        isSoldOut,
+      },
+    ]);
   };
-  const onInValid = (data) => {
+  const onInValid = (result) => {
     console.log('inValid Errors: ', errors);
   };
   // console.log(formState.errors);
+  // console.log('watch:', watch('thumbnail'));
+  useEffect(() => {
+    setValue('description', data?.description);
+    setValue('title', data?.title);
+    setValue('price', data?.price);
+    setValue('tag', data?.tags.join(', '));
+    setValue('isSoldOut', data?.isSoldOut);
+    // console.log('data.tags >>> ', data?.tags);
+    if (data?.tags) {
+      setTags(data?.tags);
+    }
+  }, [isLoading]);
 
   return (
     <div className={style.wrapper} onClick={onWrapperClick}>
       <div className={style.modal}>
         <div className={style.modalHeader}>
-          <h2 className={style.headTitle}>상품 추가하기</h2>
-          {postProduct.isLoading ? <LoadingModal /> : null}
-          {/* <div> */}
+          <h2 className={style.headTitle}>{editProduct.isLoading ? <LoadingModal /> : null}</h2>
           <Link to="/admin/products">
             <AiFillCloseCircle className={style.AiFillCloseCircle} />
           </Link>
-
-          {/* </div> */}
         </div>
         <form className={style.modalBody} onSubmit={handleSubmit(onValid, onInValid)}>
           <ul className={style.inputs}>
             <li>
               <span className={style.listName}>상품명 *</span>
-              <input
-                {...register('title', { required: '상품명은 필수입니다.' })}
-                type="text"
-                placeholder="상품명(필수)"
-              />
-              <span className={style.errorMessage}>{errors?.title?.message}</span>
+              <input {...register('title')} type="text" placeholder="상품명" />
             </li>
             <li>
-              <span className={style.listName}>가격 *</span>
-              <input
-                {...register('price', { required: '가격은 필수입니다.' })}
-                type="number"
-                placeholder="제품 가격(필수)"
-              />
-              <span className={style.errorMessage}>{errors?.price?.message}</span>
+              <span className={style.listName}>가격</span>
+              <input {...register('price', { valueAsNumber: true })} type="number" placeholder="제품 가격" />
             </li>
             <li>
-              <span className={style.listName}>상품설명 *</span>
-              <textarea
-                {...register('description', { required: '상품설명은 필수입니다.' })}
-                type="text"
-                placeholder="상품 설명(필수)"
-              />
-              <span className={style.errorMessage}>{errors?.description?.message}</span>
+              <span className={style.listName}>상품설명</span>
+              <textarea {...register('description')} type="text" placeholder="상품 설명" />
             </li>
             <li>
               <span className={style.listName}>태그 </span>
               <div>
-                <input
-                  className={style.tagInput}
-                  {...register('tag')}
-                  type="text"
-                  value={tagValue}
-                  onChange={onChangeTagValue}
-                />
+                <input className={style.tagInput} {...register('tag', { onChange: onChangeTagValue })} type="text" />
               </div>
 
               <div className={style.tagContainer}>
@@ -182,10 +199,14 @@ const AddModal = () => {
               {photoPreview === '' ? null : <img src={photoPreview} className={style.preview} />}
               <span>{errors?.photo?.message}</span>
             </li>
+            <li>
+              <span className={style.listName}>매진유무 </span>
+              <input {...register('isSoldOut')} type="checkbox" />
+            </li>
           </ul>
 
           <div className={style.modalFooter}>
-            <button className={style.btn}>추가</button>
+            <button className={style.btn}>수정</button>
             <Link to="/admin/products">
               <button className={style.btn}>취소</button>
             </Link>
@@ -196,4 +217,4 @@ const AddModal = () => {
   );
 };
 
-export default AddModal;
+export default EditModal;

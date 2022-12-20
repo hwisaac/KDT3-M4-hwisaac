@@ -65,6 +65,28 @@ const Search = () => {
     }
   }, []);
 
+  const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
+  const [filter, setFilter] = useState(filters[0]);
+  const filtered = getFilteredProducts(filter, search)
+
+  function getFilteredProducts(filter, search) {
+    if(filter === '정확도순') {
+      return search;
+    } else if(filter === '낮은 가격순') {
+      let copyLow = [...search]
+      copyLow.sort(function(a,b){
+          return a.price - b.price;
+        })
+      return copyLow;
+    } else if(filter === '높은 가격순') {
+      let copyHigh = [...search]
+      copyHigh.sort(function(a,b){
+        return b.price - a.price;
+      })
+      return copyHigh;
+    }
+  }
+
   return (
     <div className={style.wrap}>
       {loading ? (
@@ -77,19 +99,16 @@ const Search = () => {
             <h1>{title}</h1> <span>검색 결과(총 {search.length}개)</span>
           </div>
           <ul className={style.btns}>
-            {/* 클릭 시 li 에 줘야 할 효과: style.btn_select */}
-            <li className={style.btn_wrap}>
-              <button>정확도순</button>
-            </li>
-            <li className={style.btn_wrap}>
-              <button>낮은가격순</button>
-            </li>
-            <li className={style.btn_wrap}>
-              <button>높은가격순</button>
-            </li>
+            {filters.map((filter, index) => {
+              return (
+                <li className={style.btn_wrap} key={index}>
+                  <button onClick={()=>setFilter(filter)}>{filter}</button>
+                </li>
+              )
+            })}
           </ul>
           <ul>
-            {search.map((data) => (
+            {filtered.map((data) => (
               <SearchItem
                 key={data.id}
                 id={data.id}

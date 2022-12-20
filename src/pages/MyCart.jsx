@@ -1,59 +1,50 @@
 import React from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addOrUpdateToCart, getCart } from '../api/firebase';
 import CartItem from '../components/CartItem/CartItem';
 import PriceCard from '../components/PriceCard/PriceCard';
 import { BiPlus } from 'react-icons/bi';
 import { GrHome } from 'react-icons/gr';
 import style from './MyCart.module.css';
-import { useRecoilState } from 'recoil';
-import { loginState, userInfoState } from '../data/LoginData';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useCart from '../hooks/useCart';
 
 const SHIPPING = 3000;
 
 export default function MyCart() {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [allChecked, setAllChecked] = useState(true);
 
-  const userName = userInfo.displayName;
+  const {
+    cartQuery: { isLoading, data: products },
+    addOrUpdateItem,
+  } = useCart();
 
-  const queryClient = useQueryClient();
-  const addOrUpdateItem = useMutation((product) => addOrUpdateToCart(userName, product), {
-    onSuccess: () => queryClient.invalidateQueries(['carts', userName]),
-  });
-
-  const { isLoading, data: products } = useQuery(['carts', userName || ''], () => getCart(userName), {
-    enabled: !!userName,
-  });
+  const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
 
   const hasProducts = products && products.length > 0;
   const totalPrice = products && products.reduce((prev, current) => prev + current.price * current.quantity, 0);
 
+  // products && products.forEach((product) => addOrUpdateItem.mutate({ ...product, isChecked: true }))();
+
   const handleChecked = () => {
-    console.log('clicked');
+    console.log('totalClicked - clicked');
     setAllChecked((prev) => !prev);
     products.forEach((product) => addOrUpdateItem.mutate({ ...product, isChecked: !allChecked }));
   };
 
-  const getChecked = (child) => {
-    setAllChecked(child);
-  };
+  // const getChecked = (child) => {
+  //   setAllChecked(child);
+  // };
 
   const totalChecked = products && products.filter((product) => product.isChecked).length;
 
   const handleToBuy = () => {
     const buyItem = products.filter((product) => product.isChecked === true);
-    console.log('buyItem:', buyItem);
     if (buyItem.length === 0) {
       alert('주문하실 상품을 선택해 주세요.');
-      // 버튼색 변경해주기
     }
-    // navigate 메서드 이용해서 state값으로 전달하기
+    navigate('/mybuy', { state: buyItem });
   };
 
   return (
@@ -90,9 +81,8 @@ export default function MyCart() {
                 <CartItem
                   key={product.productId}
                   product={product}
-                  userName={userName}
                   allChecked={allChecked}
-                  getChecked={getChecked}
+                  // getChecked={getChecked}
                 />
               ))}
           </ul>

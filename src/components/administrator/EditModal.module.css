@@ -79,7 +79,8 @@
   /* border: 2px solid orange; */
   /* width: 100%; */
 }
-.modalBody .inputs li input[type='text'] {
+.modalBody .inputs li input[type='text'],
+.modalBody .inputs li input[type='number'] {
   width: 80%;
   min-height: 25px;
   border: none;
