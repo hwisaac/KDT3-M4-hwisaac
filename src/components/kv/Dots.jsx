@@ -6,7 +6,7 @@ export default function Dots({ activeIndex, onclick, sliderImages }) {
     <div className={style.allDots}>
       {sliderImages.map((slide, index) => (
         <span
-          key={index}
+          key={`dots-${index}`}
           className={activeIndex === index ? `${style.dot} ${style.activeDot}` : `${style.dot}`}
           onClick={() => onclick(index)}
         ></span>

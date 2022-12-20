@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import style from './Slider.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
 

@@ -13,4 +13,3 @@ const SortButton = ({filters, onFilterChange}) => {
 }
 
 export default SortButton;
-

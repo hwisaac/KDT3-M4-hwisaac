@@ -10,7 +10,7 @@ export default function Category() {
   if(error) return <p>Error ...</p>
   return (
     <main>
-      <h2 className={style.h2}>{tag}</h2>
+      <h1 className={style.h2}>{tag}</h1>
       <SortButton 
         filter={filter}
         filters={filters}

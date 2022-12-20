@@ -9,11 +9,17 @@ import { BiSearch } from 'react-icons/bi';
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [isAdmin, setIsAdmin] = useState(false);
   const accessToken = getCookie('accessToken');
+
+
 
   useEffect(() => {
     if (!accessToken) {
       setIsLoggedIn(false);
+    }
+    if(userInfo.email === 'admin@admin.com'){
+      setIsAdmin(true);
     }
   }, []);
 
@@ -70,6 +76,7 @@ export default function Header() {
                 <Link to="/mypage" className={style.util_list}>
                   마이페이지
                 </Link>
+                { isAdmin ? <Link to="/admin/products"> 관리자 페이지 </Link> : null}
                 <Link to="/mycart" className={style.util_list}>
                   장바구니
                 </Link>

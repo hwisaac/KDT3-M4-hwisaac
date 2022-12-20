@@ -11,5 +11,4 @@ const sliderImages = [
   { url: Fourth, title: '홍가리비', id: '3jgtpqIboBovZfnNJPtG' },
   { url: Fifth, title: '생굴', id: '9AI0uZPTl1QqbDBNEWm0' },
 ];
-
 export default sliderImages;

@@ -26,7 +26,9 @@ export default function Slider() {
       setActiveIndex(activeIndex + 1);
     }
   };
-
+  /**
+   * activeIndex 가 변한지 3초지나면 activeIndex 를 변경함
+   */
   useEffect(() => {
     const interval = setInterval(() => {
       if (activeIndex === sliderImages.length - 1) {

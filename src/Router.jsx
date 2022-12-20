@@ -17,6 +17,7 @@ import Search from './pages/Search';
 import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
 import ProtectedRoute from './pages/ProtectedRoute';
+import EditModal from './components/administrator/EditModal';
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
+        path: 'mybuy',
+        element: <MyBuy />,
+      },
+      {
         path: 'admin',
         element: (
           <ProtectedRoute requireAdmin>
@@ -90,6 +95,10 @@ const router = createBrowserRouter([
               {
                 path: 'add',
                 element: <AddModal />,
+              },
+              {
+                path: 'edit/:id',
+                element: <EditModal />,
               },
             ],
           },

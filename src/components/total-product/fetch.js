@@ -1,5 +1,6 @@
 import { API_URL, HEADERS } from '../../data/API.jsx';
 
+// 전체 상품 조회
 export async function getProducts() {
   const res = await fetch(API_URL + 'products', {
     method: 'GET',
