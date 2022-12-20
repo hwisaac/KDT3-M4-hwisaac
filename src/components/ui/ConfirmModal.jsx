@@ -3,7 +3,8 @@ import style from './ConfirmModal.module.css';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { AiFillCloseCircle, AiOutlineInfoCircle } from 'react-icons/ai';
+import { IoIosClose } from 'react-icons/io';
 import { addProduct, encodeImageFileAsURL } from '../../data/API';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
@@ -33,11 +34,14 @@ const ConfirmModal = ({ title, question, setOpenModal, setAnswer }) => {
     <div className={style.wrapper}>
       <div className={style.modal}>
         <div className={style.modalHeader}>
-          <h2 className={style.headTitle}>{title}</h2>
-          <AiFillCloseCircle className={style.AiFillCloseCircle} onClick={sayNo} />
+          <h2 className={style.headTitle}>{/* {title} */}</h2>
+          <IoIosClose className={style.close} onClick={sayNo} />
         </div>
         <form className={style.modalBody}>
-          <div className={style.question}>{question}</div>
+          <div className={style.contents}>
+            <AiOutlineInfoCircle className={style.infoCircle} />
+            <div className={style.question}>{question}</div>
+          </div>
           <div className={style.modalFooter}>
             <button className={style.btn} onClick={sayYes}>
               확인
