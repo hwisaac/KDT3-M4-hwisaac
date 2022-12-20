@@ -1,4 +1,3 @@
-import Axios from 'axios';
 const originProducts = require('./originProducts.json');
 
 /**

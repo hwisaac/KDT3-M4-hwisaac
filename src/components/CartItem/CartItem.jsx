@@ -4,17 +4,32 @@ import { MdOutlineClear } from 'react-icons/md';
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
+import useProducts from '../../hooks/use-products';
+import { useQuery } from '@tanstack/react-query';
+import { getProducts } from '../total-product/fetch';
 
 export default function CartItem({
   product,
-  product: { productId, quantity, title, price, photo, isChecked },
+  product: { productId, quantity, title, price, photo, isChecked, isSoldOut },
   allChecked,
+  getIsSoldOut,
+  setGetSoldOutId,
 }) {
   const { addOrUpdateItem, removeItem } = useCart();
+  const { isLoading, data: products } = useQuery(['products'], getProducts);
+  const hasGetProducts = products && products.length > 0;
+  const getProduct = products && products.filter((item) => item.id === productId)[0];
 
   useEffect(() => {
     let newAllChecked = allChecked;
-    addOrUpdateItem.mutate({ ...product, isChecked: newAllChecked });
+    if (hasGetProducts) {
+      const { isSoldOut: getSoldOut } = getProduct;
+      addOrUpdateItem.mutate({
+        ...product,
+        isChecked: newAllChecked,
+        isSoldOut: getSoldOut,
+      });
+    }
   }, [allChecked]);
 
   const navigate = useNavigate();
@@ -24,11 +39,15 @@ export default function CartItem({
     addOrUpdateItem.mutate({ ...product, quantity: quantity - 1 });
   };
 
-  const handlePlus = () => addOrUpdateItem.mutate({ ...product, quantity: quantity + 1 });
+  const handlePlus = () => !isSoldOut && addOrUpdateItem.mutate({ ...product, quantity: quantity + 1 });
 
-  const handleDelete = () => removeItem.mutate(productId);
+  const handleDelete = () => !isSoldOut && removeItem.mutate(productId);
 
-  const handleClick = () => {
+  const handleBuyClick = () => {
+    if (isSoldOut) {
+      alert('품절된 상품입니다!');
+      return;
+    }
     navigate('/mybuy', { state: product });
   };
 
@@ -38,10 +57,19 @@ export default function CartItem({
     console.log('child - clicked!!!!');
   };
 
+  // isSoldOut && getIsSoldOut(productId);
+
+  useEffect(() => {
+    isSoldOut &&
+      setGetSoldOutId((getSoldOutId) => {
+        return [...getSoldOutId, productId];
+      });
+  }, [setGetSoldOutId]);
+
   return (
-    <li className={style.item}>
+    <li className={isSoldOut ? style.soldout : style.item}>
       <div className={style.itme__info}>
-        <input type="checkbox" checked={isChecked} onChange={handleChecked} />
+        <input type="checkbox" checked={isChecked} onChange={handleChecked} disabled={isSoldOut} />
         <img className={style.image} src={photo} alt={title} />
         <div className={style.card}>
           <div>
@@ -59,7 +87,7 @@ export default function CartItem({
       <div className={style.priceSection}>
         <p className={style.priceText}>상품금액</p>
         <p className={style.totalPrice}>{`${(price * quantity).toLocaleString()}원`}</p>
-        <button onClick={handleClick}>주문하기</button>
+        <button onClick={handleBuyClick}>주문하기</button>
       </div>
     </li>
   );
