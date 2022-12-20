@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import style from './Slider.module.css';
-
-const imgVariants = {
-  initial: {
-    opacity: 0,
-    transition: {
-      duration: 1,
-    },
-  },
-  start: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  end: {
-    opacity: 0,
-    transition: {
-      duration: 1,
-    },
-  },
-};
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function SliderContent({ activeIndex, sliderImages, direction }) {
+  const navigate = useNavigate();
+  const imgVariants = {
+    initial: {
+      opacity: 0,
+      transition: {
+        duration: 1,
+      },
+    },
+    start: {
+      opacity: 1,
+      transition: {
+        duration: 1,
+      },
+    },
+    end: {
+      opacity: 0,
+      transition: {
+        duration: 1,
+      },
+    },
+  };
   return (
     <section>
       <AnimatePresence initial={false} custom={direction}>
@@ -36,8 +38,9 @@ export default function SliderContent({ activeIndex, sliderImages, direction }) 
               animate="start"
               exit="end"
               src={slide.url}
-              className={style.slideImages}
-              alt=""
+              className={style.slideImage}
+              alt={slide.title}
+              onClick={() => navigate(`/products/${slide.id}`)}
             />
           ) : null,
         )}
