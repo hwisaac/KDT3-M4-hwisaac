@@ -3,20 +3,23 @@ import style from './Product.module.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Product = ({ id, title, img, price }) => {
+const Product = ({ id, title, img, price, soldOut }) => {
   const [heart, setHeart] = useState(false);
   const navigate = useNavigate();
   function onClick() {
     setHeart((cur) => !cur);
   }
+  function onClickDetail() {
+    if (soldOut) {
+      return null;
+    } else {
+      navigate(`/products/${id}`, { state: { id, title, img, price, soldOut } });
+    }
+  }
 
   return (
-    <li
-      className={style.wrap}
-      onClick={() => {
-        navigate(`/products/${id}`, { state: { id, title, img, price } });
-      }}
-    >
+    <li className={style.wrap} onClick={onClickDetail}>
+      {soldOut ? <div className={style.soldout}>SOLDOUT</div> : null}
       <img className={style.img} src={img} alt={title} />
       <div className={style.btns}>
         <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
