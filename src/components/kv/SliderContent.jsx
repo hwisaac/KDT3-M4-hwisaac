@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import style from './Slider.module.css';
-import { AnimatePresence, motion } from 'framer-motion';
 
 export default function SliderContent({ activeIndex, sliderImages, direction }) {
   const navigate = useNavigate();

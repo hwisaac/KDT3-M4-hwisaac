@@ -13,7 +13,6 @@ export default function ProductDetail() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const userName = userInfo.displayName;
-  console.log('userInfo:', userInfo);
   const { id } = useParams();
   const navigate = useNavigate();
   const [detail, setDetail] = useState([]);
@@ -24,15 +23,15 @@ export default function ProductDetail() {
       setDetail(data);
     });
   }, [id]);
-
-  const { id: productId, title, photo, price, description } = detail;
+  console.log('detail:', detail);
+  const { id: productId, title, photo, price, description, isSoldOut } = detail;
 
   const handleClickCart = (e) => {
     if (!isLoggedIn) {
       alert('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
       window.location = '/login';
     } else {
-      const product = { productId, title, photo, price, quantity: 1, isChecked: true };
+      const product = { productId, title, photo, price, isSoldOut, quantity: 1, isChecked: true };
       addOrUpdateToCart(userName, product);
       console.log('장바구니 추가');
       navigate(`/mycart`);
