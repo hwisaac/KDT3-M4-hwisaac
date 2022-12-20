@@ -6,11 +6,16 @@
   color: #666;
   position: relative;
 }
+.checked {
+  background-color: beige;
+}
 .item .left {
   display: flex;
   align-items: center;
+  margin-left: 10px;
 }
 .item .right {
+  margin-right: 10px;
 }
 .index {
   margin: 10px;
@@ -41,6 +46,7 @@
 }
 .tags {
   margin-left: 10px;
+  font-size: 14px;
   display: flex;
   align-items: flex-end;
 }
@@ -68,7 +74,7 @@
 .noThumbnail {
   width: 80px;
   height: 80px;
-  color: var(--color-primary);
+  color: var(--color-blue);
   margin: 10px;
 }
 

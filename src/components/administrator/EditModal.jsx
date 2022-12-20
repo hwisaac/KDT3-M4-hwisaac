@@ -69,8 +69,15 @@ const EditModal = () => {
     }
   };
   /**
-   *
-   * @param data
+   * @param payload 상품 데이터
+   * @param { string } payload.title 제품명
+   * @param { number } payload.price 제품가격
+   * @param { string } payload.description 제품설명
+   * @param { string[] } payload.tag 태그
+   * @param { string } payload.thumbnail  섬네일이미지 url
+   * @param { string } payload.photo 사진이미지 url
+   * @param { boolean } payload.isSoldOut 매진유무
+   * @return {void}
    */
   const onValid = async ({ title, price, description, tag, thumbnail, photo, isSoldOut }) => {
     // { title, price, description, thumbnail, photo }
