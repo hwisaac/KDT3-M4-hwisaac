@@ -17,10 +17,11 @@ function SignUp() {
   const [profileImgBase64, setProfileImg] = useState('');
   const { email, password, displayName } = inputs;
   const onChange = (event) => {
+    console.log(event.target);
     const { value, name } = event.target;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value.trim(),
     });
   };
   const onImgChange = (event) => {
@@ -33,6 +34,7 @@ function SignUp() {
       setProfileImg(base64);
     });
   };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     console.log(email, password, displayName, profileImgBase64);

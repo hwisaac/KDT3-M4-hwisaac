@@ -1,68 +1,67 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import MyAccount from '../components/mypage/MyAccount';
+import MyOrder from '../components/mypage/MyOrder';
+import { alternativeImg, getCookie, userInfoState } from '../data/LoginData';
 import { ACCOUNT_URL, HEADERS_USER } from '../data/API';
-import { alternativeImg, getCookie, loginState, userInfoState } from '../data/LoginData';
 import style from './MyPage.module.css';
-// import './';
+import { Link, Outlet } from 'react-router-dom';
 
 export default function MyPage() {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const userInfo = useRecoilValue(userInfoState);
   const [myAccount, setMyAccount] = useState({ totalBalance: 0, accounts: [] });
+  const accessToken = getCookie('accessToken');
 
   useEffect(() => {
     let json;
     const getAccount = async () => {
       try {
-        const accessToken = getCookie('accessToken');
         const res = await fetch(`${ACCOUNT_URL}`, {
           method: 'GET',
           headers: { ...HEADERS_USER, Authorization: accessToken },
         });
         json = await res.json();
         const { totalBalance, accounts } = json;
+        console.log(json);
         setMyAccount({ totalBalance, accounts });
       } catch {
         alert(json);
       }
     };
     getAccount();
-  }, []);
+  }, [accessToken]);
+
+  const addAccount = () => {};
 
   return (
     <main className={style.main}>
-      <h2 className={style.h2}>마이페이지</h2>
-      <div className={style.left}>
-        <div className={style.profile}>
-          <img src={userInfo.profileImg ? userInfo.profileImg : alternativeImg} className={style.image}></img>
-          <span className={style.name}>{userInfo.displayName}님</span>
-          <span className={style.email}>{userInfo.email}</span>
+      {/* <h2 className={style.h2}>마이페이지</h2> */}
+      <div className={style.flex}>
+        <div className={style.left}>
+          <div className={style.profile}>
+            <img
+              src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
+              className={style.image}
+              alt="profileImage"
+            ></img>
+            <span className={style.name}>{userInfo.displayName}님</span>
+            <span className={style.email}>{userInfo.email}</span>
+          </div>
+          <p className={style.money}>
+            <p>총 보유 금액</p>
+            <span className={style.number}>{myAccount ? myAccount?.totalBalance?.toLocaleString() : 0}</span>
+            <span>원</span>
+          </p>
+          <Link to="addaccount" className={style.button}>
+            계좌 추가 연결하기
+          </Link>
+          <Outlet />
         </div>
-        <p className={style.money}>
-          <p>총 보유 금액</p>
-          <span className={style.number}>{myAccount ? myAccount?.totalBalance?.toLocaleString() : 0}</span>
-          <span>원</span>
-        </p>
-        <button className={style.button}>계좌 추가 연결하기</button>
+        <ul className={style.right}>
+          <MyAccount className={style.account} myAccount={myAccount} userInfo={userInfo} />
+          <MyOrder className={style.order} accessToken={accessToken} />
+        </ul>
       </div>
-
-      <ul className={style.right}>
-        <p className={style.p}> {userInfo.displayName}님의 연결된 계좌</p>
-        {myAccount.accounts ? (
-          myAccount.accounts.map((account, index) => (
-            <ul key={account.id} className={style.account}>
-              {index + 1}
-              <li>{account.bankName}</li>
-              <li>{account.accountNumber}</li>
-              <li>{account.balance}</li>
-            </ul>
-          ))
-        ) : (
-          <p>연결된 계좌가 없습니다. 계좌를 연결해 주세요.</p>
-        )}
-      </ul>
-      <form></form>
     </main>
   );
 }

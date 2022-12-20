@@ -18,7 +18,7 @@ export default function MyCart() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [allChecked, setAllChecked] = useState(true);
 
-  const userName = userInfo.user.displayName;
+  const userName = userInfo.displayName;
 
   const queryClient = useQueryClient();
   const addOrUpdateItem = useMutation((product) => addOrUpdateToCart(userName, product), {

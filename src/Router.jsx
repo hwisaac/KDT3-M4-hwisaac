@@ -15,6 +15,7 @@ import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
 import AddModal from './components/administrator/AddModal';
+import AddAccount from './components/mypage/AddAccount';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,12 @@ const router = createBrowserRouter([
       {
         path: 'mypage',
         element: <MyPage />,
+        children: [
+          {
+            path: 'addaccount',
+            element: <AddAccount />,
+          },
+        ],
       },
       {
         path: 'mycart',
