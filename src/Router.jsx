@@ -17,6 +17,7 @@ import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
 import ProtectedRoute from './pages/ProtectedRoute';
 import EditModal from './components/administrator/EditModal';
+import AddAccount from './components/mypage/AddAccount';
 import MyKeepProducts from './pages/MyKeepProducts';
 
 const router = createBrowserRouter([
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
             <MyPage />
           </ProtectedRoute>
         ),
+        children: [
+          {
+            path: 'addaccount',
+            element: <AddAccount />,
+          },
+        ],
       },
       {
         path: 'mycart',
