@@ -16,7 +16,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [detail, setDetail] = useState([]);
-  const { id: productId, title, photo, price, description } = detail;
+  const { id: productId, title, photo, price, description, isSoldOut } = detail;
 
   useEffect(() => {
     const details = getProductDetail(id);
