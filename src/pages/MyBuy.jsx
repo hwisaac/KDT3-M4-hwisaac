@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate, Navigate } from 'react-router-dom';
 import { addProduct, deleteProduct, getBuy, getAccountInfo } from '../data/API';
 import { userInfoState } from '../data/LoginData';
 import { useState, useEffect } from 'react';
@@ -7,14 +7,22 @@ import { useRecoilState } from 'recoil';
 import style from './MyBuy.module.css';
 import BuyItem from '../components/buy/BuyItem';
 import Account from '../components/buy/Account';
+import useCart from '../hooks/useCart';
 
 const MyBuy = () => {
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
   const { state: buyProduct } = useLocation();
-
+  const { removeItem } = useCart();
+  const navigate = useNavigate();
   // buyProduct가 여러개일 경우 products로 할당함, 아닐 경우 product에 할당
-  const products = buyProduct && buyProduct.length > 0 && buyProduct;
-  const product = buyProduct && buyProduct.length === undefined && buyProduct;
+  console.log('buyProduct:', buyProduct);
+  const products = buyProduct && buyProduct.length > 0 && buyProduct; // ->이거 아이디값 map돌리자
+  // const product = buyProduct && buyProduct.length === undefined && buyProduct;
+
+  const productIds = products && products.map((product) => product.productId);
+  // const productId = product && product.productId;
+  console.log('productIds:', productIds);
+  // console.log('productId:', productId);
 
   // 모든 제품의 총 가격
   let productsPrice = 0;
@@ -26,9 +34,10 @@ const MyBuy = () => {
         quantity--;
       }
     }
-  } else {
-    productsPrice = product.price;
   }
+  //  else {
+  //   productsPrice = product.price;
+  // }
 
   /* 유저 정보 */
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
@@ -93,26 +102,31 @@ const MyBuy = () => {
         await deleteProduct(deliveryId);
         alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
         window.location = '/';
+        // 장바구니 제품 삭제
+        console.log('productIds 실행~!');
+        productIds.map(async (id) => removeItem.mutate(id));
+        // navigate('/');
       });
 
       // 단일 상품 결제
-    } else {
-      await getBuy(product.id, accountId);
-
-      // 배송비 결제
-      const payload = {
-        title: '배송비',
-        price: 3000,
-        description: '배송비 추가',
-      };
-      addProduct(payload).then(async (data) => {
-        deliveryId = data.id;
-        await getBuy(deliveryId, accountId);
-        await deleteProduct(deliveryId);
-        alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
-        window.location = '/';
-      });
     }
+    // else {
+    //   await getBuy(product.id, accountId);
+
+    //   // 배송비 결제
+    //   const payload = {
+    //     title: '배송비',
+    //     price: 3000,
+    //     description: '배송비 추가',
+    //   };
+    //   addProduct(payload).then(async (data) => {
+    //     deliveryId = data.id;
+    //     await getBuy(deliveryId, accountId);
+    //     await deleteProduct(deliveryId);
+    //     alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+    //     window.location = '/';
+    //   });
+    // }
   };
 
   // 배송지정보 form
@@ -144,7 +158,7 @@ const MyBuy = () => {
             </thead>
             <tbody className={style.infoBody}>
               {/* 단일 상품 구매 */}
-              {product ? (
+              {/* {product ? (
                 <BuyItem
                   key={product.productId}
                   id={product.productId}
@@ -153,7 +167,7 @@ const MyBuy = () => {
                   quantity={1}
                   price={product.price}
                 />
-              ) : null}
+              ) : null} */}
               {/* 장바구니 상품 구매 */}
               {products
                 ? products.map((product) => (

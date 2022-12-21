@@ -51,7 +51,7 @@ export default function CartItem({
       alert('품절된 상품입니다!');
       return;
     }
-    navigate('/mybuy', { state: product });
+    navigate('/mybuy', { state: [product] });
   };
 
   const handleChecked = () => {
