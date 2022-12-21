@@ -31,7 +31,7 @@
 .recentlyViewed .products .product img {
   width: 100px
 }
-.recentlyViewed .products .product h2 {
+.recentlyViewed .products .product h3 {
   width: 100px;
   overflow:hidden;
   text-overflow:ellipsis;
