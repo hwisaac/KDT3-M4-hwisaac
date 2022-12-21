@@ -1,0 +1,88 @@
+.total {
+  width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title {
+  margin: 30px auto;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.btns {
+  margin: 0 -12px;
+}
+.btns li {
+  position: relative;
+  display: inline-block;
+}
+
+.btn_wrap::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 0;
+  height: 15px;
+  width: 1px;
+  background-color: #888;
+}
+.btns li:last-child::after {
+  display: none;
+}
+
+.btn_wrap button {
+  font-size: 13px;
+  line-height: 27px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0 12px;
+}
+
+/* 정렬 선택 시 */
+.btn_select::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 0;
+  height: 15px;
+  width: 1px;
+  background-color: #888;
+}
+.btn_select button {
+  font-size: 13px;
+  line-height: 27px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0 12px;
+}
+.btn_select button {
+  color: black;
+  font-weight: bold;
+}
+.btn_select button::before {
+  content: '';
+  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -196px -119px;
+  width: 14px;
+  height: 10px;
+  display: inline-block;
+  margin: 9px 5px 0 0;
+  vertical-align: top;
+}
+
+/* 상품 */
+.product_wrap {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}

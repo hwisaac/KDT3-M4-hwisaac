@@ -1,0 +1,114 @@
+/* .btns li {
+  position: relative;
+  display: inline-block;
+  padding: 0 12px;
+}
+
+.btn_wrap::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 0;
+  height: 15px;
+  width: 1px;
+  background-color: #888;
+}
+.btn {
+  font-size: 13px;
+  line-height: 27px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0 12px;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -196px -119px;
+  width: 14px;
+  height: 10px;
+  display: none;
+  margin: 9px 5px 0 0;
+  vertical-align: top;
+}
+.btn:focus {
+  padding-left: 20px;
+  color: black;
+  font-weight: bold;
+}
+.btn:focus::before {
+  display: inline-block;
+} */
+
+.btns {
+  margin: 0 -12px;
+}
+.btns li {
+  position: relative;
+  display: inline-block;
+}
+
+.btn_wrap::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 0;
+  height: 15px;
+  width: 1px;
+  background-color: #888;
+}
+.btns li:last-child::after {
+  display: none;
+}
+
+.btn_wrap button {
+  font-size: 13px;
+  line-height: 27px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0 12px;
+}
+
+/* 정렬 선택 시 */
+.btn_select::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 0;
+  height: 15px;
+  width: 1px;
+  background-color: #888;
+}
+.btn_select button {
+  font-size: 13px;
+  line-height: 27px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0 12px;
+}
+.btn_select button {
+  color: black;
+  font-weight: bold;
+}
+.btn_select button::before {
+  content: '';
+  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -196px -119px;
+  width: 14px;
+  height: 10px;
+  display: inline-block;
+  margin: 9px 5px 0 0;
+  vertical-align: top;
+}

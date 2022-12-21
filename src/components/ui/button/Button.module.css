@@ -1,0 +1,24 @@
+.btn,
+.buyBtn {
+  width: 50%;
+  height: 3rem;
+  border: 1px solid var(--color-blue);
+  background-color: var(--color-white);
+  border-radius: 6px;
+  color: var(--color-grey);
+  font-size: 1rem;
+  margin: 0.1rem;
+}
+
+.btn:hover {
+  border: 1px solid var(--color-grey);
+}
+
+.buyBtn {
+  color: var(--color-white);
+  background-color: var(--color-blue);
+}
+
+.buyBtn:hover {
+  filter: brightness(85%);
+}
