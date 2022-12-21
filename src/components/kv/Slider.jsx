@@ -6,18 +6,20 @@ import sliderImages from './sliderImages';
 import style from './Slider.module.css';
 
 export default function Slider() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
+  // const [direction, setDirection] = useState(0);
+
   const prevSlide = () => {
-    setDirection(-1);
+    // setDirection(-1);
     if (activeIndex === 0) {
       setActiveIndex(sliderImages.length - 1); // 0이면 이미지[4]가 active
     } else {
       setActiveIndex(activeIndex - 1);
     }
   };
+
   const nextSlide = () => {
-    setDirection(1);
+    // setDirection(1);
     if (activeIndex === sliderImages.length - 1) {
       setActiveIndex(0); // 마지막 이미지인 경우 이미지[0]을 active
     } else {

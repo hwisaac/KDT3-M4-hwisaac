@@ -1,0 +1,29 @@
+.account {
+  color: #606e89;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+.p {
+  margin-bottom: 10px;
+}
+.list {
+  color: black;
+  width: 100%;
+  display: flex;
+  background: #f6f9fa;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.content {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  box-sizing: border-box;
+}
+.li {
+  flex-basis: 50%;
+  text-align: center;
+}

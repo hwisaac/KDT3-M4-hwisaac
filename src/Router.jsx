@@ -1,4 +1,4 @@
-import { createBrowserRouter, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import MyPage from './pages/MyPage';
 import MyCart from './pages/MyCart';
@@ -9,14 +9,16 @@ import Slider from './components/kv/Slider';
 import ProductDetail from './pages/ProductDetail';
 import Category from './pages/Category';
 import Administrator from './pages/Admininstartor';
-import NotFound from './pages/NotFound';
 import ProductManagement from './components/administrator/ProductManagement';
 import SalesDetails from './components/administrator/SalesDetails';
 import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
 import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
+import ProtectedRoute from './pages/ProtectedRoute';
 import EditModal from './components/administrator/EditModal';
+import AddAccount from './components/mypage/AddAccount';
+import MyKeepProducts from './pages/MyKeepProducts';
 
 const router = createBrowserRouter([
   {
@@ -29,15 +31,37 @@ const router = createBrowserRouter([
       },
       {
         path: 'mypage',
-        element: <MyPage />,
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: 'addaccount',
+            element: <AddAccount />,
+          },
+        ],
       },
       {
         path: 'mycart',
-        element: <MyCart />,
+        element: (
+          <ProtectedRoute>
+            <MyCart />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'myKeepProducts',
+        element: <MyKeepProducts />,
       },
       {
         path: 'mybuy',
-        element: <MyBuy />,
+        element: (
+          <ProtectedRoute>
+            <MyBuy />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'login',
@@ -69,7 +93,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'admin',
-        element: <Administrator />,
+        element: (
+          <ProtectedRoute requireAdmin>
+            <Administrator />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: 'products',

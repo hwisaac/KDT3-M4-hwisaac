@@ -1,0 +1,41 @@
+.recentlyViewed {
+  z-index: 1;
+  width: 500px;
+  padding: 30px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  position: absolute;
+  top: 40px;
+  right: 0;
+}
+.recentlyViewed  h1 {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 10px
+}
+.recentlyViewed .products {
+  width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.recentlyViewed .products .product {
+  
+  
+}
+.recentlyViewed .products .product img {
+  width: 100px
+}
+.recentlyViewed .products .product h3 {
+  width: 100px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  margin-top: 10px;
+}
+

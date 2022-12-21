@@ -1,19 +1,25 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../data/API';
 import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../data/LoginData';
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
+import RecentlyViewed from '../recentlyViewed/RecentlyViewed';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [isAdmin, setIsAdmin] = useState(false);
   const accessToken = getCookie('accessToken');
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     if (!accessToken) {
       setIsLoggedIn(false);
+    }
+    if (userInfo.email === 'admin@admin.com') {
+      setIsAdmin(true);
     }
   }, []);
 
@@ -70,9 +76,25 @@ export default function Header() {
                 <Link to="/mypage" className={style.util_list}>
                   마이페이지
                 </Link>
+                {isAdmin ? <Link to="/admin/products"> 관리자 페이지 </Link> : null}
                 <Link to="/mycart" className={style.util_list}>
                   장바구니
                 </Link>
+                <Link to="/myKeepProducts" className={style.util_list}>
+                  찜한 상품
+                </Link>
+                <span
+                  className={style.util_list}
+                  onMouseOver={() => {
+                    setIsHovering(true);
+                  }}
+                  onMouseOut={() => {
+                    setIsHovering(false);
+                  }}
+                >
+                  최근 본 상품
+                </span>
+                {isHovering === true ? <RecentlyViewed /> : null}
                 <span className={style.util_list}>{userInfo.displayName}님</span>
                 <img src={userInfo.profileImg ? userInfo.profileImg : alternativeImg} className={style.image}></img>
                 <span className={style.util_list} onClick={onClick}>

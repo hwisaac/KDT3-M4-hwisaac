@@ -12,39 +12,38 @@ const SHIPPING = 3000;
 
 export default function MyCart() {
   const [allChecked, setAllChecked] = useState(true);
+  const [getSoldOutId, setGetSoldOutId] = useState([]);
 
   const {
     cartQuery: { isLoading, data: products },
     addOrUpdateItem,
   } = useCart();
-
   const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
 
   const hasProducts = products && products.length > 0;
-  const totalPrice = products && products.reduce((prev, current) => prev + current.price * current.quantity, 0);
+  const checkedItem = products && products.filter((product) => product.isChecked === true && !product.isSoldOut);
+  const totalPrice = products && checkedItem.reduce((prev, current) => prev + current.price * current.quantity, 0);
+  const shippingPrice = checkedItem.length !== 0 ? SHIPPING : 0;
 
-  // products && products.forEach((product) => addOrUpdateItem.mutate({ ...product, isChecked: true }))();
-
-  const handleChecked = () => {
+  const handleAllChecked = () => {
     console.log('totalClicked - clicked');
     setAllChecked((prev) => !prev);
-    products.forEach((product) => addOrUpdateItem.mutate({ ...product, isChecked: !allChecked }));
+    // const newAllChecked = !allChecked;
+    // products.map((product) => addOrUpdateItem.mutate({ ...product, isChecked: newAllChecked }));
   };
-
-  // const getChecked = (child) => {
-  //   setAllChecked(child);
-  // };
-
-  const totalChecked = products && products.filter((product) => product.isChecked).length;
+  console.log('allChecked:', allChecked);
+  const isChecked = checkedItem.length;
+  const totalChecked = products.length;
+  const isAllChecked = isChecked === products.length - getSoldOutId.length;
+  console.log('isAllChecked:', isAllChecked);
 
   const handleToBuy = () => {
-    const buyItem = products.filter((product) => product.isChecked === true);
+    const buyItem = products.filter((product) => product.isChecked === true && !product.isSoldOut);
     if (buyItem.length === 0) {
       alert('주문하실 상품을 선택해 주세요.');
-    }
-    navigate('/mybuy', { state: buyItem });
+    } else navigate('/mybuy', { state: buyItem });
   };
 
   return (
@@ -65,12 +64,8 @@ export default function MyCart() {
             <input
               type="checkbox"
               id="title"
-              checked={
-                (totalChecked === products.length && allChecked) || (!allChecked && totalChecked === products.length)
-                  ? true
-                  : false
-              }
-              onChange={handleChecked}
+              checked={(isAllChecked && allChecked) || (!allChecked && isAllChecked)}
+              onChange={handleAllChecked}
             />
             <label htmlFor="title">프레시멘토</label>
             <GrHome />
@@ -82,17 +77,17 @@ export default function MyCart() {
                   key={product.productId}
                   product={product}
                   allChecked={allChecked}
-                  // getChecked={getChecked}
+                  setGetSoldOutId={setGetSoldOutId}
                 />
               ))}
           </ul>
           <div className={style.totalPrice}>
             <PriceCard text="선택상품금액" price={totalPrice} />
             <BiPlus className={style.icons} />
-            <PriceCard text="총 배송비" price={SHIPPING} />
-            <PriceCard text="주문 금액" price={totalPrice + SHIPPING} />
+            <PriceCard text="총 배송비" price={shippingPrice} />
+            <PriceCard text="주문 금액" price={totalPrice + shippingPrice} />
             <button className={totalChecked !== 0 ? style.btn : style.disabledBtn} onClick={handleToBuy}>
-              프레시멘토 {totalChecked}건 주문하기
+              프레시멘토 {isChecked}건 주문하기
             </button>
           </div>
         </article>

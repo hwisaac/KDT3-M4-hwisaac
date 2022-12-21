@@ -4,7 +4,6 @@ import style from './LogIn.module.css';
 import { Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../data/LoginData';
-import { login } from '../../api/firebase';
 
 export function LogIn() {
   const [inputs, setInputs] = useState({
@@ -16,14 +15,16 @@ export function LogIn() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { email, password } = inputs;
   const onChange = (event) => {
+    console.log(event.target);
     const { value, name } = event.target;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value.trim(),
     });
   };
   const onSubmit = async (event) => {
     event.preventDefault();
+    console.log(email);
     let json;
     try {
       const res = await fetch(`${authUrl}/login`, {
@@ -49,9 +50,9 @@ export function LogIn() {
     }
   };
   return (
-    <>
+    <section className={style.section}>
       <Link to="/" className={style.header}>
-        <h1>NAVER</h1>
+        <h1 className={style.h1}>로그인</h1>
       </Link>
 
       <div className={style.formContainer}>
@@ -80,7 +81,7 @@ export function LogIn() {
           <input type="submit" value="로그인" className={`${style.input} ${style.btn}`} />
         </form>
       </div>
-    </>
+    </section>
   );
 }
 
