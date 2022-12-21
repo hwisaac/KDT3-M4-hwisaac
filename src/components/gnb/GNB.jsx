@@ -56,6 +56,9 @@ const GNB = () => {
               onMouseOver={() => {
                 handleChange(i);
               }}
+              onMouseOut={() => {
+                setSelected(null)
+              }}
             >
               <Link className={style.gnbLink} to={`/category/${link.mainLink}`} data-link={link.mainLink} key={i}>
                 {link.mainLink}
