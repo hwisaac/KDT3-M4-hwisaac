@@ -23,7 +23,14 @@ export async function addOrUpdateToCart(username, product) {
   return set(ref(database, `carts/${username}/${product.productId}`), product);
 }
 
-export async function removeFromCart(username, productId) {
-  console.log('sdfhsjkfhdjs:', productId);
-  return remove(ref(database, `carts/${username}/${productId}`));
+export async function removeFromCart(username, productIds) {
+  if (typeof productIds === 'string') {
+    console.log('sdfhsjkfhdjs:', productIds);
+    await remove(ref(database, `carts/${username}/${productIds}`));
+  } else {
+    for (let id of productIds) {
+      await remove(ref(database, `carts/${username}/${id}`));
+    }
+  }
+  return;
 }
