@@ -6,6 +6,7 @@ import useProducts from '../../hooks/use-products';
 
 const TotalProduct = () => {
   const [loading, error, products, filters, filter, setFilter, filtered] = useProducts('total');
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error ...</p>;
 

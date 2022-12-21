@@ -125,7 +125,7 @@ export default function Header() {
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
           <form action="/search" className={style.form}>
-            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해보세요" />
+            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해주세요" />
             <BiSearch className={style.searchIcon} />
           </form>
         </div>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProducts } from './../components/total-product/fetch';
-import { getCategorizedProducts } from './../components/total-product/fetch';
+import { getProducts, getCategorizedProducts } from './../data/API';
 import { useParams } from 'react-router-dom';
 
 export default function useProducts(sort) {
@@ -14,12 +13,17 @@ export default function useProducts(sort) {
   const searchText = '';
   const searchTags = [tag];
   const [category, setCategory] = useState([]);
+  const [select, setSelect] = useState(filter[0]);
 
   useEffect(() => {
     setLoading(true);
     setError(undefined);
     let productsData;
-    sort === 'total' ? (productsData = getProducts()) : (productsData = getCategorizedProducts(searchText, searchTags));
+    sort === 'total'
+      ? (productsData = getProducts())
+      : tag === '전체상품' || tag === '베스트'
+      ? (productsData = getProducts())
+      : (productsData = getCategorizedProducts(searchText, searchTags));
     productsData
       .then((data) => {
         // console.log('fetching...');
@@ -29,7 +33,7 @@ export default function useProducts(sort) {
       .finally(() => setLoading(false));
   }, [tag]);
 
-  return [loading, error, products, filters, filter, setFilter, filtered, tag, category];
+  return [loading, error, products, filters, filter, setFilter, filtered, category];
 }
 
 function getFilteredProducts(filter, products) {

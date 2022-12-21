@@ -1,3 +1,4 @@
+import { getCookie } from './LoginData';
 const originProducts = require('./originProducts.json');
 
 /**
@@ -212,10 +213,53 @@ var getDataUri = function (targetUrl, callback) {
     };
     reader.readAsDataURL(xhr.response);
   };
-  var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-  xhr.open('GET', proxyUrl + targetUrl);
-  xhr.responseType = 'blob';
-  xhr.send();
+// 검색
+export async function getSearch(title = '', tags = '') {
+  const res = await fetch(API_URL + 'products/search', {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({
+      searchText: `${title}`,
+      searchTags: [`${tags}`],
+    }),
+  });
+
+  const json = await res.json();
+  return json;
+}
+
+// 계좌 조회 api
+const accessToken = getCookie('accessToken');
+
+export const getAccountInfo = async () => {
+  try {
+    const res = await fetch(ACCOUNT_URL, {
+      method: 'GET',
+      headers: { ...HEADERS_USER, Authorization: accessToken },
+    });
+    const { accounts } = await res.json();
+
+    return accounts;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+// 결제 함수
+export const getBuy = async (productId, accountId) => {
+  try {
+    const res = await fetch(API_URL + 'products/buy', {
+      method: 'POST',
+      headers: { ...HEADERS, Authorization: accessToken },
+      body: JSON.stringify({
+        productId,
+        accountId,
+      }),
+    });
+    return res;
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 // function getBase64(url) {
@@ -253,4 +297,3 @@ export const resetAllProducts = async () => {
     // });
     // }
   });
-};
