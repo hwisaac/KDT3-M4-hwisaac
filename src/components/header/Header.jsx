@@ -1,17 +1,20 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../data/API';
 import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../data/LoginData';
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../data/adminUser';
+import RecentlyViewed from '../recentlyViewed/RecentlyViewed';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const accessToken = getCookie('accessToken');
   const { isAdmin } = userInfo;
+
+  const [isHovering, setIsHovering] = useState(false);
 
   const onClick = async () => {
     try {
@@ -74,6 +77,21 @@ export default function Header() {
                 <Link to="/mycart" className={style.util_list}>
                   장바구니
                 </Link>
+                <Link to="/myKeepProducts" className={style.util_list}>
+                  찜한 상품
+                </Link>
+                <span
+                  className={style.util_list}
+                  onMouseOver={() => {
+                    setIsHovering(true);
+                  }}
+                  onMouseOut={() => {
+                    setIsHovering(false);
+                  }}
+                >
+                  최근 본 상품
+                </span>
+                {isHovering === true ? <RecentlyViewed /> : null}
                 <span className={style.util_list}>{userInfo.displayName}님</span>
                 <img
                   src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
@@ -108,7 +126,7 @@ export default function Header() {
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
           <form action="/search" className={style.form}>
-            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해보세요" />
+            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해주세요" />
             <BiSearch className={style.searchIcon} />
           </form>
         </div>

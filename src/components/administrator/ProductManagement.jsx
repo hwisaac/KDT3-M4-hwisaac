@@ -43,8 +43,8 @@ const ProductManagement = () => {
    * 선택삭제를 누르면 확인창을 띄운다
    */
   const handleSelectDelete = (event) => {
-    console.log(checkList);
-    // setOpenConfirmModal(true);
+    // console.log(checkList);
+    setOpenConfirmModal(true);
   };
   /** 확인창에서 answer = true 가 세팅되면 체크된 제품의 삭제를 진행한다 */
   useEffect(() => {

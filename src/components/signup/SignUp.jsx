@@ -17,10 +17,11 @@ function SignUp() {
   const [profileImgBase64, setProfileImg] = useState('');
   const { email, password, displayName } = inputs;
   const onChange = (event) => {
+    console.log(event.target);
     const { value, name } = event.target;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value.trim(),
     });
   };
   const onImgChange = (event) => {
@@ -33,6 +34,7 @@ function SignUp() {
       setProfileImg(base64);
     });
   };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     console.log(email, password, displayName, profileImgBase64);
@@ -62,9 +64,9 @@ function SignUp() {
   };
 
   return (
-    <section className={style.signUpSection}>
+    <section className={style.section}>
       <Link to="/" className={style.header}>
-        <h1>NAVER</h1>
+        <h1 className={style.h1}>회원가입</h1>
       </Link>
       <form className={style.form} onSubmit={onSubmit}>
         <div className={style.div}>

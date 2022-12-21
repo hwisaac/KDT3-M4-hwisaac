@@ -6,8 +6,8 @@ import { AiOutlinePlusSquare, AiOutlineMinusSquare } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '../total-product/fetch';
 import SmallButton from '../ui/button/SmallButton';
+import { getProducts } from '../../data/API';
 
 export default function CartItem({
   product,

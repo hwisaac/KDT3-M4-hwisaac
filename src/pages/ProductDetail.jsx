@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
-import { getProductDetail } from '../components/total-product/fetch';
+import { getProductDetail } from '../data/API';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/button/Button';
 import { addOrUpdateToCart } from '../api/firebase';
@@ -18,6 +18,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [detail, setDetail] = useState([]);
+  const { id: productId, title, photo, price, description, isSoldOut } = detail;
 
   useEffect(() => {
     const details = getProductDetail(id);
@@ -25,8 +26,22 @@ export default function ProductDetail() {
       setDetail(data);
     });
   }, [id]);
-  console.log('detail:', detail);
-  const { id: productId, title, photo, price, description, isSoldOut } = detail;
+  
+  //최근 본 상품 로컬스토리지 저장 용도
+  useEffect(() => {
+    if(localStorage.watched === undefined) {
+      localStorage.setItem('watched', JSON.stringify([]));
+    }
+
+    const watched = localStorage.getItem('watched');
+    const watchedArr = JSON.parse(watched)
+    watchedArr.unshift(id);
+    localStorage.setItem('watched', JSON.stringify(watchedArr));
+    
+    const watchedSet = new Set(watchedArr);
+    const watchedProducts = [...watchedSet].slice(0,8)
+    localStorage.setItem('watched', JSON.stringify(watchedProducts)) 
+  },[]);
 
   const handleClickCart = (e) => {
     if (!isLoggedIn) {

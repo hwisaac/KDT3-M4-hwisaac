@@ -1,15 +1,22 @@
 import React from 'react';
 import style from './SearchItem.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const SearchItem = ({ id, img, title, price, description }) => {
   const navigate = useNavigate();
+  const [heart, setHeart] = useState(false);
+  function onClick() {
+    setHeart((cur) => !cur);
+  }
 
   return (
     <li
       className={style.item}
-      onClick={() => {
-        navigate(`/products/${id}`, { state: { id, title, img, price } });
+      onClick={(e) => {
+        if (e.target.nodeName !== 'BUTTON') {
+          navigate(`/products/${id}`, { state: { id, title, img, price } });
+        }
       }}
     >
       <div className={style.container}>
@@ -22,7 +29,9 @@ const SearchItem = ({ id, img, title, price, description }) => {
       </div>
 
       <div>
-        <button>찜</button>
+        <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
+          찜
+        </button>
       </div>
     </li>
   );

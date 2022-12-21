@@ -1,6 +1,6 @@
 .item {
   display: flex;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #eee;
   align-items: center;
   justify-content: space-between;
   color: #666;
