@@ -7,18 +7,27 @@ const RecentlyViewed = () => {
   const [products, setProducts] = useState([]);
   const watchedProducts = JSON.parse(localStorage.getItem('watched')) 
   useEffect(() => {
-    for(let i = 0; i < watchedProducts.length; i++) {
-      let details = getProductDetail(watchedProducts[i])
-      details.then((data) => {
-        setProducts((curArr)=>[data, ...curArr])
-      });
+    // for(let i = 0; i < watchedProducts.length; i++) {
+    //   let details = getProductDetail(watchedProducts[i])
+    //   details.then((data) => {
+    //     setProducts((curArr)=>[data, ...curArr])
+    //   });
+    // }
+    if(watchedProducts) {
+      for(let products of watchedProducts){
+        let details = getProductDetail(products)
+        details.then((data) => {
+          setProducts((curArr)=>[data, ...curArr])
+        });
+      }
     }
   }, []) 
 
   return (
     <section className={style.recentlyViewed}>
       <h1>최근 본 상품</h1>
-      <div className={style.products}>
+     { products.length === 0 ? (<div className={style.products}>최근 본 상품이 없습니다</div>) :
+      (<div className={style.products}>
         {
           products.map((product) => {
             return (
@@ -29,7 +38,7 @@ const RecentlyViewed = () => {
             )
           })
         }
-      </div>
+      </div>)}
     </section>
   )
 }
