@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import useProducts from '../../hooks/use-products';
 import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '../total-product/fetch';
+import { getProducts } from '../../data/API';
 
 export default function CartItem({
   product,
