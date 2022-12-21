@@ -6,8 +6,10 @@ import { alternativeImg, getCookie, userInfoState } from '../data/LoginData';
 import { ACCOUNT_URL, HEADERS_USER } from '../data/API';
 import style from './MyPage.module.css';
 import { Link, Outlet } from 'react-router-dom';
+import LoadingModal from '../components/loading/LoadingModal';
 
 export default function MyPage() {
+  const [loading, setLoading] = useState(false);
   const userInfo = useRecoilValue(userInfoState);
   const [myAccount, setMyAccount] = useState({ totalBalance: 0, accounts: [] });
   const accessToken = getCookie('accessToken');
@@ -15,6 +17,7 @@ export default function MyPage() {
   useEffect(() => {
     let json;
     const getAccount = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${ACCOUNT_URL}`, {
           method: 'GET',
@@ -27,15 +30,14 @@ export default function MyPage() {
       } catch {
         alert(json);
       }
+      setLoading(false);
     };
     getAccount();
   }, [accessToken]);
 
-  const addAccount = () => {};
-
   return (
     <main className={style.main}>
-      {/* <h2 className={style.h2}>마이페이지</h2> */}
+      {loading ? <LoadingModal /> : ''}
       <div className={style.flex}>
         <div className={style.left}>
           <div className={style.profile}>

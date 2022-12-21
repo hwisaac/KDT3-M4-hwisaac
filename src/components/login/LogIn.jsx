@@ -50,9 +50,9 @@ export function LogIn() {
     }
   };
   return (
-    <>
+    <section className={style.section}>
       <Link to="/" className={style.header}>
-        <h1>NAVER</h1>
+        <h1 className={style.h1}>로그인</h1>
       </Link>
 
       <div className={style.formContainer}>
@@ -81,7 +81,7 @@ export function LogIn() {
           <input type="submit" value="로그인" className={`${style.input} ${style.btn}`} />
         </form>
       </div>
-    </>
+    </section>
   );
 }
 
