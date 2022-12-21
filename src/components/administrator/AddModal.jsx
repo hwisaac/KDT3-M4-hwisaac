@@ -82,7 +82,7 @@ const AddModal = () => {
     <div className={style.wrapper} onClick={onWrapperClick}>
       <div className={style.modal}>
         <div className={style.modalHeader}>
-          <h2 className={style.headTitle}>상품 추가하기</h2>
+          <h2 className={style.headTitle}>New Product</h2>
           {postProduct.isLoading ? <LoadingModal /> : null}
           {/* <div> */}
           <Link to="/admin/products">
@@ -122,15 +122,15 @@ const AddModal = () => {
             </li>
             <li>
               <span className={style.listName}>태그 </span>
-              <div>
-                <input
-                  className={style.tagInput}
-                  {...register('tag')}
-                  type="text"
-                  value={tagValue}
-                  onChange={onChangeTagValue}
-                />
-              </div>
+
+              <input
+                className={style.tagInput}
+                {...register('tag')}
+                type="text"
+                value={tagValue}
+                onChange={onChangeTagValue}
+                placeholder="쉼표(,) 혹은 샵(#)으로 구분"
+              />
 
               <div className={style.tagContainer}>
                 {tags.length > 0
@@ -142,52 +142,68 @@ const AddModal = () => {
                   : null}
               </div>
             </li>
-            <li>
-              <span className={style.listName}>썸네일 </span>
-              <input
-                {...register('thumbnail', {
-                  onChange: onChangeThumbnail,
-                  validate: (files) => {
-                    if (files[0]?.size > 1000000) {
-                      return `(현재:${(files[0]?.size / 1000000).toFixed(2)}MB) 1MB 이하여야 합니다.`;
-                    } else {
-                      return true;
-                    }
-                  },
-                })}
-                type="file"
-                placeholder="썸네일 이미지"
-                accept="image/*"
-              />
-              {thumbnailPreview === '' ? null : <img src={thumbnailPreview} className={style.preview} />}
-              <span>{errors?.thumbnail?.message}</span>
-            </li>
-            <li>
-              <span className={style.listName}>사진 </span>
-              <input
-                {...register('photo', {
-                  onChange: onChangePhoto,
-                  validate: (files) => {
-                    if (files[0]?.size > 4000000) {
-                      return `(현재:${(files[0]?.size / 4000000).toFixed(2)}MB) 4MB 이하여야 합니다.`;
-                    } else {
-                      return true;
-                    }
-                  },
-                })}
-                type="file"
-                placeholder="제품 이미지"
-                accept="image/*"
-              />
-              {photoPreview === '' ? null : <img src={photoPreview} className={style.preview} />}
-              <span>{errors?.photo?.message}</span>
+            <li className={style.files}>
+              <div>
+                <span className={style.listName}>썸네일 </span>
+                <div class={style.fileContainer}>
+                  <input
+                    {...register('thumbnail', {
+                      onChange: onChangeThumbnail,
+                      validate: (files) => {
+                        if (files[0]?.size > 1000000) {
+                          return `1MB 이하여야 합니다.(현재:${(files[0]?.size / 1000000).toFixed(2)}MB)`;
+                        } else {
+                          return true;
+                        }
+                      },
+                    })}
+                    type="file"
+                    placeholder="썸네일 이미지"
+                    accept="image/*"
+                    id="add-thumbnail"
+                  />
+                  <label for="add-thumbnail" class={style.findFile}>
+                    파일찾기
+                  </label>
+                  {thumbnailPreview === '' ? null : <img src={thumbnailPreview} className={style.preview} />}
+                </div>
+
+                <span className={style.sizeError}>{errors?.thumbnail?.message}</span>
+              </div>
+              <div>
+                <span className={style.listName}>사진 </span>
+                <div class={style.fileContainer}>
+                  <input
+                    {...register('photo', {
+                      onChange: onChangePhoto,
+                      validate: (files) => {
+                        if (files[0]?.size > 4000000) {
+                          return `4MB 이하여야 합니다.(현재:${(files[0]?.size / 4000000).toFixed(2)}MB) `;
+                        } else {
+                          return true;
+                        }
+                      },
+                    })}
+                    type="file"
+                    placeholder="제품 이미지"
+                    accept="image/*"
+                    id="add-photo"
+                  />
+                  <label for="add-photo" class={style.findFile}>
+                    파일찾기
+                  </label>
+                  {photoPreview === '' ? null : <img src={photoPreview} className={style.preview} />}
+                </div>
+
+                <span>{errors?.photo?.message}</span>
+              </div>
             </li>
           </ul>
 
           <div className={style.modalFooter}>
             <button className={style.btn}>추가</button>
             <Link to="/admin/products">
-              <button className={style.btn}>취소</button>
+              <button className={style.btn + ' ' + style.gray}>취소</button>
             </Link>
           </div>
         </form>

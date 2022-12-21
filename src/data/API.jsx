@@ -1,3 +1,58 @@
+const originProducts = require('./originProducts.json');
+
+/**
+ * image 를 로드 하면 -> base64 로 인코딩
+ * @param {*} files
+ * @param {*} setPreview
+ * @returns
+ */
+export async function encodeImageFileAsURL(files, setPreview) {
+  if (files.length === 0) {
+    setPreview('');
+    return '아무것도 들어오지 않았습니다.';
+  }
+  let file = files[0];
+  let reader = new FileReader();
+
+  reader.onloadend = async function () {
+    await setPreview(reader.result);
+    console.log(reader.result);
+
+    return reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/**
+ * image url 을 받아서 base64 로 인코딩하여 리턴
+ */
+
+// export const toDataURL = (url) =>
+//   fetch(url)
+//     .then((response) => response.blob())
+//     .then(
+//       (blob) =>
+//         new Promise((resolve, reject) => {
+//           const reader = new FileReader();
+//           reader.onloadend = () => resolve(reader.result);
+//           // reader.onerror = reject;
+//           reader.readAsDataURL(blob);
+//         }),
+// );
+// function toDataURL(url, callback) {
+//   var xhr = new XMLHttpRequest();
+//   xhr.onload = function () {
+//     var reader = new FileReader();
+//     reader.onloadend = function () {
+//       callback(reader.result);
+//     };
+//     reader.readAsDataURL(xhr.response);
+//   };
+//   xhr.open('GET', url);
+//   xhr.responseType = 'blob';
+//   xhr.send();
+// }
+
 export const authUrl = 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth';
 
 export const HEADERS_USER = {
@@ -121,21 +176,81 @@ const getDetailProduct = async (id) => {
   return json;
 };
 
-// image -> base64
-export async function encodeImageFileAsURL(files, setPreview) {
-  if (files.length === 0) {
-    setPreview('');
-    return '아무것도 들어오지 않았습니다.';
-  }
-  let file = files[0];
-  let reader = new FileReader();
-
-  reader.onloadend = async function () {
-    await setPreview(reader.result);
-    console.log(reader.result);
-
-    return reader.result;
-  };
-  reader.readAsDataURL(file);
-}
 //
+export const deleteSelectedProducts = (checkList) => {
+  // 프로미스 객체가 생성되면 executor 함수가 바로 실행
+  return new Promise(async (resolve, reject) => {
+    for (let id of Object.keys(checkList)) {
+      if (checkList[id]) {
+        await deleteProduct(id);
+      }
+    }
+    console.log('console.log (전부 삭제 완료)');
+    resolve('resolve: 삭제완료');
+  });
+};
+
+// const getBase64FromUrl = async (url) => {
+//   console.log('fetch직전');
+//   const data = await fetch(url);
+// const blob = await data.blob();
+// return new Promise((resolve) => {
+//   const reader = new FileReader();
+//   reader.readAsDataURL(blob);
+//   reader.onloadend = function () {
+//     const base64data = reader.result;
+//     resolve(base64data);
+//   };
+// });
+// };
+var getDataUri = function (targetUrl, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    var reader = new FileReader();
+    reader.onloadend = function () {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(xhr.response);
+  };
+  var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+  xhr.open('GET', proxyUrl + targetUrl);
+  xhr.responseType = 'blob';
+  xhr.send();
+};
+
+// function getBase64(url) {
+//   return Axios.get(url, {
+//     responseType: 'arraybuffer',
+//   }).then((response) => Buffer.from(response.data, 'binary').toString('base64'));
+// }
+
+// 상품을 처음 상태로 초기화 한다
+export const resetAllProducts = async () => {
+  const { title, price, tags, description, detail_url, thumbnail } = originProducts[0];
+  // console.log(await getBase64(thumbnail));
+  getDataUri(detail_url, function (base64) {
+    console.log(base64);
+  });
+  return new Promise(async (resolve, reject) => {
+    // await deleteAll();
+    // for (let i = 0; i < originProducts.length; i++) {
+    //   const { title, price, tags, description, detail_url, thumbnail } = originProducts[i];
+    // getBase64FromUrl(thumbnail).then((a) => {
+    //   console.log(a);
+    // });
+    // toDataURL(proxyUrl + thumbnail, function (dataUrl) {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // toDataURL(proxyUrl + thumbnail).then((dataUrl) => {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // const thumbnailBase64 = await toDataURL(thumbnail).then((dataUrl) => {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // addProduct({ title, price, description, tags, thumbnailBase64, photoBase64 });
+    // toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0').then((dataUrl) => {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // }
+  });
+};
