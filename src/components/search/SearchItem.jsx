@@ -14,7 +14,6 @@ const SearchItem = ({ id, img, title, price, description }) => {
     <li
       className={style.item}
       onClick={(e) => {
-        console.log(e.target.nodeName === 'BUTTON');
         if (e.target.nodeName !== 'BUTTON') {
           navigate(`/products/${id}`, { state: { id, title, img, price } });
         }

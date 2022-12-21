@@ -1,3 +1,5 @@
+import { getCookie } from './LoginData';
+
 export const authUrl = 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth';
 
 export const HEADERS_USER = {
@@ -153,3 +155,37 @@ export async function getSearch(title = '', tags = '') {
   const json = await res.json();
   return json;
 }
+
+// 계좌 조회 api
+const accessToken = getCookie('accessToken');
+
+export const getAccountInfo = async () => {
+  try {
+    const res = await fetch(ACCOUNT_URL, {
+      method: 'GET',
+      headers: { ...HEADERS_USER, Authorization: accessToken },
+    });
+    const { accounts } = await res.json();
+
+    return accounts;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+// 결제 함수
+export const getBuy = async (productId, accountId) => {
+  try {
+    const res = await fetch(API_URL + 'products/buy', {
+      method: 'POST',
+      headers: { ...HEADERS, Authorization: accessToken },
+      body: JSON.stringify({
+        productId,
+        accountId,
+      }),
+    });
+    return res;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
