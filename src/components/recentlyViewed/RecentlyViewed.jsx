@@ -33,7 +33,7 @@ const RecentlyViewed = () => {
             return (
               <div key={product.id} className={style.product}>
                 <img src={product.photo} alt={product.title}/>
-                <h2>{product.title}</h2>
+                <h3>{product.title}</h3>
               </div>
             )
           })
