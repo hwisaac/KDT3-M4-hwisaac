@@ -15,6 +15,7 @@ import TransactionDetails from './components/administrator/TransactionDetails';
 import Search from './pages/Search';
 import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
+import ProtectedRoute from './pages/ProtectedRoute';
 import EditModal from './components/administrator/EditModal';
 import MyKeepProducts from './pages/MyKeepProducts';
 
@@ -29,11 +30,19 @@ const router = createBrowserRouter([
       },
       {
         path: 'mypage',
-        element: <MyPage />,
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'mycart',
-        element: <MyCart />,
+        element: (
+          <ProtectedRoute>
+            <MyCart />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'myKeepProducts',
@@ -41,7 +50,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'mybuy',
-        element: <MyBuy />,
+        element: (
+          <ProtectedRoute>
+            <MyBuy />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'login',
@@ -73,7 +86,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'admin',
-        element: <Administrator />,
+        element: (
+          <ProtectedRoute requireAdmin>
+            <Administrator />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: 'products',

@@ -8,6 +8,7 @@ const TotalProduct = () => {
   const [loading, error, products, filters, filter, setFilter, filtered] = useProducts('total');
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error ...</p>;
+
   return (
     <div className={style.total}>
       <h1 className={style.title}>프레시멘토 전체상품</h1>
