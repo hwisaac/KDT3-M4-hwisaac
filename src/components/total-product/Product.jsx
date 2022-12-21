@@ -10,11 +10,7 @@ const Product = ({ id, title, img, price, soldOut }) => {
     setHeart((cur) => !cur);
   }
   function onClickDetail() {
-    if (soldOut) {
-      return null;
-    } else {
-      navigate(`/products/${id}`, { state: { id, title, img, price, soldOut } });
-    }
+    navigate(`/products/${id}`, { state: { id, title, img, price, soldOut } });
   }
 
   return (

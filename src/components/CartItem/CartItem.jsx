@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import style from './CartItem.module.css';
 import { MdOutlineClear } from 'react-icons/md';
-import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
+import { CiSquareMinus } from 'react-icons/ci';
+import { AiOutlinePlusSquare, AiOutlineMinusSquare } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
-import useProducts from '../../hooks/use-products';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '../total-product/fetch';
+import SmallButton from '../ui/button/SmallButton';
 
 export default function CartItem({
   product,
   product: { productId, quantity, title, price, photo, isChecked, isSoldOut },
   allChecked,
-  getIsSoldOut,
   setGetSoldOutId,
 }) {
   const { addOrUpdateItem, removeItem } = useCart();
@@ -29,8 +29,11 @@ export default function CartItem({
         isChecked: newAllChecked,
         isSoldOut: getSoldOut,
       });
+      setTimeout(() => {
+        if (isSoldOut && allChecked) alert('품절된 상품이 있습니다.');
+      }, 100);
     }
-  }, [allChecked]);
+  }, [allChecked, isSoldOut]);
 
   const navigate = useNavigate();
 
@@ -41,7 +44,7 @@ export default function CartItem({
 
   const handlePlus = () => !isSoldOut && addOrUpdateItem.mutate({ ...product, quantity: quantity + 1 });
 
-  const handleDelete = () => !isSoldOut && removeItem.mutate(productId);
+  const handleDelete = () => removeItem.mutate(productId);
 
   const handleBuyClick = () => {
     if (isSoldOut) {
@@ -54,10 +57,11 @@ export default function CartItem({
   const handleChecked = () => {
     let newChecked = !product.isChecked;
     addOrUpdateItem.mutate({ ...product, isChecked: newChecked });
-    console.log('child - clicked!!!!');
   };
 
-  // isSoldOut && getIsSoldOut(productId);
+  const handleToProduct = (event) => {
+    if (event.target.nodeName !== 'svg') navigate(`/products/${productId}`);
+  };
 
   useEffect(() => {
     isSoldOut &&
@@ -69,25 +73,27 @@ export default function CartItem({
   return (
     <li className={isSoldOut ? style.soldout : style.item}>
       <div className={style.itme__info}>
-        <input type="checkbox" checked={isChecked} onChange={handleChecked} disabled={isSoldOut} />
-        <img className={style.image} src={photo} alt={title} />
-        <div className={style.card}>
-          <div>
-            <p className={style.title}>{title}</p>
-            <p className={style.price}>{`${price.toLocaleString()}원`}</p>
+        <input type="checkbox" className={style.checkbox} checked={isChecked} onChange={handleChecked} />
+        <div className={style.item__desciption} onClick={handleToProduct}>
+          <img className={style.image} src={photo} alt={title} />
+          <div className={style.card}>
+            <div className={style.cartInfo}>
+              <p className={style.title}>{title}</p>
+              <p className={style.price}>{`${price.toLocaleString()}원`}</p>
+            </div>
+            <MdOutlineClear className={style.deleteBtn} onClick={handleDelete} />
           </div>
-          <MdOutlineClear className={style.deleteBtn} onClick={handleDelete} />
         </div>
       </div>
       <div className={style.updateItem}>
-        <CiSquareMinus className={style.icons} onClick={handleMinus} />
+        <AiOutlineMinusSquare className={style.icons} onClick={handleMinus} />
         <span className={style.quantity}>{quantity}</span>
-        <CiSquarePlus className={style.icons} onClick={handlePlus} />
+        <AiOutlinePlusSquare className={style.icons} onClick={handlePlus} />
       </div>
       <div className={style.priceSection}>
         <p className={style.priceText}>상품금액</p>
         <p className={style.totalPrice}>{`${(price * quantity).toLocaleString()}원`}</p>
-        <button onClick={handleBuyClick}>주문하기</button>
+        <SmallButton text="주문하기" onClick={handleBuyClick} />
       </div>
     </li>
   );

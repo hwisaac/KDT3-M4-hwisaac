@@ -94,8 +94,6 @@ const Footer = (props) => {
           </span>
         </div>
       </div>
-
-      <Link to="/admin/products"> 관리자 페이지 </Link>
     </footer>
   );
 };
