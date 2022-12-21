@@ -25,6 +25,7 @@
   margin: auto;
   border: 1px solid rgba(128, 128, 128, 0.356);
   border-radius: 10px;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
 }
 .infos caption {
   font-size: 0;
@@ -44,14 +45,16 @@
 .infoBody {
   background-color: white;
 }
+.infoBody tr {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.137);
+}
 
 .infoBody tr td {
   text-align: center;
   vertical-align: middle;
-}
-.productInfos td {
   font-size: 13px;
 }
+
 .productInfo {
   padding: 30px 0;
   padding-left: 30px;
@@ -72,6 +75,9 @@
   font-size: 12px;
   line-height: 20px;
 }
+.productTitle a {
+  color: black;
+}
 .productTitle strong {
   font-size: 14px;
   line-height: 20px;
@@ -85,7 +91,223 @@
 /* 배송지정보, 주문자정보 */
 .infosBottom {
   width: 100%;
-  margin: auto;
+  margin: 10px auto;
   border: 1px solid rgba(128, 128, 128, 0.356);
   border-radius: 10px;
+  background-color: white;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+}
+.forms {
+  display: flex;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.24);
+}
+.deliveryInfo {
+  padding: 40px;
+  width: 75%;
+}
+.deliveryInfo h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.deliveryInfo p {
+  margin-bottom: 10px;
+}
+.deliveryInfo span {
+  display: inline-block;
+  width: 110px;
+  font-size: 14px;
+}
+.deliveryInfo input {
+  padding: 0 10px;
+  margin-right: 1px;
+  border: 1px solid #e5e5e5;
+  width: 300px;
+  height: 28px;
+  vertical-align: middle;
+  line-height: 28px;
+}
+.deliveryInfo input::placeholder {
+  color: rgb(170, 170, 170);
+}
+
+.ordererInfo {
+  padding: 40px;
+  width: 25%;
+  background-color: #f4f4f4;
+  border-left: 1px dotted rgba(0, 0, 0, 0.247);
+  border-radius: 10px;
+}
+.ordererInfo h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.ordererInfo p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.ordererInfo p span {
+  display: inline-block;
+  width: 50px;
+  font-weight: bold;
+}
+
+.pay {
+  display: flex;
+}
+.paySelect {
+  padding: 40px;
+  width: 75%;
+  overflow-x: hidden;
+}
+.paySelect h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.accountInfos {
+  border: 1px solid rgba(128, 128, 128, 0.514);
+  background-color: rgba(128, 128, 128, 0.068);
+  padding: 80px 50px;
+  width: 80%;
+  overflow-x: scroll;
+  box-sizing: border-box;
+}
+.accountInfos ul {
+  display: flex;
+  width: fit-content;
+}
+.accountInfos:hover::-webkit-scrollbar-thumb {
+}
+/* 스크롤바 설정 */
+.accountInfos::-webkit-scrollbar {
+  height: 8px;
+}
+/* 스크롤바 막대 설정 */
+.accountInfos::-webkit-scrollbar-thumb {
+  background-color: rgb(119, 119, 119);
+  border-radius: 25px;
+}
+/* 스크롤바 뒷 배경 설정 */
+.accountInfos::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 25px;
+}
+.accountInfos ul li {
+  margin-right: 20px;
+}
+.account {
+  width: 230px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+  cursor: pointer;
+}
+.account [type='radio'] {
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.397);
+  -webkit-mask: url(../imgs/check.svg) no-repeat center / cover;
+  mask: url(../imgs/check.svg) no-repeat center / cover;
+  vertical-align: middle;
+  appearance: none;
+  cursor: pointer;
+}
+.account [type='radio']:checked {
+  background-color: #09aa5c;
+}
+
+.accountTxt {
+  margin-top: 20px;
+}
+.accountTxt p:nth-child(1) {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+.accountTxt p:nth-child(2) {
+  font-size: 13px;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.accountTxt p:nth-child(3) {
+  font-size: 13px;
+  color: white;
+}
+
+.accountInfoNone {
+  width: 230px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  border: 3px dotted rgba(128, 128, 128, 0.562);
+  border-radius: 10px;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+  cursor: pointer;
+}
+.accountInfoNone div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.accountInfoNone div span {
+  background: url('../imgs/sp_simplepay.png') no-repeat 0 0;
+  width: 34px;
+  height: 34px;
+  font-size: 0;
+  margin-bottom: 20px;
+}
+.accountInfoNone div p {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.payDetail {
+  padding: 40px;
+  width: 25%;
+  background-color: #f4f4f4;
+  border-left: 1px dotted rgba(0, 0, 0, 0.247);
+  border-radius: 10px;
+}
+.payDetail h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.payDetail p {
+  padding: 8px;
+  display: flex;
+
+  justify-content: space-between;
+}
+.payDetail p:nth-child(3) {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.411);
+}
+.payDetail p strong {
+  font-size: 14px;
+  font-weight: bold;
+}
+.payDetail p span {
+  font-size: 13px;
+}
+.payBtn {
+  padding: 30px 0;
+}
+.payBtn button {
+  display: block;
+  margin: auto;
+  padding: 20px 60px;
+  background-color: #09aa5c;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
 }

@@ -6,7 +6,9 @@
   align-items: center;
 }
 .title {
+  margin: 30px auto;
   font-size: 28px;
+  font-weight: bold;
 }
 
 .btns {
@@ -79,6 +81,7 @@
 
 /* 상품 */
 .product_wrap {
+  margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;

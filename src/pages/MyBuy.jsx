@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { ACCOUNT_URL, HEADERS_USER, API_URL, HEADERS } from '../data/API';
+import { ACCOUNT_URL, HEADERS_USER, API_URL, HEADERS, addProduct, deleteProduct } from '../data/API';
 import { userInfoState, getCookie } from '../data/LoginData';
 import { useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -12,10 +12,35 @@ const MyBuy = () => {
   const products = buyProduct && buyProduct.length > 0 && buyProduct;
   const product = buyProduct && buyProduct.length === undefined && buyProduct;
 
+  console.log(products);
+  let deliveryId = '';
+  let productsPrice = 0;
+  if (products) {
+    for (let product of products) {
+      let quantity = product.quantity;
+      while (quantity > 0) {
+        productsPrice += product.price;
+        quantity--;
+      }
+    }
+  } else {
+    productsPrice = product.price;
+  }
+
   const accessToken = getCookie('accessToken');
   const [accountData, setAccountData] = useState([]);
   const [accountId, setAccountId] = useState('');
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+
+  const accountColor = {
+    KB국민은행: '#776C61',
+    신한은행: '#2B40AB',
+    우리은행: '#0199CA',
+    하나은행: '#009693',
+    케이뱅크: '#343E48',
+    카카오뱅크: '#FDE100',
+    NH농협은행: '#08B353',
+  };
 
   // 계좌 조회 api
   const getAccountInfo = async () => {
@@ -24,18 +49,17 @@ const MyBuy = () => {
         method: 'GET',
         headers: { ...HEADERS_USER, Authorization: accessToken },
       });
-      const { totalBalance, accounts } = await res.json();
-      console.log(accounts);
+      const { accounts } = await res.json();
 
-      if (accounts) {
-        setAccountData(accounts);
-      }
+      return accounts;
     } catch (error) {
       console.error(error.message);
     }
   };
   useEffect(() => {
-    getAccountInfo();
+    getAccountInfo().then((data) => {
+      setAccountData(data);
+    });
   }, []);
 
   // 계좌 버튼 클릭 시 계좌 id 넣어주기
@@ -55,11 +79,7 @@ const MyBuy = () => {
           accountId,
         }),
       });
-      console.log(res);
-
-      if (res.status === 200) {
-        return res;
-      }
+      return res;
     } catch (error) {
       console.error(error.message);
     }
@@ -67,19 +87,58 @@ const MyBuy = () => {
 
   // 결제하기 클릭 시 결제 신청
   const onClickBuy = async () => {
+    if (accountData.length === 0) {
+      alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.');
+      window.location = '/mypage';
+    }
+    if (!accountId) {
+      alert('계좌 선택을 먼저 해주세요.');
+      window.location.reload();
+    }
     if (products) {
       for (let product of products) {
         let quantity = product.quantity;
         while (quantity > 0) {
-          await getBuy(product.productId, accountId);
-          console.log(product.title, quantity);
+          const response = await getBuy(product.productId, accountId);
+          if (response.status !== 200) {
+            return (
+              alert('일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.'),
+              window.location.reload()
+            );
+          }
           quantity--;
         }
       }
-      alert('결제가 완료되었습니다.');
+
+      // 배송비 결제
+      const payload = {
+        title: '배송비',
+        price: 3000,
+        description: '배송비 추가',
+      };
+      addProduct(payload).then(async (data) => {
+        deliveryId = data.id;
+        await getBuy(deliveryId, accountId);
+        await deleteProduct(deliveryId);
+        alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+        window.location = '/';
+      });
     } else {
       await getBuy(product.id, accountId);
-      alert('결제가 완료되었습니다.');
+
+      // 배송비 결제
+      const payload = {
+        title: '배송비',
+        price: 3000,
+        description: '배송비 추가',
+      };
+      addProduct(payload).then(async (data) => {
+        deliveryId = data.id;
+        await getBuy(deliveryId, accountId);
+        await deleteProduct(deliveryId);
+        alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+        window.location = '/';
+      });
     }
   };
 
@@ -113,15 +172,17 @@ const MyBuy = () => {
             </thead>
             <tbody className={style.infoBody}>
               {product ? (
-                <tr className={style.productInfos}>
+                <tr>
                   <td>
                     <div className={style.productInfo}>
-                      {/* <Link> */}
-                      <img src={product.photo} alt={product.title} />
-                      {/* </Link> */}
+                      <Link to={`/products/${product.productId}`} state={product}>
+                        <img src={product.photo} alt={product.title} />
+                      </Link>
                       <div className={style.productTitle}>
                         <p>[스마트스토어] 프레시멘토</p>
-                        <strong>{product.title}</strong>
+                        <Link to={`/products/${product.productId}`} state={product}>
+                          <strong>{product.title}</strong>
+                        </Link>
                       </div>
                     </div>
                   </td>
@@ -133,22 +194,24 @@ const MyBuy = () => {
               ) : null}
               {products
                 ? products.map((product) => (
-                    <tr key={product.productId} className={style.productInfos}>
+                    <tr key={product.productId}>
                       <td>
                         <div className={style.productInfo}>
-                          {/* <Link> */}
-                          <img src={product.photo} alt={product.title} />
-                          {/* </Link> */}
+                          <Link to={`/products/${product.productId}`} state={{ id: product.productId }}>
+                            <img src={product.photo} alt={product.title} />
+                          </Link>
                           <div className={style.productTitle}>
                             <p>[스마트스토어] 프레시멘토</p>
-                            <strong>{product.title}</strong>
+                            <Link to={`/products/${product.productId}`} state={{ id: product.productId }}>
+                              <strong>{product.title}</strong>
+                            </Link>
                           </div>
                         </div>
                       </td>
 
                       <td>프레시멘토</td>
                       <td>{product.quantity}개</td>
-                      <td>{product.price?.toLocaleString()}원</td>
+                      <td>{(product.price * product.quantity).toLocaleString()}원</td>
                     </tr>
                   ))
                 : null}
@@ -158,7 +221,7 @@ const MyBuy = () => {
 
         <div className={style.infosBottom}>
           {/* 배송지정보, 주문자정보 */}
-          <div style={{ display: 'flex' }} className={style.infoss}>
+          <div className={style.forms}>
             {/* 배송지정보 */}
             <div className={style.deliveryInfo}>
               <h2>배송지정보</h2>
@@ -168,23 +231,44 @@ const MyBuy = () => {
                 }}
               >
                 <p>
-                  <span>수령인</span> <input value={value} onChange={onChange} type="text" />
+                  <span>수령인</span>
+                  <input
+                    value={value}
+                    onChange={onChange}
+                    type="text"
+                    placeholder="50자 이내로 입력하세요"
+                    maxLength={50}
+                  />
                 </p>
                 <p>
-                  <span>연락처</span> <input value={value} onChange={onChange} type="text" />
+                  <span>연락처</span>
+                  <input value={value} onChange={onChange} type="text" placeholder="- 기호는 제외하고 입력해주세요" />
                 </p>
                 <p>
-                  <span>배송지 주소</span> <input value={value} onChange={onChange} type="text" />
+                  <span>배송지 주소</span>
+                  <input value={value} onChange={onChange} type="text" />
                 </p>
                 <p>
-                  <span>배송메모</span> <input value={value} onChange={onChange} type="text" />
+                  <span>배송메모</span>
+                  <input
+                    value={value}
+                    onChange={onChange}
+                    type="text"
+                    placeholder="30자 이내로 요청 사항을 입력해주세요"
+                    maxLength={30}
+                  />
                 </p>
               </form>
             </div>
             {/* 주문자정보 */}
             <div className={style.ordererInfo}>
               <h2>주문자 정보</h2>
-              <p>{userInfo.displayName}</p>
+              <p>
+                <span>성함</span> {userInfo.displayName}
+              </p>
+              <p>
+                <span>이메일</span> {userInfo.email}
+              </p>
             </div>
           </div>
 
@@ -194,26 +278,50 @@ const MyBuy = () => {
             <div className={style.paySelect}>
               <h2>결제수단</h2>
 
-              {/* 계좌 목록 및 잔액 조회 map */}
-              {/* 없으면 메인페이지의 계좌 연결 페이지로 이동 */}
-              {/* 계좌연결 버튼은 마지막 */}
-              {/* 계좌선택하면 계좌 id 를 받아서 결제하기 버튼을 누르는 순간 상품 id 랑 같이 결제 api 에 전달해서 결제가 되도록 */}
               <div className={style.accountInfos}>
                 <ul>
-                  {accountData.map((account) => (
-                    <li key={account.id} className={style.accountInfo}>
-                      <button
-                        onClick={() => onClick(account.id, account.bankName)}
-                        style={{ backgroundColor: 'salmon' }}
-                      >
-                        <div>
-                          <p>{account.bankName}</p>
-                          <p>계좌번호</p>
-                          <p>{account.accountNumber}</p>
-                        </div>
-                      </button>
-                    </li>
-                  ))}
+                  {accountData.length === 0
+                    ? null
+                    : accountData.map((account) => (
+                        <li key={account.id} className={style.accountInfo}>
+                          <label>
+                            <div
+                              className={style.account}
+                              style={{ backgroundColor: `${accountColor[account.bankName]}` }}
+                            >
+                              <input
+                                type="radio"
+                                name="account"
+                                onChange={() => {
+                                  if (account.balance >= productsPrice + 3000) {
+                                    onClick(account.id, account.bankName);
+                                  } else {
+                                    return alert('해당 계좌에 잔액이 부족하여 결제가 불가능합니다.');
+                                  }
+                                }}
+                              />
+                              <div className={style.accountTxt}>
+                                <p>{account.bankName}</p>
+                                <p>계좌번호</p>
+                                <p>{account.accountNumber}</p>
+                              </div>
+                            </div>
+                          </label>
+                        </li>
+                      ))}
+                  <li className={style.accountInfoNone}>
+                    <Link
+                      to={'/mypage'}
+                      onClick={() => {
+                        alert('계좌 추가 페이지로 이동합니다');
+                      }}
+                    >
+                      <div>
+                        <span>icon</span>
+                        <p>계좌 추가</p>
+                      </div>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -221,8 +329,13 @@ const MyBuy = () => {
             <div className={style.payDetail}>
               <h2>결제상세</h2>
               <p>
-                {/* 최종 금액: 장바구니에서 가져온 모든 상품들 합한 금액 */}
-                <strong>주문금액</strong> <span>{product.price?.toLocaleString()}원</span>
+                <strong>주문금액</strong> <span>{productsPrice.toLocaleString()}원</span>
+              </p>
+              <p>
+                <strong>배송비</strong> <span>3,000원</span>
+              </p>
+              <p>
+                <strong>총 결제 금액</strong> <span>{(productsPrice + 3000).toLocaleString()}원</span>
               </p>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import style from './ProductDetail.module.css';
-import { getProductDetail } from '../components/total-product/fetch';
+import { getProductDetail } from '../data/API';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/button/Button';
 import { addOrUpdateToCart } from '../api/firebase';

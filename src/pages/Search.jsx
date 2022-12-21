@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { getSearch } from '../components/total-product/fetch';
+import { getSearch } from '../data/API';
 import { useSearchParams } from 'react-router-dom';
-import SearchItem from './SearchItem';
+import SearchItem from '../components/search/SearchItem';
 import style from './Search.module.css';
 
 const Search = () => {

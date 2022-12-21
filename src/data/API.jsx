@@ -138,4 +138,18 @@ export async function encodeImageFileAsURL(files, setPreview) {
   };
   reader.readAsDataURL(file);
 }
-//
+
+// 검색
+export async function getSearch(title = '', tags = '') {
+  const res = await fetch(API_URL + 'products/search', {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({
+      searchText: `${title}`,
+      searchTags: [`${tags}`],
+    }),
+  });
+
+  const json = await res.json();
+  return json;
+}
