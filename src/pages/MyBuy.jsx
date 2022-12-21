@@ -53,6 +53,9 @@ const MyBuy = () => {
   let deliveryId = '';
 
   const onClickBuy = async () => {
+    if (value === '') {
+      console.log('배송지 정보 비어있음');
+    }
     if (accountData.length === 0) {
       alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.');
       window.location = '/mypage';

@@ -167,7 +167,7 @@ export const deleteAll = async () => {
   }
 };
 
-const getDetailProduct = async (id) => {
+export const getDetailProduct = async (id) => {
   const res = await fetch(API_URL + `products/${id}`, {
     method: 'GET',
     headers: HEADERS,
@@ -213,6 +213,7 @@ var getDataUri = function (targetUrl, callback) {
     };
     reader.readAsDataURL(xhr.response);
   };
+};
 // 검색
 export async function getSearch(title = '', tags = '') {
   const res = await fetch(API_URL + 'products/search', {
@@ -297,3 +298,4 @@ export const resetAllProducts = async () => {
     // });
     // }
   });
+};
