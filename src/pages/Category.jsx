@@ -5,17 +5,13 @@ import SortButton from '../components/button/SortButton';
 import useProducts from '../hooks/use-products';
 
 export default function Category() {
-  const [loading, error, products, filters, filter, setFilter, filtered, tag] = useProducts('category')
-  if(loading) return <p>Loading...</p>
-  if(error) return <p>Error ...</p>
+  const [loading, error, products, filters, filter, setFilter, filtered, tag, category] = useProducts('category');
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error ...</p>;
   return (
-    <main>
-      <h1 className={style.h2}>{tag}</h1>
-      <SortButton 
-        filter={filter}
-        filters={filters}
-        onFilterChange={(filter) => setFilter(filter)}
-        />
+    <main className={style.main}>
+      <h2 className={style.h2}>{tag}</h2>
+      <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
       <ul className={style.product_wrap}>
         {filtered.map((product) => (
           <Product id={product.id} title={product.title} img={product.thumbnail} price={product.price} />
