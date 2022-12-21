@@ -5,23 +5,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
+import { adminUser } from '../../data/adminUser';
 import RecentlyViewed from '../recentlyViewed/RecentlyViewed';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [isAdmin, setIsAdmin] = useState(false);
   const accessToken = getCookie('accessToken');
-  const [isHovering, setIsHovering] = useState(false);
+  const { isAdmin } = userInfo;
 
-  useEffect(() => {
-    if (!accessToken) {
-      setIsLoggedIn(false);
-    }
-    if (userInfo.email === 'admin@admin.com') {
-      setIsAdmin(true);
-    }
-  }, []);
+  const [isHovering, setIsHovering] = useState(false);
 
   const onClick = async () => {
     try {
@@ -76,7 +69,11 @@ export default function Header() {
                 <Link to="/mypage" className={style.util_list}>
                   마이페이지
                 </Link>
-                {isAdmin ? <Link to="/admin/products"> 관리자 페이지 </Link> : null}
+                {isAdmin && (
+                  <Link to="/admin/products" className={style.util_list}>
+                    관리자 페이지
+                  </Link>
+                )}
                 <Link to="/mycart" className={style.util_list}>
                   장바구니
                 </Link>
@@ -96,7 +93,11 @@ export default function Header() {
                 </span>
                 {isHovering === true ? <RecentlyViewed /> : null}
                 <span className={style.util_list}>{userInfo.displayName}님</span>
-                <img src={userInfo.profileImg ? userInfo.profileImg : alternativeImg} className={style.image}></img>
+                <img
+                  src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
+                  className={style.image}
+                  alt="유저이미지"
+                ></img>
                 <span className={style.util_list} onClick={onClick}>
                   로그아웃
                 </span>

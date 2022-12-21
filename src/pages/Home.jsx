@@ -10,7 +10,7 @@ export default function Home() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   useEffect(() => {
     isLoggedIn && adminUser(userInfo, setUserInfo);
-  }, [setUserInfo]);
+  }, []);
 
   return (
     <main>

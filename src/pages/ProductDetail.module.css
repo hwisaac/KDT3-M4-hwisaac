@@ -1,7 +1,7 @@
 .item {
   display: flex;
   width: 1200px;
-  margin: auto;
+  margin: 3rem auto;
   border: 1px solid var(--color-light-grey);
 }
 
@@ -24,7 +24,7 @@
 
 .price {
   font-size: 1.7rem;
-  padding-bottom: 0.25rem;
+  padding-bottom: 1.5rem;
   font-weight: bold;
   border-bottom: 1px solid var(--color-grey);
   text-align: right;
@@ -32,11 +32,25 @@
 
 .description {
   font-size: 1rem;
-  padding: 0.5rem 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-light-grey);
+}
+
+.shipping {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-light-grey);
+}
+
+.shippingTitle {
+  padding-right: 0.5rem;
+  border-right: 1px solid var(--color-light-grey);
 }
 
 .btns {
   display: flex;
+  padding: 1rem 0;
 }
 
 .btn {
@@ -53,4 +67,24 @@
 
 .btn:hover {
   filter: brightness(85%);
+}
+
+.isSoldOut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--color-light-grey);
+  /* background-color: var(--color-red); */
+}
+
+.isSoldOut .icons {
+  font-size: 6rem;
+  color: var(--color-light-grey);
+}
+
+.soldOutDescription {
+  font-weight: bold;
 }

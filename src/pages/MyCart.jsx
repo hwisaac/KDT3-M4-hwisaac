@@ -7,6 +7,7 @@ import style from './MyCart.module.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useCart from '../hooks/useCart';
+import SmallButton from '../components/ui/button/SmallButton';
 
 const SHIPPING = 3000;
 
@@ -16,6 +17,7 @@ export default function MyCart() {
 
   const {
     cartQuery: { isLoading, data: products },
+    removeItem,
     addOrUpdateItem,
   } = useCart();
   const navigate = useNavigate();
@@ -24,26 +26,33 @@ export default function MyCart() {
 
   const hasProducts = products && products.length > 0;
   const checkedItem = products && products.filter((product) => product.isChecked === true && !product.isSoldOut);
+  const onlyChecked = products && products.filter((product) => product.isChecked === true);
   const totalPrice = products && checkedItem.reduce((prev, current) => prev + current.price * current.quantity, 0);
   const shippingPrice = checkedItem.length !== 0 ? SHIPPING : 0;
 
   const handleAllChecked = () => {
-    console.log('totalClicked - clicked');
     setAllChecked((prev) => !prev);
     // const newAllChecked = !allChecked;
     // products.map((product) => addOrUpdateItem.mutate({ ...product, isChecked: newAllChecked }));
   };
-  console.log('allChecked:', allChecked);
-  const isChecked = checkedItem.length;
+  const isChecked = onlyChecked.length;
   const totalChecked = products.length;
-  const isAllChecked = isChecked === products.length - getSoldOutId.length;
-  console.log('isAllChecked:', isAllChecked);
+  const soldOutItem = getSoldOutId.length;
+  const isAllChecked = isChecked === products.length;
 
   const handleToBuy = () => {
     const buyItem = products.filter((product) => product.isChecked === true && !product.isSoldOut);
     if (buyItem.length === 0) {
       alert('주문하실 상품을 선택해 주세요.');
-    } else navigate('/mybuy', { state: buyItem });
+    } else if (soldOutItem > 0) {
+      alert('품절된 상품은 구매가 불가능합니다.');
+    } else {
+      navigate('/mybuy', { state: buyItem });
+    }
+  };
+  const handleSelectDeleteClick = () => {
+    const selected = products && products.map((product) => product.isChecked === true && product.productId);
+    selected.map((productId) => removeItem.mutate(productId));
   };
 
   return (
@@ -61,14 +70,17 @@ export default function MyCart() {
       {hasProducts && (
         <article className={style.container}>
           <div className={style.title}>
-            <input
-              type="checkbox"
-              id="title"
-              checked={(isAllChecked && allChecked) || (!allChecked && isAllChecked)}
-              onChange={handleAllChecked}
-            />
-            <label htmlFor="title">프레시멘토</label>
-            <GrHome />
+            <div className={style.titleInput}>
+              <input
+                type="checkbox"
+                id="title"
+                checked={(allChecked && isAllChecked) || (!allChecked && isAllChecked)}
+                onChange={handleAllChecked}
+              />
+              <label htmlFor="title">프레시멘토</label>
+              <GrHome />
+            </div>
+            <SmallButton text="선택 삭제" onClick={handleSelectDeleteClick} />
           </div>
           <ul>
             {products &&
