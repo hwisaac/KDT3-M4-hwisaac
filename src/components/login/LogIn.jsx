@@ -4,7 +4,6 @@ import style from './LogIn.module.css';
 import { Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../data/LoginData';
-import { login } from '../../api/firebase';
 
 export function LogIn() {
   const [inputs, setInputs] = useState({
