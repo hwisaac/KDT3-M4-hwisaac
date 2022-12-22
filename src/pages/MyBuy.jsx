@@ -15,8 +15,9 @@ const MyBuy = () => {
   const { removeItems } = useCart();
   // const navigate = useNavigate();
   const products = buyProduct && buyProduct.length > 0 && buyProduct;
-
   const productIds = products && products.map((product) => product.productId);
+  const product = buyProduct && buyProduct.length === undefined && buyProduct;
+  console.log(product.price);
 
   // 모든 제품의 총 가격
   let productsPrice = 0;
@@ -141,6 +142,16 @@ const MyBuy = () => {
                     />
                   ))
                 : null}
+              {product ? (
+                <BuyItem
+                  key={product.productId}
+                  id={product.productId}
+                  photo={product.photo}
+                  title={product.title}
+                  quantity={1}
+                  price={product.price}
+                />
+              ) : null}
             </tbody>
           </table>
         </div>
