@@ -33,7 +33,7 @@ export default function useProducts(sort) {
       .finally(() => setLoading(false));
   }, [tag]);
 
-  return [loading, error, products, filters, filter, setFilter, filtered, category];
+  return [loading, error, products, filters, filter, setFilter, filtered, tag, category];
 }
 
 function getFilteredProducts(filter, products) {

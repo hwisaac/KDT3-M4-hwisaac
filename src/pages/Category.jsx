@@ -8,7 +8,7 @@ import LoadingModal from '../components/loading/LoadingModal';
 export default function Category() {
   const [loading, error, products, filters, filter, setFilter, filtered, tag] = useProducts('category');
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingModal />;
   if (error) return <p>Error ...</p>;
   return (
     <main className={style.main}>
