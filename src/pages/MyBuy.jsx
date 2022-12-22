@@ -17,7 +17,6 @@ const MyBuy = () => {
   const products = buyProduct && buyProduct.length > 0 && buyProduct;
   const productIds = products && products.map((product) => product.productId);
   const product = buyProduct && buyProduct.length === undefined && buyProduct;
-  console.log(product.price);
 
   // 모든 제품의 총 가격
   let productsPrice = 0;
@@ -29,6 +28,8 @@ const MyBuy = () => {
         quantity--;
       }
     }
+  } else {
+    productsPrice = product.price;
   }
 
   /* 유저 정보 */
@@ -55,11 +56,11 @@ const MyBuy = () => {
 
   const onClickBuy = async () => {
     if (value === '') {
-      console.log('배송지 정보 비어있음');
+      return alert('배송지 정보가 비어있으니 입력 후 결제 바랍니다.'), window.location.reload();
     }
+
     if (accountData.length === 0) {
-      alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.');
-      window.location = '/mypage';
+      return alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.'), (window.location = '/mypage');
     }
     if (!accountId) {
       alert('계좌 선택을 먼저 해주세요.');
@@ -95,8 +96,26 @@ const MyBuy = () => {
         alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
         // window.location = '/';
         // 장바구니 제품 삭제
-        console.log('productIds 실행~!');
+        // console.log('productIds 실행~!');
         productIds.map(async (id) => removeItems.mutate(id));
+      });
+
+      // 단일 상품 결제
+    } else {
+      await getBuy(product.id, accountId);
+
+      // 배송비 결제
+      const payload = {
+        title: '배송비',
+        price: 3000,
+        description: '배송비 추가',
+      };
+      addProduct(payload).then(async (data) => {
+        deliveryId = data.id;
+        await getBuy(deliveryId, accountId);
+        await deleteProduct(deliveryId);
+        alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+        window.location = '/';
       });
     }
   };
@@ -144,8 +163,8 @@ const MyBuy = () => {
                 : null}
               {product ? (
                 <BuyItem
-                  key={product.productId}
-                  id={product.productId}
+                  key={product.id}
+                  id={product.id}
                   photo={product.photo}
                   title={product.title}
                   quantity={1}
