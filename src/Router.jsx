@@ -11,7 +11,7 @@ import Category from './pages/Category';
 import Administrator from './pages/Admininstartor';
 import ProductManagement from './components/administrator/ProductManagement';
 import SalesDetails from './components/administrator/SalesDetails';
-import TransactionDetails from './components/administrator/TransactionDetails';
+import Transactions from './components/administrator/Transactions';
 import Search from './pages/Search';
 import MyBuy from './pages/MyBuy';
 import AddModal from './components/administrator/AddModal';
@@ -119,7 +119,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'transactions',
-            element: <TransactionDetails />,
+            element: <Transactions />,
           },
         ],
       },

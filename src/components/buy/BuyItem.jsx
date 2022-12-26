@@ -7,12 +7,12 @@ const BuyItem = ({ id, photo, title, quantity, price }) => {
     <tr className={style.wrap}>
       <td>
         <div className={style.productInfo}>
-          <Link to={`/products/${id}`} state={{ id: id }}>
+          <Link to={`/products/${id}`} state={{ id }}>
             <img src={photo} alt={title} />
           </Link>
           <div className={style.productTitle}>
             <p>[스마트스토어] 프레시멘토</p>
-            <Link to={`/products/${id}`} state={{ id: id }}>
+            <Link to={`/products/${id}`} state={{ id }}>
               <strong>{title}</strong>
             </Link>
           </div>

@@ -8,29 +8,28 @@ import { AiOutlineProject, AiOutlineSchedule } from 'react-icons/ai';
 
 export default function Administrator() {
   const matchProducts = useMatch('/admin/products');
-  const matchSales = useMatch('/admin/sales');
-  console.log(matchProducts, matchSales);
+  const matchSales = useMatch('/admin/transactions');
   return (
     <section className={style.adminPage}>
       <div className={style.inner}>
         <h2 className={style.pageTitle}>관리자 페이지</h2>
         <ul className={style.nav}>
           <Link to="products">
-            <li className={matchProducts ? style.focus : null}>
+            <li className={matchProducts && style.focus}>
               <AiOutlineSchedule />
               상품 관리
             </li>
           </Link>
-          <Link to="sales">
+          {/* <Link to="sales">
             <li className={matchSales ? style.focus : null}>
               {' '}
               <AiOutlineProject />
               판매내역
             </li>
-          </Link>
-          {/* <Link to="transactions">
-            <li>거래 내역</li>
           </Link> */}
+          <Link to="transactions">
+            <li className={matchSales && style.focus}>transact</li>
+          </Link>
         </ul>
         <Outlet />
       </div>
