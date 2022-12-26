@@ -13,23 +13,24 @@ const MyBuy = () => {
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
   const { state: buyProduct } = useLocation();
   const { removeItems } = useCart();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const products = buyProduct && buyProduct.length > 0 && buyProduct;
   const productIds = products && products.map((product) => product.productId);
-  const product = buyProduct && buyProduct.length === undefined && buyProduct;
 
   // 모든 제품의 총 가격
   let productsPrice = 0;
   if (products) {
     for (let product of products) {
-      let quantity = product.quantity;
-      while (quantity > 0) {
-        productsPrice += product.price;
-        quantity--;
+      if (product.quantity) {
+        let quantity = product.quantity;
+        while (quantity > 0) {
+          productsPrice += product.price;
+          quantity--;
+        }
+      } else {
+        productsPrice = product.price;
       }
     }
-  } else {
-    productsPrice = product.price;
   }
 
   /* 유저 정보 */
@@ -57,14 +58,10 @@ const MyBuy = () => {
   const onClickBuy = async () => {
     if (value === '') {
       return alert('배송지 정보가 비어있으니 입력 후 결제 바랍니다.'), window.location.reload();
-    }
-
-    if (accountData.length === 0) {
-      return alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.'), (window.location = '/mypage');
-    }
-    if (!accountId) {
-      alert('계좌 선택을 먼저 해주세요.');
-      window.location.reload();
+    } else if (accountData.length === 0) {
+      return alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.'), navigate('/mypage');
+    } else if (!accountId) {
+      return alert('계좌 선택을 먼저 해주세요.'), window.location.reload();
     }
 
     // 장바구니 결제
@@ -96,26 +93,8 @@ const MyBuy = () => {
         alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
         // window.location = '/';
         // 장바구니 제품 삭제
-        // console.log('productIds 실행~!');
+        // navigate('/');
         productIds.map(async (id) => removeItems.mutate(id));
-      });
-
-      // 단일 상품 결제
-    } else {
-      await getBuy(product.id, accountId);
-
-      // 배송비 결제
-      const payload = {
-        title: '배송비',
-        price: 3000,
-        description: '배송비 추가',
-      };
-      addProduct(payload).then(async (data) => {
-        deliveryId = data.id;
-        await getBuy(deliveryId, accountId);
-        await deleteProduct(deliveryId);
-        alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
-        window.location = '/';
       });
     }
   };
@@ -152,25 +131,15 @@ const MyBuy = () => {
               {products
                 ? products.map((product) => (
                     <BuyItem
-                      key={product.productId}
-                      id={product.productId}
+                      key={product.productId || product.id}
+                      id={product.productId || product.id}
                       photo={product.photo}
                       title={product.title}
-                      quantity={product.quantity}
+                      quantity={product.quantity || 1}
                       price={product.price}
                     />
                   ))
                 : null}
-              {product ? (
-                <BuyItem
-                  key={product.id}
-                  id={product.id}
-                  photo={product.photo}
-                  title={product.title}
-                  quantity={1}
-                  price={product.price}
-                />
-              ) : null}
             </tbody>
           </table>
         </div>

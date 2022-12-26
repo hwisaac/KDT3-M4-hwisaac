@@ -26,22 +26,22 @@ export default function ProductDetail() {
       setDetail(data);
     });
   }, [id]);
-  
+
   //최근 본 상품 로컬스토리지 저장 용도
   useEffect(() => {
-    if(localStorage.watched === undefined) {
+    if (localStorage.watched === undefined) {
       localStorage.setItem('watched', JSON.stringify([]));
     }
 
     const watched = localStorage.getItem('watched');
-    const watchedArr = JSON.parse(watched)
+    const watchedArr = JSON.parse(watched);
     watchedArr.unshift(id);
     localStorage.setItem('watched', JSON.stringify(watchedArr));
-    
+
     const watchedSet = new Set(watchedArr);
-    const watchedProducts = [...watchedSet].slice(0,8)
-    localStorage.setItem('watched', JSON.stringify(watchedProducts)) 
-  },[]);
+    const watchedProducts = [...watchedSet].slice(0, 8);
+    localStorage.setItem('watched', JSON.stringify(watchedProducts));
+  }, []);
 
   const handleClickCart = (e) => {
     if (!isLoggedIn) {
@@ -60,7 +60,7 @@ export default function ProductDetail() {
     if (!isLoggedIn) {
       alert('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
       window.location = '/login';
-    } else navigate(`/mybuy`, { state: detail });
+    } else navigate(`/mybuy`, { state: [detail] });
   };
 
   return (
