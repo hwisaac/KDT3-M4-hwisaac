@@ -142,9 +142,9 @@ export async function deleteProduct(id) {
 
 /**
  *
- * @param {*} id: string
+ * @param {string} id
  * @param {*} payload =: { title, price, description, tags, thumbnailBase64, photoBase64, isSoldOut }
- * @returns : void
+ * @returns {void}
  */
 export async function updateProduct(id, payload) {
   console.log(payload);
@@ -299,3 +299,14 @@ export const resetAllProducts = async () => {
     // }
   });
 };
+
+export async function getTransactionsAll() {
+  const res = await fetch(API_URL + 'products/transactions/all', {
+    method: 'GET',
+    headers: HEADERS,
+  });
+
+  const json = await res.json();
+  // console.log('getTransactionsAll >> ', json);
+  return json;
+}

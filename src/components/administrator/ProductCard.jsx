@@ -32,9 +32,7 @@ const ProductCard = ({
   });
   const handleChange = (event) => {
     setChecked((prev) => !prev);
-    console.log(id, event.currentTarget.checked);
     assignCheckList(id, event.currentTarget.checked);
-    console.log(title);
   };
   // 카드의 체크여부
   const [checked, setChecked] = useState(false);
@@ -43,7 +41,6 @@ const ProductCard = ({
   useEffect(() => {
     setChecked(selectAll);
     assignCheckList(id, selectAll);
-    console.log(checked);
   }, [selectAll]);
 
   return (
