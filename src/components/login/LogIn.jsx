@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { authUrl, HEADERS_USER } from '../../data/API';
 import style from './LogIn.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../data/LoginData';
 
 export function LogIn() {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -44,7 +45,7 @@ export function LogIn() {
         profileImg,
       });
       document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
-      document.location.href = '/';
+      navigate('/');
     } catch (error) {
       alert(json);
     }

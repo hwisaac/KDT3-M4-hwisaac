@@ -24,6 +24,7 @@ export default function Header() {
       });
       const json = await res.json();
       if (json) {
+        console.log(json);
         deleteCookie('accessToken');
         setIsLoggedIn(false);
         setUserInfo({
