@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './TotalProduct.module.css';
 import Product from './Product';
-import SortButton from '../button/SortButton';
-import useProducts from '../../hooks/use-products';
+import SortButton from '../ui/button/SortButton';
+import useProducts from '../../hooks/useProducts';
 
 const TotalProduct = () => {
   const [loading, error, products, filters, filter, setFilter, filtered] = useProducts('total');

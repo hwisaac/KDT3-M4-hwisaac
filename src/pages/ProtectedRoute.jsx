@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { loginState, userInfoState } from '../data/LoginData';
+import { loginState, userInfoState } from '../api/userInfo';
 
 export default function ProtectedRoute({ children, requireAdmin }) {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);

@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
-import { authUrl, HEADERS_USER } from '../../data/API';
-import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../data/LoginData';
+import { authUrl, HEADERS_USER } from '../../api/commonApi';
+import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../api/userInfo';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
-import { adminUser } from '../../data/adminUser';
-import RecentlyViewed from '../recentlyViewed/RecentlyViewed';
+import { adminUser } from '../../api/adminUser';
+import RecentlyViewed from '../recently-viewed/RecentlyViewed';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -24,6 +24,7 @@ export default function Header() {
       });
       const json = await res.json();
       if (json) {
+        console.log(json);
         deleteCookie('accessToken');
         setIsLoggedIn(false);
         setUserInfo({

@@ -25,7 +25,6 @@ export async function addOrUpdateToCart(username, product) {
 
 export async function removeFromCart(username, productIds) {
   if (typeof productIds === 'string') {
-    console.log('sdfhsjkfhdjs:', productIds);
     await remove(ref(database, `carts/${username}/${productIds}`));
   } else {
     for (let id of productIds) {
