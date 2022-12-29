@@ -1,5 +1,7 @@
 // const originProducts = require('./originProducts.json');
 import { API_URL, HEADERS } from './commonApi';
+// const originProducts = require('./originProducts.json');
+import { API_URL, HEADERS } from './commonApi';
 
 /**
  * image 를 로드 하면 -> base64 로 인코딩
@@ -203,8 +205,26 @@ export async function getTransactionsAll() {
     method: 'GET',
     headers: HEADERS,
   });
-
-  const json = await res.json();
-  // console.log('getTransactionsAll >> ', json);
-  return json;
+  return new Promise(async (resolve, reject) => {
+    // await deleteAll();
+    // for (let i = 0; i < originProducts.length; i++) {
+    //   const { title, price, tags, description, detail_url, thumbnail } = originProducts[i];
+    // getBase64FromUrl(thumbnail).then((a) => {
+    //   console.log(a);
+    // });
+    // toDataURL(proxyUrl + thumbnail, function (dataUrl) {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // toDataURL(proxyUrl + thumbnail).then((dataUrl) => {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // const thumbnailBase64 = await toDataURL(thumbnail).then((dataUrl) => {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // addProduct({ title, price, description, tags, thumbnailBase64, photoBase64 });
+    // toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0').then((dataUrl) => {
+    //   console.log('RESULT:', dataUrl);
+    // });
+    // }
+  });
 }
