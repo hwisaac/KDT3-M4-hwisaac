@@ -1,6 +1,3 @@
-// const originProducts = require('./originProducts.json');
-import { API_URL, HEADERS } from './commonApi';
-// const originProducts = require('./originProducts.json');
 import { API_URL, HEADERS } from './commonApi';
 
 /**
