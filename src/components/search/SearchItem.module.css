@@ -34,7 +34,7 @@
 .btn_heart {
   outline: none;
   border: none;
-  background-image: url('../../imgs/spSs_icon_svg.svg');
+  background-image: url('../../assets/svg/spSs_icon_svg.svg');
   background-repeat: no-repeat;
   background-position: -111px -188px;
   background-color: white;
@@ -48,7 +48,7 @@
 .btn_heart__red {
   outline: none;
   border: none;
-  background-image: url('../../imgs/spSs_icon_svg.svg');
+  background-image: url('../../assets/svg/spSs_icon_svg.svg');
   background-repeat: no-repeat;
   background-position: -156px -188px;
   background-color: white;

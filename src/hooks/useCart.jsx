@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import { addOrUpdateToCart, getCart, removeFromCart } from '../api/firebase';
-import { loginState, userInfoState } from '../data/LoginData';
+import { loginState, userInfoState } from '../api/userInfo';
 import { useNavigate } from 'react-router-dom';
 
 export default function useCart() {
