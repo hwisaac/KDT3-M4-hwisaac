@@ -7,7 +7,7 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { addProduct, encodeImageFileAsURL, getProductDetail, getProducts, updateProduct } from '../../api/productApi';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { myAtom } from '../../api/atoms';
+import { myAtom } from '../../recoil/atoms';
 import LoadingModal from '../ui/loading/LoadingModal';
 
 const EditModal = () => {

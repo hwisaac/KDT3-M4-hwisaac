@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { useSetRecoilState } from 'recoil';
-import { myAtom } from '../../api/atoms';
+import { myAtom } from '../../recoil/atoms';
 import ConfirmModal from '../../components/ui/ConfirmModal';
 
 const ProductManagement = () => {

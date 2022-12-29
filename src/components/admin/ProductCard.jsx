@@ -6,7 +6,7 @@ import { deleteProduct } from '../../api/productApi';
 import { MdHideImage } from 'react-icons/md';
 import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { myAtom } from '../../api/atoms';
+import { myAtom } from '../../recoil/atoms';
 import LoadingModal from '../ui/loading/LoadingModal';
 
 const ProductCard = ({

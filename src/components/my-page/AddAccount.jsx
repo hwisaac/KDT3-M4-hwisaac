@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { ACCOUNT_URL, HEADERS_USER } from '../../api/commonApi';
-import { getCookie } from '../../api/userInfo';
+import { getCookie } from '../../recoil/userInfo';
 import style from './AddAccount.module.css';
 
 function AddAccount() {

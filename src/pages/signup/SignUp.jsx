@@ -3,7 +3,7 @@ import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import style from './SignUp.module.css';
 import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { loginState, userInfoState } from '../../api/userInfo';
+import { loginState, userInfoState } from '../../recoil/userInfo';
 
 function SignUp() {
   const [inputs, setInputs] = useState({

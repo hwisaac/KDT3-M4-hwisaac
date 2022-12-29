@@ -1,5 +1,5 @@
 import { API_URL, ACCOUNT_URL, HEADERS, HEADERS_USER } from './commonApi';
-import { getCookie } from './userInfo';
+import { getCookie } from '../recoil/userInfo';
 
 // 계좌 조회 api
 const accessToken = getCookie('accessToken');

@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../api/commonApi';
-import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../api/userInfo';
+import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import style from './Header.module.css';

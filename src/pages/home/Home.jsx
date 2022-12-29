@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { adminUser } from '../../api/adminUser';
 import Slider from '../../components/kv/Slider';
 import TotalProduct from '../../components/total-product/TotalProduct';
-import { loginState, userInfoState } from '../../api/userInfo';
+import { loginState, userInfoState } from '../../recoil/userInfo';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);

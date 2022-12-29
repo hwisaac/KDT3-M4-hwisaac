@@ -15,8 +15,8 @@
   height: 25px;
   margin: auto;
   background-color: rgba(255, 255, 255, 0.397);
-  -webkit-mask: url(../../assets/svg/check.svg) no-repeat center / cover;
-  mask: url(../../assets/svg/check.svg) no-repeat center / cover;
+  -webkit-mask: url(../../assets//check.svg) no-repeat center / cover;
+  mask: url(../../assets//check.svg) no-repeat center / cover;
   vertical-align: middle;
   appearance: none;
   cursor: pointer;

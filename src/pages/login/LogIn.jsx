@@ -3,7 +3,7 @@ import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import style from './LogIn.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { loginState, userInfoState } from '../../api/userInfo';
+import { loginState, userInfoState } from '../../recoil/userInfo';
 
 export function LogIn() {
   const navigate = useNavigate();

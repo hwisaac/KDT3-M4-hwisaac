@@ -7,7 +7,7 @@ import Button from '../../components/ui/button/Button';
 import { addOrUpdateToCart } from '../../api/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { loginState, userInfoState } from '../../api/userInfo';
+import { loginState, userInfoState } from '../../recoil/userInfo';
 import { BsCartX } from 'react-icons/bs';
 
 const SHIPPING = 3000;

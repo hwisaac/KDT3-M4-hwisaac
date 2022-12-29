@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import MyAccount from '../../components/my-page/MyAccount';
 import MyOrder from '../../components/my-page/MyOrder';
-import { alternativeImg, getCookie, userInfoState } from '../../api/userInfo';
+import { alternativeImg, getCookie, userInfoState } from '../../recoil/userInfo';
 import { ACCOUNT_URL, HEADERS_USER } from '../../api/commonApi';
 import style from './MyPage.module.css';
 import { Link, Outlet } from 'react-router-dom';
