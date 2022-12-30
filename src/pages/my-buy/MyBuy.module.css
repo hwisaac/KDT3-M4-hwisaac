@@ -1,0 +1,224 @@
+.body {
+  background-color: #f4f4f4;
+  width: 100%;
+  height: 100%;
+  padding: 100px 0;
+}
+
+.wrap {
+  width: 1100px;
+  margin: auto;
+}
+.wrap h1 {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.main {
+  padding: 30px 0;
+}
+
+/* 주문 내역 */
+.infos {
+  width: 100%;
+  margin: auto;
+  border: 1px solid rgba(128, 128, 128, 0.356);
+  border-radius: 10px;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+}
+.infos caption {
+  font-size: 0;
+}
+.infos table {
+  width: 100%;
+}
+
+.infoHead {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.164);
+}
+.infoHead tr th {
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+.infoBody {
+  background-color: white;
+}
+
+/* 배송지정보, 주문자정보 */
+.infosBottom {
+  width: 100%;
+  margin: 10px auto;
+  border: 1px solid rgba(128, 128, 128, 0.356);
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+}
+.forms {
+  display: flex;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.24);
+}
+.deliveryInfo {
+  padding: 40px;
+  width: 75%;
+}
+.deliveryInfo h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.deliveryInfo p {
+  margin-bottom: 10px;
+}
+.deliveryInfo span {
+  display: inline-block;
+  width: 110px;
+  font-size: 14px;
+}
+.deliveryInfo input {
+  padding: 0 10px;
+  margin-right: 1px;
+  border: 1px solid #e5e5e5;
+  width: 300px;
+  height: 28px;
+  vertical-align: middle;
+  line-height: 28px;
+}
+.deliveryInfo input::placeholder {
+  color: rgb(170, 170, 170);
+}
+
+.ordererInfo {
+  padding: 40px;
+  width: 25%;
+  background-color: #f4f4f4;
+  border-left: 1px dotted rgba(0, 0, 0, 0.247);
+  border-radius: 10px;
+}
+.ordererInfo h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.ordererInfo p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.ordererInfo p span {
+  display: inline-block;
+  width: 50px;
+  font-weight: bold;
+}
+
+.pay {
+  display: flex;
+}
+.paySelect {
+  padding: 40px;
+  width: 75%;
+  overflow-x: hidden;
+}
+.paySelect h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.accountInfos {
+  border: 1px solid rgba(128, 128, 128, 0.514);
+  background-color: rgba(128, 128, 128, 0.068);
+  padding: 80px 50px;
+  width: 80%;
+  overflow-x: scroll;
+  box-sizing: border-box;
+}
+.accountInfos ul {
+  display: flex;
+  width: fit-content;
+}
+/* 스크롤바 설정 */
+.accountInfos::-webkit-scrollbar {
+  height: 8px;
+}
+/* 스크롤바 막대 설정 */
+.accountInfos::-webkit-scrollbar-thumb {
+  background-color: rgb(119, 119, 119);
+  border-radius: 25px;
+}
+/* 스크롤바 뒷 배경 설정 */
+.accountInfos::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 25px;
+}
+
+.accountInfoNone {
+  width: 230px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  border: 3px dotted rgba(128, 128, 128, 0.562);
+  border-radius: 10px;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+  cursor: pointer;
+}
+.accountInfoNone div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.accountInfoNone div span {
+  background: url('../../assets/image/sp_simplepay.png') no-repeat 0 0;
+  width: 34px;
+  height: 34px;
+  font-size: 0;
+  margin-bottom: 20px;
+}
+.accountInfoNone div p {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.payDetail {
+  padding: 40px;
+  width: 25%;
+  background-color: #f4f4f4;
+  border-left: 1px dotted rgba(0, 0, 0, 0.247);
+  border-radius: 10px;
+}
+.payDetail h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.payDetail p {
+  padding: 8px;
+  display: flex;
+
+  justify-content: space-between;
+}
+.payDetail p:nth-child(3) {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.411);
+}
+.payDetail p strong {
+  font-size: 14px;
+  font-weight: bold;
+}
+.payDetail p span {
+  font-size: 13px;
+}
+.payBtn {
+  padding: 30px 0;
+}
+.payBtn button {
+  display: block;
+  margin: auto;
+  padding: 20px 60px;
+  background-color: #09aa5c;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
