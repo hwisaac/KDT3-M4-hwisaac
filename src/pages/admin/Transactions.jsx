@@ -6,6 +6,7 @@ import { getTransactionsAll } from '../../api/productApi';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
+import TransactionCard from '../../components/admin/TransactionCard';
 
 const Transactions = () => {
   const getData = async () => {
@@ -18,6 +19,7 @@ const Transactions = () => {
       return result;
     });
   };
+
   const { isLoading, data, refetch } = useQuery(['transactions'], () => getData());
 
   // useEffect(() => {
@@ -26,11 +28,21 @@ const Transactions = () => {
 
   return (
     <ul className={style.transactionsList}>
+      <TransactionCard
+        payload={{
+          tableHeader: true,
+        }}
+      />
       {!isLoading &&
-        data?.map((transaction) => {
+        data?.map((transaction, index) => {
           const { account, detailId, done, isCanceled, product, timePaid, user } = transaction;
-          <li></li>;
-          console.log({ account, detailId, done, isCanceled, product, timePaid, user });
+
+          return (
+            <TransactionCard
+              key={detailId}
+              payload={{ account, detailId, done, isCanceled, product, timePaid, user, index, tableHeader: false }}
+            />
+          );
         })}
     </ul>
   );
