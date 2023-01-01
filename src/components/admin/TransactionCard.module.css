@@ -1,7 +1,7 @@
 .card {
   display: grid;
-  grid-template-columns: 30px 150px 70px auto 100px 130px 100px;
-  gap: 20px;
+  grid-template-columns: 30px 150px 90px auto 100px 130px 100px;
+  gap: 15px;
   box-sizing: border-box;
   padding: 10px 15px;
   border: 2px solid var(--color-light-gray2);
@@ -17,9 +17,27 @@
   color: #7a808c;
   padding: 13px 15px;
 }
+.tableFooter {
+  display: flex;
+  justify-content: space-between;
+  color: #7a808c;
+  font-size: 14px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.tableFooter .btn {
+  border: 2px solid var(--color-light-gray2);
+  padding: 10px 15px;
+  margin: 0 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 카드 */
 .card > div {
   display: flex;
   align-items: center;
+  /* background-color: yellow; */
 }
 .card .select {
   justify-content: center;

@@ -7,8 +7,11 @@ import { getTransactionsAll } from '../../api/productApi';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import TransactionCard from '../../components/admin/TransactionCard';
+import OverviewCard from './OverviewCard';
 
 const Transactions = () => {
+  let tableFooter = false;
+  let tableHeader = false;
   const getData = async () => {
     return fetch('../data/mockUpTransactions.json', {
       headers: {
@@ -27,24 +30,51 @@ const Transactions = () => {
   // }, []);
 
   return (
-    <ul className={style.transactionsList}>
-      <TransactionCard
-        payload={{
-          tableHeader: true,
-        }}
-      />
-      {!isLoading &&
-        data?.map((transaction, index) => {
-          const { account, detailId, done, isCanceled, product, timePaid, user } = transaction;
+    <>
+      <div className={style.overview}>
+        <OverviewCard title={'Total transactions'} content={2420} />
+        <OverviewCard title={'Earned'} content={300000} />
+        <OverviewCard title={'Canceled'} content={100} />
+        <OverviewCard title={'Done'} content={30} />
+      </div>
 
-          return (
-            <TransactionCard
-              key={detailId}
-              payload={{ account, detailId, done, isCanceled, product, timePaid, user, index, tableHeader: false }}
-            />
-          );
-        })}
-    </ul>
+      <ul className={style.transactionsList}>
+        <TransactionCard
+          payload={{
+            tableHeader: true,
+            tableFooter,
+          }}
+        />
+        {!isLoading &&
+          data?.map((transaction, index) => {
+            const { account, detailId, done, isCanceled, product, timePaid, user } = transaction;
+
+            return (
+              <TransactionCard
+                key={detailId}
+                payload={{
+                  account,
+                  detailId,
+                  done,
+                  isCanceled,
+                  product,
+                  timePaid,
+                  user,
+                  index,
+                  tableHeader,
+                  tableFooter,
+                }}
+              />
+            );
+          })}
+        <TransactionCard
+          payload={{
+            tableFooter: true,
+            tableHeader,
+          }}
+        />
+      </ul>
+    </>
   );
 };
 

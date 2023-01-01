@@ -9,7 +9,17 @@ import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import CheckBox from '../ui/check-box/CheckBox';
 
 function TransactionCard({ payload }) {
-  const { index = 0, done = true, isCanceled = true, timePaid = '', product, user, account, tableHeader } = payload;
+  const {
+    index = 0,
+    done = true,
+    isCanceled = true,
+    timePaid = '',
+    product,
+    user,
+    account,
+    tableHeader,
+    tableFooter,
+  } = payload;
 
   const { accountNumber, bankCode, bankName } = { ...account };
   const { description, price, productId, tags, thumbnail, title } = { ...product };
@@ -36,7 +46,15 @@ function TransactionCard({ payload }) {
       </li>
     );
   }
-  // if (tableFooter){}
+  if (tableFooter) {
+    return (
+      <li className={[style.card, style.tableFooter].join(' ')}>
+        <div className={style.btn}>Previous</div>
+        <div>Page 1 of 10</div>
+        <div className={style.btn}>Next</div>
+      </li>
+    );
+  }
   return (
     <li className={style.card}>
       <div className={style.select}>
@@ -50,7 +68,7 @@ function TransactionCard({ payload }) {
         </div>
       </div>
       <div className={style.price}>
-        <span className={done ? style.done : null}>{price.toLocaleString()}</span>
+        <span className={done ? style.done : null}>₩ {price.toLocaleString()}</span>
       </div>
       <div className={style.product}>
         <span className={style.title}>{title}</span>
@@ -76,8 +94,8 @@ function TransactionCard({ payload }) {
         <span className={style.accountNumber}>{accountNumber}</span>
       </div>
       <div className={style.icons}>
-        <AiOutlineDelete className={style.delete} />
         <AiOutlineEdit className={style.edit} />
+        <AiOutlineDelete className={style.delete} />
       </div>
     </li>
   );
