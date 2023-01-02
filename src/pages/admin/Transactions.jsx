@@ -8,6 +8,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import TransactionCard from '../../components/admin/TransactionCard';
 import OverviewCard from './OverviewCard';
+import BankIcon from '../../components/ui/bank-icon/BankIcon';
 
 const Transactions = () => {
   let tableFooter = false;

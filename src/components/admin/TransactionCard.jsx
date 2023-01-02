@@ -7,6 +7,10 @@ import { BiLoader } from 'react-icons/bi';
 
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import CheckBox from '../ui/check-box/CheckBox';
+import { bank } from '../../recoil/atoms';
+import { useRecoilValue } from 'recoil';
+import bankI from '../../assets/image/sp_bankbi.png';
+import BankIcon from '../ui/bank-icon/BankIcon';
 
 function TransactionCard({ payload }) {
   const {
@@ -20,6 +24,7 @@ function TransactionCard({ payload }) {
     tableHeader,
     tableFooter,
   } = payload;
+  const bankIcon = useRecoilValue(bank);
 
   const { accountNumber, bankCode, bankName } = { ...account };
   const { description, price, productId, tags, thumbnail, title } = { ...product };
@@ -46,6 +51,7 @@ function TransactionCard({ payload }) {
       </li>
     );
   }
+
   if (tableFooter) {
     return (
       <li className={[style.card, style.tableFooter].join(' ')}>
@@ -88,10 +94,7 @@ function TransactionCard({ payload }) {
         </div>
       </div>
       <div className={style.bank}>
-        <span className={style.bankName}>
-          {bankName} ({bankCode})
-        </span>
-        <span className={style.accountNumber}>{accountNumber}</span>
+        <BankIcon bankCode={bankCode} scale={'25%'} className={style.bankIcon} />
       </div>
       <div className={style.icons}>
         <AiOutlineEdit className={style.edit} />
