@@ -1,0 +1,167 @@
+.card {
+  display: grid;
+  grid-template-columns: 30px 150px 90px auto 100px 50px 100px;
+  gap: 15px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  border: 2px solid var(--color-light-gray2);
+  border-top: none;
+  color: #32353d;
+}
+.tableHeader {
+  font-size: 12px;
+  border: 2px solid var(--color-light-gray2);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #f9fbfc;
+  color: #7a808c;
+  padding: 13px 15px;
+}
+.tableFooter {
+  display: flex;
+  justify-content: space-between;
+  color: #7a808c;
+  font-size: 14px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.tableFooter .btn {
+  border: 2px solid var(--color-light-gray2);
+  padding: 10px 15px;
+  margin: 0 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 카드 */
+.card > div {
+  /* display: flex;
+  align-items: center;*/
+  /* background-color: green; */
+}
+.card .select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card .user {
+  gap: 10px;
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+}
+.card .user .profileImg {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: 2px solid var(--color-blue);
+}
+.card .user div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.card .user div .displayName {
+  font-size: 14px;
+}
+.card .user div .email {
+  font-size: 11px;
+  font-weight: 400;
+  color: gray;
+}
+.card .price {
+  display: flex;
+  align-items: center;
+}
+.card .price span {
+  background-color: var(--color-light-gray2);
+  color: var(--color-dark-gray2);
+  border-radius: 50px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.card .price span.done {
+  background-color: var(--color-light-green);
+  color: var(--color-dark-green);
+}
+
+.card .product {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  overflow: hidden;
+}
+.card .product span {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+.card .status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+}
+.card .status > div {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  border-radius: 50px;
+  padding: 3px 10px;
+  color: var(--color-light-grey);
+  border: 1px dashed var(--color-light-grey);
+  gap: 5px;
+  cursor: pointer;
+}
+.card .status > div:hover {
+  background-color: var(--color-dark-gray2);
+  color: var(--color-light-gray2);
+  border: 1px solid var(--color-dark-gray2);
+}
+.card .status .active {
+  background-color: var(--color-light-gray2);
+  color: var(--color-dark-gray2);
+  border: 1px solid var(--color-dark-gray2);
+}
+
+.card .bank {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 15px;
+  justify-content: center;
+  gap: 3px;
+  position: relative;
+}
+
+.card .bank .bankName {
+  display: flex;
+  border: 1px solid red;
+}
+.card .bank .accountNumber {
+  color: var(--color-light-grey1);
+  font-size: 12px;
+  font-weight: 300;
+}
+.card .bank .bankIcon {
+  left: -50%;
+}
+
+.card .icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  font-size: 20px;
+}
+.card .icons .delete,
+.card .icons .edit {
+  cursor: pointer;
+  color: var(--color-dark-gray2);
+}
