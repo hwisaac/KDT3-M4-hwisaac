@@ -6,19 +6,17 @@ import { useState } from 'react';
 const SearchItem = ({ id, img, title, price, description }) => {
   const navigate = useNavigate();
   const [heart, setHeart] = useState(false);
-  function onClick() {
-    setHeart((cur) => !cur);
-  }
+  const onClickHeart = () => {
+    setHeart((prev) => !prev);
+  };
+  const onClickItem = (e) => {
+    if (e.target.nodeName !== 'BUTTON') {
+      navigate(`/products/${id}`, { state: { id, title, img, price } });
+    }
+  };
 
   return (
-    <li
-      className={style.item}
-      onClick={(e) => {
-        if (e.target.nodeName !== 'BUTTON') {
-          navigate(`/products/${id}`, { state: { id, title, img, price } });
-        }
-      }}
-    >
+    <li className={style.item} onClick={onClickItem}>
       <div className={style.container}>
         <img className={style.img} src={img} alt={title} />
         <div>
@@ -29,7 +27,7 @@ const SearchItem = ({ id, img, title, price, description }) => {
       </div>
 
       <div>
-        <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
+        <button onClick={onClickHeart} className={heart ? style.btnHeart_red : style.btnHeart}>
           찜
         </button>
       </div>

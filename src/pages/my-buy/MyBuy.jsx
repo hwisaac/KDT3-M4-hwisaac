@@ -9,8 +9,11 @@ import style from './MyBuy.module.css';
 import BuyItem from '../../components/my-buy/BuyItem';
 import Account from '../../components/my-buy/Account';
 import useCart from '../../hooks/useCart';
+import { getCookie } from './../../recoil/userInfo';
 
 const MyBuy = () => {
+  const [loading, setLoading] = useState(true);
+
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
   const { state: buyProduct } = useLocation();
   const { removeItems } = useCart();
@@ -23,13 +26,9 @@ const MyBuy = () => {
   if (products) {
     for (let product of products) {
       if (product.quantity) {
-        let quantity = product.quantity;
-        while (quantity > 0) {
-          productsPrice += product.price;
-          quantity--;
-        }
+        productsPrice += product.price * product.quantity;
       } else {
-        productsPrice = product.price;
+        productsPrice += product.price;
       }
     }
   }
@@ -42,8 +41,12 @@ const MyBuy = () => {
   const [accountId, setAccountId] = useState('');
 
   useEffect(() => {
-    getAccountInfo().then((data) => {
+    const accessToken = getCookie('accessToken');
+
+    const account = getAccountInfo({ accessToken });
+    account.then((data) => {
       setAccountData(data);
+      setLoading(false);
     });
   }, []);
 
@@ -58,19 +61,26 @@ const MyBuy = () => {
 
   const onClickBuy = async () => {
     if (value === '') {
-      return alert('배송지 정보가 비어있으니 입력 후 결제 바랍니다.'), window.location.reload();
+      alert('배송지 정보가 비어있으니 입력 후 결제 바랍니다.');
+      return;
     } else if (accountData.length === 0) {
-      return alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.'), navigate('/mypage');
+      alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.');
+      navigate('/mypage');
+      return;
     } else if (!accountId) {
-      return alert('계좌 선택을 먼저 해주세요.'), window.location.reload();
+      alert('계좌 선택을 먼저 해주세요.');
+      return;
     }
 
-    // 장바구니 결제
+    const accessToken = getCookie('accessToken');
+
+    // 결제 로직
     if (products) {
       for (let product of products) {
-        let quantity = product.quantity;
+        // 단일 상품 구매 시 개수 정보가 없기 때문에 1 로 설정
+        let quantity = product.quantity || 1;
         while (quantity > 0) {
-          const response = await getBuy(product.productId, accountId);
+          const response = await getBuy(product.productId || product.id, accountId, accessToken);
           if (response.status !== 200) {
             return (
               alert('일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.'),
@@ -89,13 +99,10 @@ const MyBuy = () => {
       };
       addProduct(payload).then(async (data) => {
         deliveryId = data.id;
-        await getBuy(deliveryId, accountId);
+        await getBuy(deliveryId, accountId, accessToken);
         await deleteProduct(deliveryId);
         alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
-        // window.location = '/';
-        // 장바구니 제품 삭제
-        // navigate('/');
-        productIds.map(async (id) => removeItems.mutate(id));
+        productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
       });
     }
   };
@@ -205,9 +212,11 @@ const MyBuy = () => {
 
               <div className={style.accountInfos}>
                 <ul>
-                  {accountData.length === 0
+                  {loading
                     ? null
-                    : accountData.map((account) => (
+                    : accountData?.length === 0
+                    ? null
+                    : accountData?.map((account) => (
                         <Account
                           key={account.id}
                           id={account.id}

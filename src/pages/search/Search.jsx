@@ -4,14 +4,13 @@ import { getSearch } from '../../api/productApi';
 import { useSearchParams } from 'react-router-dom';
 import SearchItem from '../../components/search/SearchItem';
 import style from './Search.module.css';
+import { useQuery } from '@tanstack/react-query';
+import LoadingModal from '../../components/ui/loading/LoadingModal';
 
 const Search = () => {
-  const [search, setSearch] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // location 의 ?s=title 가져오기
-  let [searchParams, setSearchParams] = useSearchParams();
-  let title = searchParams.get('s');
+  // 쿼리 값 가져오기
+  const [searchParams, setSearchParams] = useSearchParams();
+  const title = searchParams.get('q');
 
   const TAGS = [
     '농산물',
@@ -38,32 +37,21 @@ const Search = () => {
     titleArr = title.split(' ');
     tag = TAGS.find((tag) => titleArr.includes(tag));
     findTitle = titleArr.find((t) => t !== tag);
-  } else if (!title.includes(' ') && tag) {
-    title = tag;
   }
 
-  // 구분해서 search data 넣기
+  const {
+    isLoading,
+    data: search,
+    refetch,
+  } = useQuery(['search'], () => {
+    if (findTitle && tag) return getSearch(findTitle, tag);
+    else if (tag) return getSearch('', tag);
+    else return getSearch(title);
+  });
+
   useEffect(() => {
-    if (findTitle && tag) {
-      const searchData = getSearch(findTitle, tag);
-      searchData.then((data) => {
-        setSearch(data);
-        setLoading(false);
-      });
-    } else if (!findTitle && tag) {
-      const searchData = getSearch('', tag);
-      searchData.then((data) => {
-        setSearch(data);
-        setLoading(false);
-      });
-    } else {
-      const searchData = getSearch(title);
-      searchData.then((data) => {
-        setSearch(data);
-        setLoading(false);
-      });
-    }
-  }, []);
+    refetch();
+  }, [title]);
 
   const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
   const [filter, setFilter] = useState(filters[0]);
@@ -89,8 +77,8 @@ const Search = () => {
 
   return (
     <div className={style.wrap}>
-      {loading ? (
-        ''
+      {isLoading ? (
+        <LoadingModal />
       ) : search.length === 0 ? (
         <p className={style.none}>입력하신 '{title}'에 대한 스토어 내 검색결과가 없습니다.</p>
       ) : (
