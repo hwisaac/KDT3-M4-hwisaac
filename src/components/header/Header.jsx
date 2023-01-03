@@ -2,11 +2,12 @@ import { useRecoilState } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../api/adminUser';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -39,17 +40,16 @@ export default function Header() {
     }
   };
 
-  const [value, setValue] = useState('');
+  /* 검색 기능 */
+  const navigate = useNavigate();
 
-  const onKeyDown = (event) => {
-    let inputValue = event.target.value;
-    if (event.key === 'Enter' && !event.isComposing) {
-      if (inputValue !== '') {
-        setValue(inputValue.trim());
-      } else {
-        alert('검색어를 입력해주세요');
-      }
-    }
+  const { register, handleSubmit, setValue } = useForm();
+  const onValid = ({ search }) => {
+    navigate(`/search?q=${search}`);
+    setValue('search');
+  };
+  const onInvalid = () => {
+    return alert('검색어를 입력해주세요');
   };
 
   return (
@@ -126,9 +126,17 @@ export default function Header() {
             <p>맛그레이드하세요↗ 식품전문가 프레시멘토의 큐레이션 서비스</p>
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
-          <form action="/search" className={style.form}>
-            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해주세요" />
-            <BiSearch className={style.searchIcon} />
+
+          <form onSubmit={handleSubmit(onValid, onInvalid)} className={style.form}>
+            <input
+              {...register('search', {
+                required: '검색어를 입력해주세요',
+              })}
+              type="search"
+            />
+            <button type="submit">
+              <BiSearch className={style.searchIcon} />
+            </button>
           </form>
         </div>
       </div>
