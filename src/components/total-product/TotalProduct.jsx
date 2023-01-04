@@ -8,7 +8,8 @@ import useFilter from '../../hooks/useFilter';
 
 const TotalProduct = () => {
   const [loading, error, products] = useProducts('total');
-  const [filters, filter, setFilter, filtered] = useFilter(products);
+  const response = useFilter(products);
+  const {filters, filter, setFilter, filtered} = {...response}
   
   if (loading) return <LoadingModal/>;
   if (error) return <p>Error ...</p>;

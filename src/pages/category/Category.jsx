@@ -8,7 +8,9 @@ import useFilter from '../../hooks/useFilter';
 
 export default function Category() {
   const [loading, error, products, tag] = useProducts('category');
-  const [filters, filter, setFilter, filtered] = useFilter(products);
+  // const [filters, filter, setFilter, filtered] = useFilter(products);
+  const response = useFilter(products);
+  const {filters, filter, setFilter, filtered} = {...response}
 
   if (loading) return <LoadingModal />;
   if (error) return <p>Error ...</p>;
@@ -18,7 +20,7 @@ export default function Category() {
       <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
       <ul className={style.product_wrap}>
         {filtered.map((product) => (
-          <Product id={product.id} title={product.title} img={product.thumbnail} price={product.price} />
+          <Product key={product.id} id={product.id} title={product.title} img={product.thumbnail} price={product.price} />
         ))}
       </ul>
     </main>

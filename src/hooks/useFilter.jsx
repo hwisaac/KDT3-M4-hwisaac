@@ -11,14 +11,15 @@ function getFilteredProducts (filter, products) {
   return copy;
 }
 
-
-export default function useFilter (products) {
+export default function useFilter (products) { 
   const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
   const [filter, setFilter] = useState(filters[0]);
+  if(!products) return undefined;
   const filtered = getFilteredProducts(filter, products);
 
-  return [filters, filter, setFilter, filtered];
+  return {filters, filter, setFilter, filtered};
 }
+
 
 
 

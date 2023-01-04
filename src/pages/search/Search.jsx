@@ -1,19 +1,18 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getSearch } from '../../api/productApi';
 import { useSearchParams } from 'react-router-dom';
 import SearchItem from '../../components/search/SearchItem';
 import style from './Search.module.css';
+import { useQuery } from '@tanstack/react-query';
+import LoadingModal from '../../components/ui/loading/LoadingModal';
 import useFilter from '../../hooks/useFilter';
+import SortButton from '../../components/ui/button/SortButton';
 
-const Search = () => {  
-  const [search, setSearch] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filters, setFilter, filtered] = useFilter(search)
-
-  // location 의 ?s=title 가져오기
-  let [searchParams, setSearchParams] = useSearchParams();
-  let title = searchParams.get('s');
+const Search = () => {
+  // 쿼리 값 가져오기
+  const [searchParams, setSearchParams] = useSearchParams();
+  const title = searchParams.get('q');
 
   const TAGS = [
     '농산물',
@@ -52,9 +51,16 @@ const Search = () => {
     else return getSearch(title);
   });
 
+
   useEffect(() => {
     refetch();
   }, [title]);
+
+  const response = useFilter(search);
+  // console.log(response)
+  // const [filters, filter, setFilter, filtered] = useFilter(search)
+  // const {filters, filter, setFilter, filtered} = useFilter(search)
+  const {filters, filter, setFilter, filtered} = {...response}
 
   return (
     <div className={style.wrap}>
@@ -67,15 +73,7 @@ const Search = () => {
           <div className={style.head}>
             <h1>{title}</h1> <span>검색 결과(총 {search.length}개)</span>
           </div>
-          <ul className={style.btns}>
-            {filters.map((filter, index) => {
-              return (
-                <li className={style.btn_wrap} key={index}>
-                  <button onClick={() => setFilter(filter)}>{filter}</button>
-                </li>
-              );
-            })}
-          </ul>
+          <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
           <ul>
             {filtered.map((data) => (
               <SearchItem

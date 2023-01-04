@@ -9,6 +9,7 @@ import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../api/adminUser';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
 import { useFieldArray, useForm } from 'react-hook-form';
+import UserMenu from '../ui/user-menu/UserMenu';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
