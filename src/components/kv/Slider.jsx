@@ -39,7 +39,7 @@ export default function Slider() {
     }, 3000);
     return () => clearInterval(interval);
   }, [activeIndex]);
-
+   
   return (
     <div className={style.sliderContainer}>
       <SliderContent activeIndex={activeIndex} sliderImages={sliderImages} />

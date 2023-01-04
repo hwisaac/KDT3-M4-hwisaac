@@ -1,32 +1,39 @@
 .recentlyViewed {
-  z-index: 1;
-  width: 500px;
-  padding: 30px 10px;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fff;
-  position: absolute;
-  top: 40px;
-  right: 0;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  border-radius: 10px;
 }
-.recentlyViewed  h1 {
+.recentlyViewed .title {
+  width: 100%;
+  background-color: rgb(107, 144, 220);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.recentlyViewed .title h1 {
   font-size: 15px;
   font-weight: bold;
-  margin-bottom: 10px
+  color: #fff;
+  padding: 10px;
 }
 .recentlyViewed .products {
-  width: 450px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-}
-.recentlyViewed .products .product {
-  
-  
+  padding: 10px 20px;
+  cursor: pointer;
 }
 .recentlyViewed .products .product img {
   width: 100px
@@ -37,5 +44,6 @@
   text-overflow:ellipsis;
   white-space:nowrap;
   margin-top: 10px;
+  font-size: 12px;
 }
 
