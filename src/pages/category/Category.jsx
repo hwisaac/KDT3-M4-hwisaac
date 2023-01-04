@@ -4,11 +4,9 @@ import style from './Category.module.css';
 import SortButton from '../../components/ui/button/SortButton';
 import useProducts from '../../hooks/useProducts';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
-import useFilter from '../../hooks/useFilter';
 
 export default function Category() {
-  const [loading, error, products, tag] = useProducts('category');
-  const [filters, filter, setFilter, filtered] = useFilter(products);
+  const [loading, error, products, filters, filter, setFilter, filtered, tag] = useProducts('category');
 
   if (loading) return <LoadingModal />;
   if (error) return <p>Error ...</p>;

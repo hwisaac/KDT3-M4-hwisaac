@@ -3,15 +3,10 @@ import style from './TotalProduct.module.css';
 import Product from './Product';
 import SortButton from '../ui/button/SortButton';
 import useProducts from '../../hooks/useProducts';
-import LoadingModal from '../ui/loading/LoadingModal';
-import useFilter from '../../hooks/useFilter';
+import LoadingModal from './../ui/loading/LoadingModal';
 
 const TotalProduct = () => {
-  const [loading, error, products] = useProducts('total');
-  const [filters, filter, setFilter, filtered] = useFilter(products);
-  
-  if (loading) return <LoadingModal/>;
-  if (error) return <p>Error ...</p>;
+  const [loading, error, products, filters, filter, setFilter, filtered] = useProducts('total');
 
   return (
     <>

@@ -2,42 +2,30 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { getProductDetail } from '../../api/productApi';
 import style from './RecentlyViewed.module.css';
-import { useNavigate } from 'react-router-dom';
 
 const RecentlyViewed = () => {
   const [products, setProducts] = useState([]);
   const watchedProducts = JSON.parse(localStorage.getItem('watched'));
-  const navigate = useNavigate()
-
   useEffect(() => {
-    // if (watchedProducts) {
-    //   for (let product of watchedProducts) {
-    //     let details = getProductDetail(product);
-    //     details//
-    //     .then((data) => {
-    //       setProducts((curArr) => [data, ...curArr]);
-    //     });
-    //   }
+    // for(let i = 0; i < watchedProducts.length; i++) {
+    //   let details = getProductDetail(watchedProducts[i])
+    //   details.then((data) => {
+    //     setProducts((curArr)=>[data, ...curArr])
+    //   });
     // }
-
-      if(watchedProducts){
-        Promise.all(watchedProducts.map(async product =>{
-          return getProductDetail(product);
-        })).then((data)=>{
-          setProducts(data);
-        })
+    if (watchedProducts) {
+      for (let products of watchedProducts) {
+        let details = getProductDetail(products);
+        details.then((data) => {
+          setProducts((curArr) => [data, ...curArr]);
+        });
       }
-  }, [watchedProducts]);
-
-  const handleClick = (event) => {
-    navigate(`/products/${event.target.className}`)
-  }
+    }
+  }, []);
 
   return (
     <section className={style.recentlyViewed}>
-      <div className={style.title}>
-        <h1>최근 본 상품</h1>
-      </div>
+      <h1>최근 본 상품</h1>
       {products.length === 0 ? (
         <div className={style.products}>최근 본 상품이 없습니다</div>
       ) : (
@@ -45,7 +33,7 @@ const RecentlyViewed = () => {
           {products.map((product) => {
             return (
               <div key={product.id} className={style.product}>
-                <img src={product.photo} alt={product.title} className={product.id} onClick={handleClick}/>
+                <img src={product.photo} alt={product.title} />
                 <h3>{product.title}</h3>
               </div>
             );

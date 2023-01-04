@@ -1,7 +1,6 @@
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
-import Gnb from './components/gnb/Gnb';
-import RecentlyViewed from './components/recently-viewed/RecentlyViewed';
+import GNB from './components/gnb/GNB';
 import { Outlet } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -12,10 +11,9 @@ function App() {
   return (
     <>
       <Header />
-      <Gnb />
+      <GNB />
       <Outlet />
       <Footer />
-      <RecentlyViewed/>
       <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
