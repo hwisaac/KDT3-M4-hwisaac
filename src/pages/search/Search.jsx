@@ -40,37 +40,26 @@ const Search = () => {
     titleArr = title.split(' ');
     tag = TAGS.find((tag) => titleArr.includes(tag));
     findTitle = titleArr.find((t) => t !== tag);
-  } else if (!title.includes(' ') && tag) {
-    title = tag;
   }
 
-  // 구분해서 search data 넣기
+  const {
+    isLoading,
+    data: search,
+    refetch,
+  } = useQuery(['search'], () => {
+    if (findTitle && tag) return getSearch(findTitle, tag);
+    else if (tag) return getSearch('', tag);
+    else return getSearch(title);
+  });
+
   useEffect(() => {
-    if (findTitle && tag) {
-      const searchData = getSearch(findTitle, tag);
-      searchData.then((data) => {
-        setSearch(data);
-        setLoading(false);
-      });
-    } else if (!findTitle && tag) {
-      const searchData = getSearch('', tag);
-      searchData.then((data) => {
-        setSearch(data);
-        setLoading(false);
-      });
-    } else {
-      const searchData = getSearch(title);
-      searchData.then((data) => {
-        setSearch(data);
-        setLoading(false);
-      });
-    }
-  }, []);
+    refetch();
+  }, [title]);
 
   return (
     <div className={style.wrap}>
-      {loading ? (
-        ''
+      {isLoading ? (
+        <LoadingModal />
       ) : search.length === 0 ? (
         <p className={style.none}>입력하신 '{title}'에 대한 스토어 내 검색결과가 없습니다.</p>
       ) : (

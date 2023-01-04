@@ -1,10 +1,7 @@
 import { API_URL, ACCOUNT_URL, HEADERS, HEADERS_USER } from './commonApi';
-import { getCookie } from '../recoil/userInfo';
 
 // 계좌 조회 api
-const accessToken = getCookie('accessToken');
-
-export const getAccountInfo = async () => {
+export const getAccountInfo = async ({ accessToken }) => {
   try {
     const res = await fetch(ACCOUNT_URL, {
       method: 'GET',
@@ -19,7 +16,7 @@ export const getAccountInfo = async () => {
 };
 
 // 결제 함수
-export const getBuy = async (productId, accountId) => {
+export const getBuy = async (productId, accountId, accessToken) => {
   try {
     const res = await fetch(API_URL + 'products/buy', {
       method: 'POST',
@@ -29,6 +26,7 @@ export const getBuy = async (productId, accountId) => {
         accountId,
       }),
     });
+    console.log(res);
     return res;
   } catch (error) {
     console.error(error.message);

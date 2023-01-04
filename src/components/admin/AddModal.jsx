@@ -145,7 +145,7 @@ const AddModal = () => {
             <li className={style.files}>
               <div>
                 <span className={style.listName}>썸네일 </span>
-                <div class={style.fileContainer}>
+                <div className={style.fileContainer}>
                   <input
                     {...register('thumbnail', {
                       onChange: onChangeThumbnail,
@@ -162,7 +162,7 @@ const AddModal = () => {
                     accept="image/*"
                     id="add-thumbnail"
                   />
-                  <label for="add-thumbnail" class={style.findFile}>
+                  <label htmlFor="add-thumbnail" className={style.findFile}>
                     파일찾기
                   </label>
                   {thumbnailPreview === '' ? null : <img src={thumbnailPreview} className={style.preview} />}
@@ -172,7 +172,7 @@ const AddModal = () => {
               </div>
               <div>
                 <span className={style.listName}>사진 </span>
-                <div class={style.fileContainer}>
+                <div className={style.fileContainer}>
                   <input
                     {...register('photo', {
                       onChange: onChangePhoto,
@@ -189,7 +189,7 @@ const AddModal = () => {
                     accept="image/*"
                     id="add-photo"
                   />
-                  <label for="add-photo" class={style.findFile}>
+                  <label htmlFor="add-photo" className={style.findFile}>
                     파일찾기
                   </label>
                   {photoPreview === '' ? null : <img src={photoPreview} className={style.preview} />}

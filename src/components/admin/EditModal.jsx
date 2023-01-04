@@ -167,7 +167,7 @@ const EditModal = () => {
             <li className={style.files}>
               <div>
                 <span className={style.listName}>썸네일 </span>
-                <div class={style.fileContainer}>
+                <div className={style.fileContainer}>
                   <input
                     {...register('thumbnail', {
                       onChange: onChangeThumbnail,
@@ -184,18 +184,18 @@ const EditModal = () => {
                     accept="image/*"
                     id="edit-thumbnail"
                   />
-                  <label for="edit-thumbnail" class={style.findFile}>
+                  <label htmlFor="edit-thumbnail" className={style.findFile}>
                     파일찾기
                   </label>
                   {thumbnailPreview === '' ? null : <img src={thumbnailPreview} className={style.preview} />}
                 </div>
 
-                <span class={style.sizeError}>{errors?.thumbnail?.message}</span>
+                <span className={style.sizeError}>{errors?.thumbnail?.message}</span>
               </div>
 
               <div>
                 <span className={style.listName}>사진 </span>
-                <div class={style.fileContainer}>
+                <div className={style.fileContainer}>
                   <input
                     {...register('photo', {
                       onChange: onChangePhoto,
@@ -212,7 +212,7 @@ const EditModal = () => {
                     accept="image/*"
                     id="edit-photo"
                   />
-                  <label for="edit-photo" class={style.findFile}>
+                  <label for="edit-photo" className={style.findFile}>
                     파일찾기
                   </label>
                   {photoPreview === '' ? null : <img src={photoPreview} className={style.preview} />}

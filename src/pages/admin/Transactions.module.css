@@ -1,3 +1,6 @@
+.overview {
+  display: flex;
+  gap: 20px;
+}
 .transactionsList {
 }
-
