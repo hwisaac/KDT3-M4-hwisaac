@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import style from './TransactionCard.module.css';
 import { alternativeImg } from '../../recoil/userInfo';
 import { BsFillBagCheckFill } from 'react-icons/bs';
@@ -11,9 +11,11 @@ import { bank } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import bankI from '../../assets/image/sp_bankbi.png';
 import BankIcon from '../ui/bank-icon/BankIcon';
+import { editTransaction } from '../../api/productApi';
 
 function TransactionCard({ payload }) {
   const {
+    detailId,
     index = 0,
     done = true,
     isCanceled = true,
@@ -25,11 +27,43 @@ function TransactionCard({ payload }) {
     tableFooter,
   } = payload;
   const bankIcon = useRecoilValue(bank);
+  const pendingBtn = useRef();
+  const doneBtn = useRef();
+  const canceledBtn = useRef();
 
   const { accountNumber, bankCode, bankName } = { ...account };
   const { description, price, productId, tags, thumbnail, title } = { ...product };
   const { displayName, email, profileImg } = { ...user };
 
+  const toggleActive = (refBtn) => {
+    const target = refBtn.current;
+    if (target.classList.contains(style.active)) {
+      target.classList.remove(style.active);
+    } else {
+      target.classList.add(style.active);
+    }
+  };
+  const isActive = (refBtn) => {
+    const target = refBtn.current;
+    return target.classList.contains(style.active);
+  };
+
+  const onClickPending = () => {
+    editTransaction(detailId, { done: false, isCanceled: false });
+    toggleActive(pendingBtn);
+    doneBtn.current.classList.remove(style.active);
+    canceledBtn.current.classList.remove(style.active);
+  };
+  const onClickDone = () => {
+    editTransaction(detailId, { done: !isActive(doneBtn), isCanceled: isActive(canceledBtn) });
+    toggleActive(doneBtn);
+    pendingBtn.current.classList.remove(style.active);
+  };
+  const onClickCanceled = () => {
+    editTransaction(detailId, { done: isActive(doneBtn), isCanceled: !isActive(canceledBtn) });
+    toggleActive(canceledBtn);
+    pendingBtn.current.classList.remove(style.active);
+  };
   // console.log(payload);
 
   // (user) email, displayName,
@@ -65,6 +99,7 @@ function TransactionCard({ payload }) {
     <li className={style.card}>
       <div className={style.select}>
         <input type="checkbox" />
+        {index}
       </div>
       <div className={style.user}>
         <img className={style.profileImg} src={profileImg ? profileImg : alternativeImg} />
@@ -77,23 +112,32 @@ function TransactionCard({ payload }) {
         <span className={done ? style.done : null}>₩ {price.toLocaleString()}</span>
       </div>
       <div className={style.product}>
-        <span className={style.title}>{title}</span>
+        <span className={style.title}>
+          {title}
+          {detailId}
+        </span>
       </div>
       <div className={style.status}>
-        <div className={!(done || isCanceled) ? style.active : null}>
+        <div
+          name="pending"
+          className={!(done || isCanceled) ? style.active : null}
+          onClick={onClickPending}
+          ref={pendingBtn}
+        >
           <BiLoader className={style.pending} />
           Pending
         </div>
-        <div className={done ? style.active : null}>
+        <div name="done" className={done ? style.active : null} onClick={onClickDone} ref={doneBtn}>
           <BsFillBagCheckFill className={style.complete} />
           Done
         </div>
-        <div className={isCanceled ? style.active : null}>
+        <div name="canceled" className={isCanceled ? style.active : null} onClick={onClickCanceled} ref={canceledBtn}>
           <GiCancel className={style.cancel} />
           Canceled
         </div>
       </div>
       <div className={style.bank}>
+        <BankIcon bankCode={bankCode} scale={'25%'} className={style.bankIcon} />
         <BankIcon bankCode={bankCode} scale={'25%'} className={style.bankIcon} />
       </div>
       <div className={style.icons}>

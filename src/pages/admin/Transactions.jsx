@@ -11,59 +11,73 @@ import OverviewCard from './OverviewCard';
 import BankIcon from '../../components/ui/bank-icon/BankIcon';
 
 const Transactions = () => {
-  let tableFooter = false;
-  let tableHeader = false;
-  const getData = async () => {
-    return fetch('../data/mockUpTransactions.json', {
-      headers: {
-        Accept: 'application / json',
-      },
-    }).then((res) => {
-      const result = res.json();
-      return result;
-    });
-  };
+  const [totalTransactions, setTotalTransactions] = useState(0);
+  const [totalCanceled, setTotalCanceled] = useState(0);
+  const [totalDone, setTotalDone] = useState(0);
+  const [totalEarned, setTotalEarned] = useState(0);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
-  const { isLoading, data, refetch } = useQuery(['transactions'], () => getData());
+  const { isLoading, data, refetch } = useQuery(['transactions'], getTransactionsAll, {
+    onSuccess: async (data) => {
+      // 배송료 제외한 배열로
+      await setFilteredTransactions(data.filter((transaction) => transaction.product.title.trim() !== '배송비'));
+    },
+  });
+  useEffect(() => {
+    // compute overview Data
+    const numOfTransactions = filteredTransactions.length;
+    const numOfEarn = filteredTransactions
+      .map((transaction) => transaction.product.price)
+      .map(Number)
+      .reduce((sum, price) => sum + price, 0);
+    const numOfDone = filteredTransactions.filter((transaction) => transaction.done).length;
+    const numOfCanceled = filteredTransactions.filter((transaction) => transaction.isCanceled).length;
 
-  // useEffect(() => {
-  //   getData();
-  // }, []);
+    // overview 데이터 업데이트
+    setTotalTransactions(numOfTransactions);
+    setTotalEarned(numOfEarn);
+    setTotalDone(numOfDone);
+    setTotalCanceled(numOfCanceled);
+    console.log('총거래', numOfTransactions, '수익', numOfEarn, 'done', numOfDone, '취소', numOfCanceled);
+  }, [filteredTransactions]);
+
+  // console.log('거래내역', data);
 
   return (
     <>
+      {isLoading && <LoadingModal />}
       <div className={style.overview}>
-        <OverviewCard title={'Total transactions'} content={2420} />
-        <OverviewCard title={'Earned'} content={300000} />
-        <OverviewCard title={'Canceled'} content={100} />
-        <OverviewCard title={'Done'} content={30} />
+        <OverviewCard title={'Total transactions'} content={totalTransactions} />
+        <OverviewCard title={'Earned'} content={totalEarned} />
+        <OverviewCard title={'Canceled'} content={totalCanceled} />
+        <OverviewCard title={'Done'} content={totalDone} />
       </div>
 
       <ul className={style.transactionsList}>
         <TransactionCard
           payload={{
             tableHeader: true,
-            tableFooter,
+            tableFooter: false,
           }}
         />
         {!isLoading &&
-          data?.map((transaction, index) => {
+          filteredTransactions?.map((transaction, index) => {
             const { account, detailId, done, isCanceled, product, timePaid, user } = transaction;
 
             return (
               <TransactionCard
                 key={detailId}
                 payload={{
-                  account,
-                  detailId,
+                  index,
                   done,
                   isCanceled,
-                  product,
                   timePaid,
+                  product,
                   user,
-                  index,
-                  tableHeader,
-                  tableFooter,
+                  account,
+                  detailId,
+                  tableHeader: false,
+                  tableFooter: false,
                 }}
               />
             );
@@ -71,7 +85,7 @@ const Transactions = () => {
         <TransactionCard
           payload={{
             tableFooter: true,
-            tableHeader,
+            tableHeader: false,
           }}
         />
       </ul>
