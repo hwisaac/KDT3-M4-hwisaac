@@ -1,12 +1,16 @@
 import React from 'react';
 import style from './TotalProduct.module.css';
 import Product from './Product';
-import SortButton from '../button/SortButton';
-import useProducts from '../../hooks/use-products';
+import SortButton from '../ui/button/SortButton';
+import useProducts from '../../hooks/useProducts';
+import LoadingModal from '../ui/loading/LoadingModal';
+import useFilter from '../../hooks/useFilter';
 
 const TotalProduct = () => {
-  const [loading, error, products, filters, filter, setFilter, filtered] = useProducts('total');
-  if (loading) return <p>Loading...</p>;
+  const [loading, error, products] = useProducts('total');
+  const [filters, filter, setFilter, filtered] = useFilter(products);
+  
+  if (loading) return <LoadingModal/>;
   if (error) return <p>Error ...</p>;
 
   return (

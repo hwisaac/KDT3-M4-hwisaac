@@ -1,27 +1,18 @@
 import { useRecoilState } from 'recoil';
-import { authUrl, HEADERS_USER } from '../../data/API';
-import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../data/LoginData';
-import React, { useState, useEffect } from 'react';
+import { authUrl, HEADERS_USER } from '../../api/commonApi';
+import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
-import RecentlyViewed from '../recentlyViewed/RecentlyViewed';
+import { adminUser } from '../../api/adminUser';
+import UserMenu from '../ui/user-menu/UserMenu';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [isAdmin, setIsAdmin] = useState(false);
   const accessToken = getCookie('accessToken');
-  const [isHovering, setIsHovering] = useState(false);
-
-  useEffect(() => {
-    if (!accessToken) {
-      setIsLoggedIn(false);
-    }
-    if(userInfo.email === 'admin@admin.com'){
-      setIsAdmin(true);
-    }
-  }, []);
+  const { isAdmin } = userInfo;
 
   const onClick = async () => {
     try {
@@ -31,6 +22,7 @@ export default function Header() {
       });
       const json = await res.json();
       if (json) {
+        console.log(json);
         deleteCookie('accessToken');
         setIsLoggedIn(false);
         setUserInfo({
@@ -73,32 +65,26 @@ export default function Header() {
           <div className={style.util}>
             {isLoggedIn ? (
               <>
-                <Link to="/mypage" className={style.util_list}>
-                  마이페이지
-                </Link>
-                { isAdmin ? <Link to="/admin/products"> 관리자 페이지 </Link> : null}
-                <Link to="/mycart" className={style.util_list}>
-                  장바구니
-                </Link>
-                <Link to="/myKeepProducts" className={style.util_list}>
-                  찜한 상품
-                </Link>
-                <span className={style.util_list} onMouseOver={()=>{setIsHovering(true)}} onMouseOut={()=>{setIsHovering(false)}}>최근 본 상품</span>
-                {isHovering === true ? <RecentlyViewed/> : null}
+                {isAdmin && (
+                  <UserMenu text={'관리자 페이지'} link={"/admin/products"}/>
+                )}
+                <UserMenu text={'마이페이지'} link={"/mypage"}/>
+                <UserMenu text={'장바구니'} link={"/mycart"}/>
+                <UserMenu text={'찜한 상품'} link={"/myKeepProducts"}/>
                 <span className={style.util_list}>{userInfo.displayName}님</span>
-                <img src={userInfo.profileImg ? userInfo.profileImg : alternativeImg} className={style.image}></img>
+                <img
+                  src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
+                  className={style.image}
+                  alt="유저이미지"
+                ></img>
                 <span className={style.util_list} onClick={onClick}>
                   로그아웃
                 </span>
               </>
             ) : (
               <>
-                <Link to="/login" className={style.util_list}>
-                  로그인
-                </Link>
-                <Link to="/signup" className={style.util_list}>
-                  회원가입
-                </Link>
+                <UserMenu text={'로그인'} link={"/login"}/>
+                <UserMenu text={'회원가입'} link={"/signup"}/>
               </>
             )}
           </div>
@@ -115,7 +101,7 @@ export default function Header() {
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
           <form action="/search" className={style.form}>
-            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해보세요" />
+            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해주세요" />
             <BiSearch className={style.searchIcon} />
           </form>
         </div>

@@ -1,23 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import MyPage from './pages/MyPage';
-import MyCart from './pages/MyCart';
-import Home from './pages/Home';
-import LogIn from './components/login/LogIn';
-import SignUp from './components/signup/SignUp';
-import Slider from './components/kv/Slider';
-import ProductDetail from './pages/ProductDetail';
-import Category from './pages/Category';
-import Administrator from './pages/Admininstartor';
-import ProductManagement from './components/administrator/ProductManagement';
-import SalesDetails from './components/administrator/SalesDetails';
-import TransactionDetails from './components/administrator/TransactionDetails';
-import Search from './pages/Search';
-import MyBuy from './pages/MyBuy';
-import AddModal from './components/administrator/AddModal';
+import MyPage from './pages/my-page/MyPage';
+import MyCart from './pages/my-cart/MyCart';
+import Home from './pages/home/Home';
+import LogIn from './pages/login/LogIn';
+import SignUp from './pages/signup/SignUp';
+import ProductDetail from './pages/products/ProductDetail';
+import Category from './pages/category/Category';
+import Administrator from './pages/admin/Admininstartor';
+import ProductManagement from './pages/admin/ProductManagement';
+import SalesDetails from './pages/admin/SalesDetails';
+import Transactions from './pages/admin/Transactions';
+import Search from './pages/search/Search';
+import MyBuy from './pages/my-buy/MyBuy';
+import AddModal from './components/admin/AddModal';
 import ProtectedRoute from './pages/ProtectedRoute';
-import EditModal from './components/administrator/EditModal';
-import MyKeepProducts from './pages/MyKeepProducts';
+import EditModal from './components/admin/EditModal';
+import AddAccount from './components/my-page/AddAccount';
+import MyKeepProducts from './pages/my-keep-products/MyKeepProducts';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +35,12 @@ const router = createBrowserRouter([
             <MyPage />
           </ProtectedRoute>
         ),
+        children: [
+          {
+            path: 'addaccount',
+            element: <AddAccount />,
+          },
+        ],
       },
       {
         path: 'mycart',
@@ -63,10 +69,6 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUp />,
-      },
-      {
-        path: 'slider',
-        element: <Slider />,
       },
       {
         path: 'category/:tag',
@@ -112,7 +114,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'transactions',
-            element: <TransactionDetails />,
+            element: <Transactions />,
           },
         ],
       },

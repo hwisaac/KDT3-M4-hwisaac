@@ -1,15 +1,7 @@
 import React from 'react';
 import style from './ConfirmModal.module.css';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { AiFillCloseCircle, AiOutlineInfoCircle } from 'react-icons/ai';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { IoIosClose } from 'react-icons/io';
-import { addProduct, encodeImageFileAsURL } from '../../data/API';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useMutation } from '@tanstack/react-query';
-import { myAtom } from '../../data/atoms.js';
-import LoadingModal from '../loading/LoadingModal';
 
 /**
  * 질문을 던지고 확인or취소를 결정하는 모달창
