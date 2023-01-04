@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../recoil/userInfo';
 import { BsCartX } from 'react-icons/bs';
-import saveRecentViewed from './saveRecentViewed';
 
 const SHIPPING = 3000;
 export default function ProductDetail() {
@@ -30,7 +29,18 @@ export default function ProductDetail() {
 
   //최근 본 상품 로컬스토리지 저장 용도
   useEffect(() => {
-    saveRecentViewed(id)
+    if (localStorage.watched === undefined) {
+      localStorage.setItem('watched', JSON.stringify([]));
+    }
+
+    const watched = localStorage.getItem('watched');
+    const watchedArr = JSON.parse(watched);
+    watchedArr.unshift(id);
+    localStorage.setItem('watched', JSON.stringify(watchedArr));
+
+    const watchedSet = new Set(watchedArr);
+    const watchedProducts = [...watchedSet].slice(0, 8);
+    localStorage.setItem('watched', JSON.stringify(watchedProducts));
   }, []);
 
   const handleClickCart = (e) => {
@@ -79,5 +89,3 @@ export default function ProductDetail() {
     </section>
   );
 }
-
-
