@@ -4,10 +4,12 @@ import { getSearch } from '../../api/productApi';
 import { useSearchParams } from 'react-router-dom';
 import SearchItem from '../../components/search/SearchItem';
 import style from './Search.module.css';
+import useFilter from '../../hooks/useFilter';
 
-const Search = () => {
+const Search = () => {  
   const [search, setSearch] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilter, filtered] = useFilter(search)
 
   // location 의 ?s=title 가져오기
   let [searchParams, setSearchParams] = useSearchParams();
@@ -64,28 +66,6 @@ const Search = () => {
       });
     }
   }, []);
-
-  const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
-  const [filter, setFilter] = useState(filters[0]);
-  const filtered = getFilteredProducts(filter, search);
-
-  function getFilteredProducts(filter, search) {
-    if (filter === '정확도순') {
-      return search;
-    } else if (filter === '낮은 가격순') {
-      let copyLow = [...search];
-      copyLow.sort(function (a, b) {
-        return a.price - b.price;
-      });
-      return copyLow;
-    } else if (filter === '높은 가격순') {
-      let copyHigh = [...search];
-      copyHigh.sort(function (a, b) {
-        return b.price - a.price;
-      });
-      return copyHigh;
-    }
-  }
 
   return (
     <div className={style.wrap}>
