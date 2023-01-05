@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import style from './GnbDepth.module.css';
 import { useState } from 'react';
 
-const GnbDepth = ({ targetGnb, links, name }) => {
+const GnbDepth = ({ targetGnb, links }) => {
   const [selected, setSelected] = useState(null);
   const handleMouseOver = (i) => {
     //각 리스트 별로 출력해야하기 때문에
@@ -13,23 +13,23 @@ const GnbDepth = ({ targetGnb, links, name }) => {
     // console.log(i)
     setSelected(i);
   };
-  
+
   return (
     <>
       {links.subLink && links.mainLink === targetGnb ? (
         <ul className={style.twoDep} data-main={targetGnb}>
           {links.mainLink === targetGnb
             ? links.subLink &&
-              links.subLink.map((link, index) => {
+              links.subLink.map((link, i) => {
                 return (
                   <li
-                    key={index}
-                    className={selected === index ? style.selectedList : style.list}
+                    key={i}
+                    className={selected === i ? style.selectedList : style.list}
                     onMouseOver={() => {
-                      handleMouseOver(index);
+                      handleMouseOver(i);
                     }}
                   >
-                    <Link className={style.link} to={`/category/${link}`}>
+                    <Link className={style.link} to={`/category/${link}`} key={i}>
                       {link}
                     </Link>
                   </li>

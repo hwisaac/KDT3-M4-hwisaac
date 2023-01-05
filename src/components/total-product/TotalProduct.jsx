@@ -3,7 +3,7 @@ import style from './TotalProduct.module.css';
 import Product from './Product';
 import SortButton from '../ui/button/SortButton';
 import useProducts from '../../hooks/useProducts';
-import LoadingModal from '../ui/loading/LoadingModal';
+import LoadingModal from './../ui/loading/LoadingModal';
 import useFilter from '../../hooks/useFilter';
 
 const TotalProduct = () => {

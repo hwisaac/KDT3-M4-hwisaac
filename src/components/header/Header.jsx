@@ -1,7 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import style from './Header.module.css';
@@ -20,7 +19,6 @@ export default function Header() {
 
   //프레시멘토 로고를 홈화면에서만 보이도록 변경
   const { pathname } = useLocation();
-  console.log(pathname)
   useEffect(() => { 
     if(pathname != '/') {
       setHome(false)
@@ -29,7 +27,6 @@ export default function Header() {
       setHome(true)
     }
   }, [pathname])
-  console.log(home)
 
   const onClick = async () => {
     try {
@@ -81,10 +78,10 @@ export default function Header() {
           <div className={style.util}>
             {isLoggedIn ? (
               <>
+                <UserMenu text={'마이페이지'} link={"/mypage"}/>
                 {isAdmin && (
                   <UserMenu text={'관리자 페이지'} link={"/admin/products"}/>
                 )}
-                <UserMenu text={'마이페이지'} link={"/mypage"}/>
                 <UserMenu text={'장바구니'} link={"/mycart"}/>
                 <UserMenu text={'찜한 상품'} link={"/myKeepProducts"}/>
                 <span className={style.util_list}>{userInfo.displayName}님</span>
