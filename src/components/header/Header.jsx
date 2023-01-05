@@ -3,7 +3,7 @@ import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
 
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../api/adminUser';
@@ -14,8 +14,22 @@ import UserMenu from '../ui/user-menu/UserMenu';
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [home, setHome] = useState(true)
   const accessToken = getCookie('accessToken');
   const { isAdmin } = userInfo;
+
+  //프레시멘토 로고를 홈화면에서만 보이도록 변경
+  const { pathname } = useLocation();
+  console.log(pathname)
+  useEffect(() => { 
+    if(pathname != '/') {
+      setHome(false)
+    } 
+    if(pathname === '/') {
+      setHome(true)
+    }
+  }, [pathname])
+  console.log(home)
 
   const onClick = async () => {
     try {
@@ -116,14 +130,16 @@ export default function Header() {
           </form>
         </div>
       </div>
-      <div className={style.mainLogo}>
+      {
+       home ? (<div className={style.mainLogo}>
         <Link to="/">
           <img
             src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
             alt="FRESH MENTOR"
           />
         </Link>
-      </div>
+      </div>) : null
+      }
     </header>
   );
 }

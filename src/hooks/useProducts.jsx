@@ -29,5 +29,5 @@ export default function useProducts(sort) {
       .finally(() => setLoading(false));
   }, [tag]);
 
-  return [loading, error, products, tag, category];
+  return {loading, error, products, tag, category};
 }

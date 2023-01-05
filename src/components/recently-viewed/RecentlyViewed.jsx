@@ -20,13 +20,22 @@ const RecentlyViewed = () => {
     //   }
     // }
 
-      if(watchedProducts){
-        Promise.all(watchedProducts.map(async product =>{
-          return getProductDetail(product);
-        })).then((data)=>{
-          setProducts(data);
-        })
-      }
+    if(watchedProducts){
+      Promise.all(watchedProducts.map(async product =>{
+        return getProductDetail(product);
+      })).then((data)=>{
+        setProducts(data);
+      })
+    }
+
+  //   if(watchedProducts){
+  //     Promise.allSettled(watchedProducts.map(async product =>{
+  //       return getProductDetail(product);
+  //     })).then((data)=>{
+  //       console.log('data', data)
+  //       setProducts(data);
+  //     }).catch((error) => console.log(error))
+  //   }
   }, [watchedProducts]);
 
   const handleClick = (event) => {

@@ -56,11 +56,12 @@ const Search = () => {
     refetch();
   }, [title]);
 
-  const response = useFilter(search);
-  // console.log(response)
   // const [filters, filter, setFilter, filtered] = useFilter(search)
   // const {filters, filter, setFilter, filtered} = useFilter(search)
+  const response = useFilter(search);
+  // console.log('search', response)
   const {filters, filter, setFilter, filtered} = {...response}
+  // console.log(filtered)
 
   return (
     <div className={style.wrap}>
@@ -75,7 +76,7 @@ const Search = () => {
           </div>
           <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
           <ul>
-            {filtered.map((data) => (
+            {filtered?.map((data) => (
               <SearchItem
                 key={data.id}
                 id={data.id}

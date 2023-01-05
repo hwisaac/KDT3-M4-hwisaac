@@ -14,8 +14,11 @@ function getFilteredProducts (filter, products) {
 export default function useFilter (products) { 
   const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
   const [filter, setFilter] = useState(filters[0]);
-  if(!products) return undefined;
-  const filtered = getFilteredProducts(filter, products);
+  if(!products) {
+    console.log('products가 없습니다')
+    return 
+  }
+  const filtered = getFilteredProducts(filter, products)
 
   return {filters, filter, setFilter, filtered};
 }
