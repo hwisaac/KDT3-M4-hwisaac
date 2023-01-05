@@ -23,8 +23,6 @@ const MyBuy = () => {
   const products = buyProduct && buyProduct.length > 0 && buyProduct;
   const productIds = products && products.map((product) => product.productId);
 
-  console.log(buyProduct);
-
   // 모든 제품의 총 가격
   let productsPrice = 0;
   if (products) {

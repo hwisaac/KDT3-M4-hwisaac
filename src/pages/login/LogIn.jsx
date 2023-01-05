@@ -16,7 +16,6 @@ export function LogIn() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const { email, password } = inputs;
   const onChange = (event) => {
-    console.log(event.target);
     const { value, name } = event.target;
     setInputs({
       ...inputs,
@@ -25,7 +24,6 @@ export function LogIn() {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log(email);
     let json;
     try {
       const res = await fetch(`${authUrl}/login`, {

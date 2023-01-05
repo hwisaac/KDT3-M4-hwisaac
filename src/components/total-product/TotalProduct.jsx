@@ -4,9 +4,11 @@ import Product from './Product';
 import SortButton from '../ui/button/SortButton';
 import useProducts from '../../hooks/useProducts';
 import LoadingModal from './../ui/loading/LoadingModal';
+import useFilter from '../../hooks/useFilter';
 
 const TotalProduct = () => {
-  const [loading, error, products, filters, filter, setFilter, filtered] = useProducts('total');
+  const { loading, error, products } = useProducts('total');
+  const { filters, filter, setFilter, filtered } = useFilter(products);
 
   return (
     <>
@@ -19,7 +21,7 @@ const TotalProduct = () => {
           <h1 className={style.title}>프레시멘토 전체상품</h1>
           <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
           <ul className={style.product_wrap}>
-            {filtered.map((product) => (
+            {filtered?.map((product) => (
               <Product
                 key={product.id}
                 id={product.id}
