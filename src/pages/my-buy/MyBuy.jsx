@@ -10,16 +10,20 @@ import BuyItem from '../../components/my-buy/BuyItem';
 import Account from '../../components/my-buy/Account';
 import useCart from '../../hooks/useCart';
 import { getCookie } from './../../recoil/userInfo';
+import DeliveryForm from '../../components/my-buy/DeliveryForm';
+import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
+import LoadingModal from './../../components/ui/loading/LoadingModal';
 
 const MyBuy = () => {
-  const [loading, setLoading] = useState(true);
-
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
   const { state: buyProduct } = useLocation();
   const { removeItems } = useCart();
   const navigate = useNavigate();
   const products = buyProduct && buyProduct.length > 0 && buyProduct;
   const productIds = products && products.map((product) => product.productId);
+
+  console.log(buyProduct);
 
   // 모든 제품의 총 가격
   let productsPrice = 0;
@@ -35,35 +39,43 @@ const MyBuy = () => {
 
   /* 유저 정보 */
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const accessToken = getCookie('accessToken');
 
   /* 계좌 조회 */
-  const [accountData, setAccountData] = useState([]);
+  const { isLoading, data: AccountInfo } = useQuery(['account'], () => {
+    return getAccountInfo({ accessToken });
+  });
+
+  /* 계좌 버튼 클릭 시 계좌 id 넣어주기 */
   const [accountId, setAccountId] = useState('');
 
-  useEffect(() => {
-    const accessToken = getCookie('accessToken');
-
-    const account = getAccountInfo({ accessToken });
-    account.then((data) => {
-      setAccountData(data);
-      setLoading(false);
-    });
-  }, []);
-
-  // 계좌 버튼 클릭 시 계좌 id 넣어주기
   const onChange = (id) => {
     setAccountId(id);
   };
 
   /* 결제하기 클릭 시 결제 신청 */
-  // 배송비 id 초기화
+  // 배송지정보 form
+  const [errorStyle, setErrorStyle] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: fromError },
+    setValue,
+  } = useForm();
+
+  // 결제 신청
   let deliveryId = '';
 
-  const onClickBuy = async () => {
-    if (value === '') {
-      alert('배송지 정보가 비어있으니 입력 후 결제 바랍니다.');
-      return;
-    } else if (accountData.length === 0) {
+  const payload = {
+    title: '배송비',
+    price: 3000,
+    description: '배송비 추가',
+  };
+
+  const onValid = async (data) => {
+    /* 배송지정보에 있는 데이터를 보내고 싶으면 바로 위의 data 에서 가져다가 쓰면 됨 */
+    if (AccountInfo.accounts.length === 0) {
       alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.');
       navigate('/mypage');
       return;
@@ -72,45 +84,34 @@ const MyBuy = () => {
       return;
     }
 
-    const accessToken = getCookie('accessToken');
-
     // 결제 로직
-    if (products) {
-      for (let product of products) {
-        // 단일 상품 구매 시 개수 정보가 없기 때문에 1 로 설정
+    Promise.all(
+      products.map(async (product) => {
         let quantity = product.quantity || 1;
         while (quantity > 0) {
-          const response = await getBuy(product.productId || product.id, accountId, accessToken);
-          if (response.status !== 200) {
-            return (
-              alert('일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.'),
-              window.location.reload()
-            );
-          }
+          await getBuy(product.productId || product.id, accountId, accessToken);
           quantity--;
         }
-      }
-
-      // 배송비 결제
-      const payload = {
-        title: '배송비',
-        price: 3000,
-        description: '배송비 추가',
-      };
-      addProduct(payload).then(async (data) => {
-        deliveryId = data.id;
-        await getBuy(deliveryId, accountId, accessToken);
-        await deleteProduct(deliveryId);
-        alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
-        productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
+      }),
+    )
+      .then(() => {
+        addProduct(payload).then(async (data) => {
+          deliveryId = data.id;
+          await getBuy(deliveryId, accountId, accessToken);
+          await deleteProduct(deliveryId);
+          alert(`${(productsPrice + 3000).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+          productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
+        });
+      })
+      .catch(() => {
+        alert('일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.');
+        navigate('/');
       });
-    }
   };
 
-  // 배송지정보 form
-  const [value, setValue] = useState('');
-  const onChangeInput = (event) => {
-    setValue(event.target.value);
+  const onInvalid = () => {
+    setErrorStyle(true);
+    alert('배송지정보를 올바르게 입력해주세요');
   };
 
   return (
@@ -156,42 +157,7 @@ const MyBuy = () => {
           {/* 배송지정보, 주문자정보 */}
           <div className={style.forms}>
             {/* 배송지정보 */}
-            <div className={style.deliveryInfo}>
-              <h2>배송지정보</h2>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                <p>
-                  <span>수령인</span>
-                  <input
-                    onChange={onChangeInput}
-                    type="text"
-                    placeholder="50자 이내로 입력하세요"
-                    maxLength={50}
-                    required
-                  />
-                </p>
-                <p>
-                  <span>연락처</span>
-                  <input onChange={onChangeInput} type="text" placeholder="- 기호는 제외하고 입력해주세요" required />
-                </p>
-                <p>
-                  <span>배송지 주소</span>
-                  <input onChange={onChangeInput} type="text" required />
-                </p>
-                <p>
-                  <span>배송메모</span>
-                  <input
-                    onChange={onChangeInput}
-                    type="text"
-                    placeholder="30자 이내로 요청 사항을 입력해주세요"
-                    maxLength={30}
-                  />
-                </p>
-              </form>
-            </div>
+            <DeliveryForm register={register} fromError={fromError} errorStyle={errorStyle} setValue={setValue} />
             {/* 주문자정보 */}
             <div className={style.ordererInfo}>
               <h2>주문자 정보</h2>
@@ -212,21 +178,21 @@ const MyBuy = () => {
 
               <div className={style.accountInfos}>
                 <ul>
-                  {loading
-                    ? null
-                    : accountData?.length === 0
-                    ? null
-                    : accountData?.map((account) => (
-                        <Account
-                          key={account.id}
-                          id={account.id}
-                          bankName={account.bankName}
-                          balance={account.balance}
-                          accountNumber={account.accountNumber}
-                          productsPrice={productsPrice}
-                          onChange={onChange}
-                        />
-                      ))}
+                  {isLoading ? (
+                    <LoadingModal />
+                  ) : AccountInfo.accounts?.length === 0 ? null : (
+                    AccountInfo.accounts?.map((account) => (
+                      <Account
+                        key={account.id}
+                        id={account.id}
+                        bankName={account.bankName}
+                        balance={account.balance}
+                        accountNumber={account.accountNumber}
+                        productsPrice={productsPrice}
+                        onChange={onChange}
+                      />
+                    ))
+                  )}
                   {/* 계좌 연결 X */}
                   <li className={style.accountInfoNone}>
                     <Link
@@ -244,6 +210,7 @@ const MyBuy = () => {
                 </ul>
               </div>
             </div>
+
             {/* 결제상세 */}
             <div className={style.payDetail}>
               <h2>결제상세</h2>
@@ -262,7 +229,9 @@ const MyBuy = () => {
 
         {/* 결제하기 */}
         <div className={style.payBtn}>
-          <button onClick={onClickBuy}>결제하기</button>
+          <button type="submit" onClick={handleSubmit(onValid, onInvalid)}>
+            결제하기
+          </button>
         </div>
       </div>
     </div>

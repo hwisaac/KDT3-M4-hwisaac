@@ -7,7 +7,7 @@ import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../api/adminUser';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -127,6 +127,7 @@ export default function Header() {
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
 
+          {/* 검색 */}
           <form onSubmit={handleSubmit(onValid, onInvalid)} className={style.form}>
             <input
               {...register('search', {

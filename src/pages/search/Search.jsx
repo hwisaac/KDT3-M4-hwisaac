@@ -12,6 +12,7 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const title = searchParams.get('q');
 
+  // 태그 탐색을 위한 태그데이터
   const TAGS = [
     '농산물',
     '과일',
@@ -39,20 +40,30 @@ const Search = () => {
     findTitle = titleArr.find((t) => t !== tag);
   }
 
+  // api 호출
   const {
     isLoading,
     data: search,
     refetch,
-  } = useQuery(['search'], () => {
-    if (findTitle && tag) return getSearch(findTitle, tag);
-    else if (tag) return getSearch('', tag);
-    else return getSearch(title);
-  });
+  } = useQuery(
+    ['search'],
+    () => {
+      if (findTitle && tag) return getSearch(findTitle, tag);
+      else if (tag) return getSearch('', tag);
+      else return getSearch(title);
+    },
+    {
+      onError: () => {
+        alert('현재 검색을 이용할 수 없으니 문의 바랍니다.');
+      },
+    },
+  );
 
   useEffect(() => {
     refetch();
   }, [title]);
 
+  /* 정렬 */
   const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
   const [filter, setFilter] = useState(filters[0]);
   const filtered = getFilteredProducts(filter, search);

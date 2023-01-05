@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getProducts, getCategorizedProducts } from './../api/productApi';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 export default function useProducts(sort) {
   const [loading, setLoading] = useState(false);
