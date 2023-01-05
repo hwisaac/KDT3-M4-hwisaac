@@ -7,13 +7,8 @@ import LoadingModal from './../ui/loading/LoadingModal';
 import useFilter from '../../hooks/useFilter';
 
 const TotalProduct = () => {
-  const {loading, error, products} = useProducts('total');
-  const {filters, filter, setFilter, filtered} = useFilter(products);
-  // const response = useFilter(products);
-  // console.log('total products', response)
-  
-  if (loading) return <LoadingModal/>;
-  if (error) return <p>Error ...</p>;
+  const { loading, error, products } = useProducts('total');
+  const { filters, filter, setFilter, filtered } = useFilter(products);
 
   return (
     <>

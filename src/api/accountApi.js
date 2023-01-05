@@ -1,4 +1,5 @@
 import { API_URL, ACCOUNT_URL, HEADERS, HEADERS_USER } from './commonApi';
+import { getCookie } from './../recoil/userInfo';
 
 // 계좌 조회 api
 export const getAccountInfo = async ({ accessToken }) => {
@@ -7,9 +8,26 @@ export const getAccountInfo = async ({ accessToken }) => {
       method: 'GET',
       headers: { ...HEADERS_USER, Authorization: accessToken },
     });
-    const { accounts } = await res.json();
+    const json = await res.json();
 
-    return accounts;
+    return json;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+// test
+const accessToken = getCookie('accessToken');
+
+export const getAccountInfo2 = async () => {
+  try {
+    const res = await fetch(ACCOUNT_URL, {
+      method: 'GET',
+      headers: { ...HEADERS_USER, Authorization: accessToken },
+    });
+    const json = await res.json();
+
+    return json;
   } catch (error) {
     console.error(error.message);
   }
