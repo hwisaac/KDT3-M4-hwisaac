@@ -1,11 +1,13 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getSearch } from '../../api/productApi';
 import { useSearchParams } from 'react-router-dom';
 import SearchItem from '../../components/search/SearchItem';
 import style from './Search.module.css';
 import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
+import useFilter from '../../hooks/useFilter';
+import SortButton from '../../components/ui/button/SortButton';
 
 const Search = () => {
   // 쿼리 값 가져오기
@@ -49,31 +51,17 @@ const Search = () => {
     else return getSearch(title);
   });
 
+
   useEffect(() => {
     refetch();
   }, [title]);
 
-  const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
-  const [filter, setFilter] = useState(filters[0]);
-  const filtered = getFilteredProducts(filter, search);
-
-  function getFilteredProducts(filter, search) {
-    if (filter === '정확도순') {
-      return search;
-    } else if (filter === '낮은 가격순') {
-      let copyLow = [...search];
-      copyLow.sort(function (a, b) {
-        return a.price - b.price;
-      });
-      return copyLow;
-    } else if (filter === '높은 가격순') {
-      let copyHigh = [...search];
-      copyHigh.sort(function (a, b) {
-        return b.price - a.price;
-      });
-      return copyHigh;
-    }
-  }
+  // const [filters, filter, setFilter, filtered] = useFilter(search)
+  // const {filters, filter, setFilter, filtered} = useFilter(search)
+  const response = useFilter(search);
+  // console.log('search', response)
+  const {filters, filter, setFilter, filtered} = {...response}
+  // console.log(filtered)
 
   return (
     <div className={style.wrap}>
@@ -86,17 +74,9 @@ const Search = () => {
           <div className={style.head}>
             <h1>{title}</h1> <span>검색 결과(총 {search.length}개)</span>
           </div>
-          <ul className={style.btns}>
-            {filters.map((filter, index) => {
-              return (
-                <li className={style.btn_wrap} key={index}>
-                  <button onClick={() => setFilter(filter)}>{filter}</button>
-                </li>
-              );
-            })}
-          </ul>
+          <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
           <ul>
-            {filtered.map((data) => (
+            {filtered?.map((data) => (
               <SearchItem
                 key={data.id}
                 id={data.id}

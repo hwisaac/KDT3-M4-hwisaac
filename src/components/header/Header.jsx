@@ -2,20 +2,31 @@ import { useRecoilState } from 'recoil';
 import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../api/adminUser';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
 import { useFieldArray, useForm } from 'react-hook-form';
+import UserMenu from '../ui/user-menu/UserMenu';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [home, setHome] = useState(true)
   const accessToken = getCookie('accessToken');
   const { isAdmin } = userInfo;
 
-  const [isHovering, setIsHovering] = useState(false);
+  //프레시멘토 로고를 홈화면에서만 보이도록 변경
+  const { pathname } = useLocation();
+  useEffect(() => { 
+    if(pathname != '/') {
+      setHome(false)
+    } 
+    if(pathname === '/') {
+      setHome(true)
+    }
+  }, [pathname])
 
   const onClick = async () => {
     try {
@@ -67,32 +78,12 @@ export default function Header() {
           <div className={style.util}>
             {isLoggedIn ? (
               <>
-                <Link to="/mypage" className={style.util_list}>
-                  마이페이지
-                </Link>
+                <UserMenu text={'마이페이지'} link={"/mypage"}/>
                 {isAdmin && (
-                  <Link to="/admin/products" className={style.util_list}>
-                    관리자 페이지
-                  </Link>
+                  <UserMenu text={'관리자 페이지'} link={"/admin/products"}/>
                 )}
-                <Link to="/mycart" className={style.util_list}>
-                  장바구니
-                </Link>
-                <Link to="/myKeepProducts" className={style.util_list}>
-                  찜한 상품
-                </Link>
-                <span
-                  className={style.util_list}
-                  onMouseOver={() => {
-                    setIsHovering(true);
-                  }}
-                  onMouseOut={() => {
-                    setIsHovering(false);
-                  }}
-                >
-                  최근 본 상품
-                </span>
-                {isHovering === true ? <RecentlyViewed /> : null}
+                <UserMenu text={'장바구니'} link={"/mycart"}/>
+                <UserMenu text={'찜한 상품'} link={"/myKeepProducts"}/>
                 <span className={style.util_list}>{userInfo.displayName}님</span>
                 <img
                   src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
@@ -105,12 +96,8 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link to="/login" className={style.util_list}>
-                  로그인
-                </Link>
-                <Link to="/signup" className={style.util_list}>
-                  회원가입
-                </Link>
+                <UserMenu text={'로그인'} link={"/login"}/>
+                <UserMenu text={'회원가입'} link={"/signup"}/>
               </>
             )}
           </div>
@@ -140,14 +127,16 @@ export default function Header() {
           </form>
         </div>
       </div>
-      <div className={style.mainLogo}>
+      {
+       home ? (<div className={style.mainLogo}>
         <Link to="/">
           <img
             src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
             alt="FRESH MENTOR"
           />
         </Link>
-      </div>
+      </div>) : null
+      }
     </header>
   );
 }
