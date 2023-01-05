@@ -197,31 +197,23 @@ var getDataUri = function (targetUrl, callback) {
 //   });
 // };
 
-export async function getTransactionsAll() {
+export const getTransactionsAll = async () => {
   const res = await fetch(API_URL + 'products/transactions/all', {
     method: 'GET',
     headers: HEADERS,
   });
-  return new Promise(async (resolve, reject) => {
-    // await deleteAll();
-    // for (let i = 0; i < originProducts.length; i++) {
-    //   const { title, price, tags, description, detail_url, thumbnail } = originProducts[i];
-    // getBase64FromUrl(thumbnail).then((a) => {
-    //   console.log(a);
-    // });
-    // toDataURL(proxyUrl + thumbnail, function (dataUrl) {
-    //   console.log('RESULT:', dataUrl);
-    // });
-    // toDataURL(proxyUrl + thumbnail).then((dataUrl) => {
-    //   console.log('RESULT:', dataUrl);
-    // });
-    // const thumbnailBase64 = await toDataURL(thumbnail).then((dataUrl) => {
-    //   console.log('RESULT:', dataUrl);
-    // });
-    // addProduct({ title, price, description, tags, thumbnailBase64, photoBase64 });
-    // toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0').then((dataUrl) => {
-    //   console.log('RESULT:', dataUrl);
-    // });
-    // }
+  const json = await res.json();
+  return json;
+};
+
+export const editTransaction = async (detailId, { isCanceled, done }) => {
+  console.log(detailId);
+  console.log({ isCanceled, done });
+  const res = await fetch(API_URL + `products/transactions/${detailId}`, {
+    method: 'PUT',
+    headers: HEADERS,
+    body: JSON.stringify({ isCanceled, done }),
   });
-}
+  const json = await res.json();
+  console.log(json);
+};
