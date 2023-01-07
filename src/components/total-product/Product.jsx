@@ -1,18 +1,14 @@
 import React from 'react';
 import style from './Product.module.css';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Product = ({ id, title, img, price, soldOut }) => {
   const [heart, setHeart] = useState(false);
-  const navigate = useNavigate();
-  function onClick() {
-    setHeart((cur) => !cur);
-  }
-  
-  function onClickDetail() {
-    navigate(`/products/${id}`, { state: { id, title, img, price, soldOut } });
-  }
+
+  const onClickHeart = () => {
+    setHeart((prev) => !prev);
+  };
 
   return (
     <li className={style.wrap}>
@@ -22,7 +18,7 @@ const Product = ({ id, title, img, price, soldOut }) => {
       </Link>
       <div className={style.btns}>
         {soldOut ? null : (
-          <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
+          <button onClick={onClickHeart} className={heart ? style.btnHeartBig_red : style.btnHeartBig}>
             찜
           </button>
         )}
@@ -32,7 +28,7 @@ const Product = ({ id, title, img, price, soldOut }) => {
           <p className={style.title}>{title}</p>
         </Link>
 
-        <button onClick={onClick} className={heart ? style.heart__red : style.heart}>
+        <button onClick={onClickHeart} className={heart ? style.btnHeartSmall_red : style.btnHeartSmall}>
           찜
         </button>
 

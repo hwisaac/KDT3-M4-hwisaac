@@ -1,0 +1,52 @@
+.deliveryInfo {
+  padding: 40px;
+  width: 75%;
+}
+.deliveryInfo h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.deliveryInfo p {
+  margin-bottom: 20px;
+}
+.deliveryInfo span {
+  display: inline-block;
+  width: 110px;
+  font-size: 14px;
+}
+.deliveryInfo input {
+  padding: 0 10px;
+  margin-right: 1px;
+  border: 1px solid #e5e5e5;
+  width: 300px;
+  height: 28px;
+  vertical-align: middle;
+  line-height: 28px;
+}
+.deliveryInfo input[type='number']::-webkit-outer-spin-button,
+.deliveryInfo input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+/* 파이어폭스 */
+.deliveryInfo input[type='number'] {
+  -moz-appearance: textfield;
+}
+.deliveryInfo input::placeholder {
+  color: rgb(170, 170, 170);
+}
+
+.error {
+  display: none;
+  margin-left: 10px;
+  color: red;
+  font-size: 13px;
+}
+.setError {
+  display: inline-block;
+  margin-left: 10px;
+  color: red;
+  font-size: 13px;
+}

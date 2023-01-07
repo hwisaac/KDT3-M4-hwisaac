@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getProducts } from '../../api/productApi';
 import ProductCard from '../../components/admin/ProductCard';
 import { Outlet, Link, useMatch } from 'react-router-dom';
-import { AiOutlineProject, AiOutlineSchedule } from 'react-icons/ai';
+import { AiOutlineProject, AiOutlineSchedule, AiOutlineBarChart } from 'react-icons/ai';
 
 export default function Administrator() {
   const matchProducts = useMatch('/admin/products');
@@ -16,7 +16,7 @@ export default function Administrator() {
         <ul className={style.nav}>
           <Link to="products">
             <li className={matchProducts && style.focus}>
-              <AiOutlineSchedule />
+              <AiOutlineSchedule className={style.icon} />
               상품 관리
             </li>
           </Link>
@@ -28,7 +28,10 @@ export default function Administrator() {
             </li>
           </Link> */}
           <Link to="transactions">
-            <li className={matchSales && style.focus}>transact</li>
+            <li className={matchSales && style.focus}>
+              <AiOutlineBarChart className={style.icon} />
+              거래내역
+            </li>
           </Link>
         </ul>
         <Outlet />

@@ -8,7 +8,7 @@
     },
     "product": {
       "productId": "n8bfMC0YQTIXCBHwUplS",
-      "title": "바삭한 수제 김부각 통부각 한입부각",
+      "title": "바삭한 수제 김부각 통부각 한입부각 바삭한 수제 김부각 통부각 한입부각 바삭한 수제 김부각 통부각 한입부각 바삭한 수제 김부각 통부각 한입부각 바삭한 수제 김부각 통부각 한입부각 ",
       "price": 1990,
       "description": "깨끗하게 만들어 더욱 맛있는 김부각 보고가세요! 정성가득 온가족 영양간식 바삭한 수제 통부각 한입부각 왼쪽 - 통째로 김부각 / 오른쪽 - 한입쏙 김부각 01 배송 안내 평일 오전",
       "tags": ["가공식품", "반찬"],
@@ -22,7 +22,7 @@
     "reservation": null,
     "timePaid": "2022-12-20T12:10:19.215Z",
     "isCanceled": true,
-    "done": false
+    "done": true
   },
   {
     "detailId": "0ItNX9gwuM8SNO8WzSVx",
@@ -72,7 +72,7 @@
     "reservation": null,
     "timePaid": "2022-12-22T05:47:54.735Z",
     "isCanceled": false,
-    "done": false
+    "done": true
   },
   {
     "detailId": "0ShqQmG3QVy7YX0oI8Pk",
@@ -172,7 +172,7 @@
     "reservation": null,
     "timePaid": "2022-12-21T17:01:55.719Z",
     "isCanceled": false,
-    "done": false
+    "done": true
   },
   {
     "detailId": "101e32ToYWSWiV8gQU3D",

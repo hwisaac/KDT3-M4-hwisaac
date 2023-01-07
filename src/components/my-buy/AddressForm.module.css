@@ -1,0 +1,40 @@
+.deliveryForm {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.deliveryForm .post {
+  width: 80px;
+  margin-right: 10px;
+}
+
+.btn {
+  padding: 5px 10px;
+  background-color: #6b90dc;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.address {
+  display: flex;
+}
+.address input {
+  width: 200px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.error {
+  display: none;
+  margin-left: 10px;
+  color: red;
+  font-size: 13px;
+}
+.setError {
+  display: inline-block;
+  margin-left: 10px;
+  color: red;
+  font-size: 13px;
+}

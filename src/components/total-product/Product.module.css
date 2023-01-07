@@ -44,7 +44,7 @@
   pointer-events: visible;
 }
 
-.btn_heart {
+.btnHeartBig {
   outline: none;
   border: none;
   background-image: url('../../assets/image/spSs_icon_svg.svg');
@@ -58,7 +58,7 @@
   margin-right: 20px;
   cursor: pointer;
 }
-.btn_heart__red {
+.btnHeartBig_red {
   outline: none;
   border: none;
   background-image: url('../../assets/image/spSs_icon_svg.svg');
@@ -89,7 +89,7 @@
   padding-bottom: 1px;
   border-bottom: 1px solid transparent;
 }
-.heart {
+.btnHeartSmall {
   position: absolute;
   top: 2px;
   right: 0;
@@ -103,7 +103,7 @@
   cursor: pointer;
   z-index: 10;
 }
-.heart__red {
+.btnHeartSmall_red {
   background-image: url(../../assets/image/icon_heart_15x13_red.7c83f183.svg);
   position: absolute;
   top: 2px;
