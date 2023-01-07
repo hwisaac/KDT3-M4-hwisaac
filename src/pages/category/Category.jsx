@@ -5,7 +5,7 @@ import SortButton from '../../components/ui/button/SortButton';
 import useProducts from '../../hooks/useProducts';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 
-export default function Category() {
+export const Category = () => {
   const [loading, error, products, filters, filter, setFilter, filtered, tag] = useProducts('category');
 
   if (loading) return <LoadingModal />;
@@ -16,9 +16,17 @@ export default function Category() {
       <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
       <ul className={style.product_wrap}>
         {filtered.map((product) => (
-          <Product id={product.id} title={product.title} img={product.thumbnail} price={product.price} />
+          <Product
+            key={product.id}
+            id={product.id}
+            title={product.title}
+            img={product.thumbnail}
+            price={product.price}
+            soldOut={product.isSoldOut}
+          />
         ))}
       </ul>
     </main>
   );
-}
+};
+export default Category;

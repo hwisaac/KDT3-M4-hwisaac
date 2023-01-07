@@ -13,7 +13,6 @@ export default function Header() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const accessToken = getCookie('accessToken');
   const { isAdmin } = userInfo;
-
   const [isHovering, setIsHovering] = useState(false);
 
   const onClick = async () => {

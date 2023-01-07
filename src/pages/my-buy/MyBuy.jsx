@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { addProduct, deleteProduct } from '../../api/productApi';
 import { getBuy, getAccountInfo } from '../../api/accountApi';
-import { userInfoState } from '../../recoil/userInfo';
+import { getCookie, userInfoState } from '../../recoil/userInfo';
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import style from './MyBuy.module.css';
@@ -40,6 +40,7 @@ const MyBuy = () => {
   /* 계좌 조회 */
   const [accountData, setAccountData] = useState([]);
   const [accountId, setAccountId] = useState('');
+  const accessToken = getCookie('accessToken');
 
   useEffect(() => {
     getAccountInfo().then((data) => {
@@ -68,9 +69,9 @@ const MyBuy = () => {
     // 장바구니 결제
     if (products) {
       for (let product of products) {
-        let quantity = product.quantity;
+        let quantity = product.quantity || 1;
         while (quantity > 0) {
-          const response = await getBuy(product.productId, accountId);
+          const response = await getBuy(product.productId, accountId, accessToken);
           if (response.status !== 200) {
             return (
               alert('일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.'),
@@ -89,12 +90,13 @@ const MyBuy = () => {
       };
       addProduct(payload).then(async (data) => {
         deliveryId = data.id;
-        await getBuy(deliveryId, accountId);
+        await getBuy(deliveryId, accountId, accessToken);
         await deleteProduct(deliveryId);
         alert(`${(productsPrice + data.price).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
         // window.location = '/';
         // 장바구니 제품 삭제
         // navigate('/');
+
         productIds.map(async (id) => removeItems.mutate(id));
       });
     }
@@ -205,7 +207,7 @@ const MyBuy = () => {
 
               <div className={style.accountInfos}>
                 <ul>
-                  {accountData.length === 0
+                  {accountData?.length === 0
                     ? null
                     : accountData.map((account) => (
                         <Account

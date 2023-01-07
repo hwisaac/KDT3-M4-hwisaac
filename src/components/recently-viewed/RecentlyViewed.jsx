@@ -13,15 +13,28 @@ const RecentlyViewed = () => {
     //     setProducts((curArr)=>[data, ...curArr])
     //   });
     // }
+
+    // const a = async () => {
+    //   for (let products of watchedProducts) {
+    //     const data = await getProductDetail(products);
+    //     console.log(data);
+    //     setProducts((curArr) => [data, ...curArr]);
+    //   }
+    // };
+    // a();
+
     if (watchedProducts) {
-      for (let products of watchedProducts) {
-        let details = getProductDetail(products);
+      for (let product of watchedProducts) {
+        let details = getProductDetail(product);
+
         details.then((data) => {
+          console.log(data);
           setProducts((curArr) => [data, ...curArr]);
         });
       }
     }
   }, []);
+  console.log(products);
 
   return (
     <section className={style.recentlyViewed}>
