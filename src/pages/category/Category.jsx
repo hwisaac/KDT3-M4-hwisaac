@@ -24,6 +24,7 @@ export default function Category() {
             title={product.title}
             img={product.thumbnail}
             price={product.price}
+            soldOut={product.isSoldOut}
           />
         ))}
       </ul>

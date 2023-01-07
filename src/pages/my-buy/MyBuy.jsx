@@ -9,7 +9,6 @@ import style from './MyBuy.module.css';
 import BuyItem from '../../components/my-buy/BuyItem';
 import Account from '../../components/my-buy/Account';
 import useCart from '../../hooks/useCart';
-import { getCookie } from './../../recoil/userInfo';
 import DeliveryForm from '../../components/my-buy/DeliveryForm';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
