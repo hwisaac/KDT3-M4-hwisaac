@@ -41,13 +41,13 @@ export default function MyCart() {
   const isAllChecked = isChecked === products.length;
 
   const handleToBuy = () => {
-    const buyItem = products.filter((product) => product.isChecked === true && !product.isSoldOut);
-    if (buyItem.length === 0) {
+    const buyProduct = products.filter((product) => product.isChecked === true && !product.isSoldOut);
+    if (buyProduct.length === 0) {
       alert('주문하실 상품을 선택해 주세요.');
     } else if (soldOutItem > 0) {
       alert('품절된 상품은 구매가 불가능합니다.');
     } else {
-      navigate('/mybuy', { state: buyItem });
+      navigate('/mybuy', { state: buyProduct });
     }
   };
   const handleSelectDeleteClick = () => {

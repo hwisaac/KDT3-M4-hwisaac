@@ -31,7 +31,7 @@
   color: gray;
   line-height: 20px;
 }
-.btn_heart {
+.btnHeart {
   outline: none;
   border: none;
   background-image: url('../../assets/image/spSs_icon_svg.svg');
@@ -45,7 +45,7 @@
   margin-right: 20px;
   cursor: pointer;
 }
-.btn_heart__red {
+.btnHeart_red {
   outline: none;
   border: none;
   background-image: url('../../assets/image/spSs_icon_svg.svg');
