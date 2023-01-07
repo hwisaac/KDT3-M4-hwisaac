@@ -44,22 +44,14 @@ const Search = () => {
   const {
     isLoading,
     data: search,
-    refetch,
-  } = useQuery(['search'], () => {
+  } = useQuery([`${title}`], () => {
     if (findTitle && tag) return getSearch(findTitle, tag);
     else if (tag) return getSearch('', tag);
     else return getSearch(title);
   });
 
-
-  useEffect(() => {
-    refetch();
-  }, [title]);
-
-  // const [filters, filter, setFilter, filtered] = useFilter(search)
   // const {filters, filter, setFilter, filtered} = useFilter(search)
   const response = useFilter(search);
-  // console.log('search', response)
   const {filters, filter, setFilter, filtered} = {...response}
   // console.log(filtered)
 
