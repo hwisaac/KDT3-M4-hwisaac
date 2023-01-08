@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import style from './CheckBoxSecond.module.css';
 
-const CheckBox = ({ id }) => {
+const CheckBoxSecond = ({ id }) => {
   const [checked, setChecked] = useState(false);
   const onChange = () => {
     setChecked((prev) => !prev);
@@ -13,4 +13,4 @@ const CheckBox = ({ id }) => {
     </label>
   );
 };
-export default CheckBox;
+export default CheckBoxSecond;
