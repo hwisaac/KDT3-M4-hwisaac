@@ -85,7 +85,7 @@ const ProductCard = ({ key, payload }) => {
     <li className={style.card}>
       <div className={style.select}>
         {/* <input type="checkbox" /> */}
-        <CheckBoxSecond />
+        <CheckBoxSecond id={id} />
       </div>
       <div className={style.price}>
         <span className={!isSoldOut ? style.done : null}>₩ {price.toLocaleString()}</span>
