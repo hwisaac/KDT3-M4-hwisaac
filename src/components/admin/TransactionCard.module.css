@@ -16,10 +16,12 @@
   background-color: #f9fbfc;
   color: #7a808c;
   padding: 13px 15px;
+  align-items: center;
 }
 .tableFooter {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   color: #7a808c;
   font-size: 14px;
   border-bottom-left-radius: 10px;

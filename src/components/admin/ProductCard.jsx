@@ -8,21 +8,29 @@ import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { myAtom } from '../../recoil/atoms';
 import LoadingModal from '../ui/loading/LoadingModal';
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import CheckBox from '../ui/check-box/CheckBox';
+import CheckBoxSecond from '../ui/check-box/CheckBoxSecond';
 
-const ProductCard = ({
-  index,
-  id,
-  title,
-  price,
-  description,
-  tags,
-  isSoldOut,
-  thumbnail,
-  assignCheckList,
-  checkList,
-  selectAll,
-  isC,
-}) => {
+import { GiCancel } from 'react-icons/gi';
+
+const ProductCard = ({ key, payload }) => {
+  const {
+    index,
+    id,
+    title,
+    price,
+    description,
+    tags,
+    isSoldOut,
+    thumbnail,
+    assignCheckList,
+    checkList,
+    selectAll,
+    isCanceled,
+    tableHeader,
+    tableFooter,
+  } = payload;
   const atom = useRecoilValue(myAtom);
   const removeProduct = useMutation((id) => deleteProduct(id), {
     // 성공하면 닫고 데이터 refetch
@@ -30,6 +38,7 @@ const ProductCard = ({
       atom.myFn(); // refetch 함수
     },
   });
+  console.log('assignCheckList함수: ', typeof assignCheckList);
   const handleChange = (event) => {
     setChecked((prev) => !prev);
     assignCheckList(id, event.currentTarget.checked);
@@ -40,38 +49,68 @@ const ProductCard = ({
   // 전체박스 체크유무에 의존한 체킹
   useEffect(() => {
     setChecked(selectAll);
-    assignCheckList(id, selectAll);
+    // console.log('id와 selectAll', id, selectAll);
+    // TODO: 체크박스로 모두 선택하는 기능
+    // assignCheckList(id, selectAll);
   }, [selectAll]);
 
+  // 헤더인 경우
+  if (tableHeader) {
+    return (
+      <li className={[style.card, style.tableHeader].join(' ')}>
+        <div>
+          <CheckBox id={'masterCheckBox'} />
+        </div>
+        <div>Price</div>
+        <div>Product</div>
+        {/* <div>Tags</div> */}
+        <div>Sold Out</div>
+
+        <div>Edit / Delete</div>
+      </li>
+    );
+  }
+  // 푸터인 경우
+  if (tableFooter) {
+    return (
+      <li className={[style.card, style.tableFooter].join(' ')}>
+        <div className={style.btn}>Previous</div>
+        <div>Page 1 of 10</div>
+        <div className={style.btn}>Next</div>
+      </li>
+    );
+  }
+
   return (
-    <li className={`${style.item} ${checked ? style.checked : null}`}>
-      {removeProduct.isLoading ? <LoadingModal /> : null}
-      {isSoldOut ? <div className={`${style.soldOut}`}></div> : null}
-      <div className={style.left}>
-        <input type="checkbox" onChange={handleChange} checked={checked} />
-        <span className={style.index}>{index + 1}</span>
-        {thumbnail ? (
-          <img className={style.thumbnail} src={thumbnail} alt={title} />
-        ) : (
-          <MdHideImage className={style.noThumbnail} />
-        )}
-        <p className={style.title}>
-          {title}
+    <li className={style.card}>
+      <div className={style.select}>
+        {/* <input type="checkbox" /> */}
+        <CheckBoxSecond />
+      </div>
+      <div className={style.price}>
+        <span className={!isSoldOut ? style.done : null}>₩ {price.toLocaleString()}</span>
+      </div>
+      <div className={style.product}>
+        <img src={thumbnail} alt="" className={style.thumbnail} />
+        <div className={style.texts}>
           <span className={style.id}>{id}</span>
-        </p>
-        <div className={style.tags}>
-          {tags.map((tag) => (
-            <span className={style.tag} key={`${id}-${tag}`}>{`#${tag}`}</span>
-          ))}
+          <span className={style.title}>{title}</span>
+          <ul className={style.tags}>
+            {tags.map((tag) => (
+              <li className={style.tag}>#{tag}</li>
+            ))}
+          </ul>
         </div>
       </div>
-      <div className={style.right}>
-        <Link to={`edit/${id}`} state={{ index, id, title, price, description, tags, isSoldOut, thumbnail }}>
-          <button className={style.btn}>수정</button>
-        </Link>
-        <button className={style.btn} onClick={() => removeProduct.mutate(id)}>
-          삭제
-        </button>
+      <div className={style.soldOut}>
+        <div className={isSoldOut ? style.active : null}>
+          <GiCancel className={style.cancel} />
+          Sold Out
+        </div>
+      </div>
+      <div className={style.icons}>
+        <AiOutlineEdit className={style.edit} />
+        <AiOutlineDelete className={style.delete} />
       </div>
     </li>
   );

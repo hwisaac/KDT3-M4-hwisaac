@@ -99,7 +99,6 @@ function TransactionCard({ payload }) {
     <li className={style.card}>
       <div className={style.select}>
         <input type="checkbox" />
-        {index}
       </div>
       <div className={style.user}>
         <img className={style.profileImg} src={profileImg ? profileImg : alternativeImg} />
@@ -112,10 +111,7 @@ function TransactionCard({ payload }) {
         <span className={done ? style.done : null}>₩ {price.toLocaleString()}</span>
       </div>
       <div className={style.product}>
-        <span className={style.title}>
-          {title}
-          {detailId}
-        </span>
+        <span className={style.title}>{title}</span>
       </div>
       <div className={style.status}>
         <div

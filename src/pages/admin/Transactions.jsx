@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getTransactionsAll } from '../../api/productApi';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, QueryClient } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import TransactionCard from '../../components/admin/TransactionCard';
 import OverviewCard from './OverviewCard';
 import BankIcon from '../../components/ui/bank-icon/BankIcon';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Transactions = () => {
   const [totalTransactions, setTotalTransactions] = useState(0);
@@ -16,13 +17,23 @@ const Transactions = () => {
   const [totalDone, setTotalDone] = useState(0);
   const [totalEarned, setTotalEarned] = useState(0);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const queryClient = useQueryClient();
 
-  const { isLoading, data, refetch } = useQuery(['transactions'], getTransactionsAll, {
+  const { isFetching, isLoading, data, refetch } = useQuery(['transactions'], getTransactionsAll, {
+    staleTime: 15 * 1000,
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
     onSuccess: async (data) => {
       // 배송료 제외한 배열로
       await setFilteredTransactions(data.filter((transaction) => transaction.product.title.trim() !== '배송비'));
     },
   });
+  useEffect(() => {
+    const tranData = queryClient.getQueryData(['transactions']);
+    if (tranData) {
+      setFilteredTransactions(data.filter((transaction) => transaction.product.title.trim() !== '배송비'));
+    }
+  }, []);
   useEffect(() => {
     // compute overview Data
     const numOfTransactions = filteredTransactions.length;
@@ -45,7 +56,7 @@ const Transactions = () => {
 
   return (
     <>
-      {isLoading && <LoadingModal />}
+      {isFetching && <LoadingModal />}
       <div className={style.overview}>
         <OverviewCard title={'Total transactions'} content={totalTransactions} />
         <OverviewCard title={'Earned'} content={totalEarned} />
@@ -60,7 +71,7 @@ const Transactions = () => {
             tableFooter: false,
           }}
         />
-        {!isLoading &&
+        {!isFetching &&
           filteredTransactions?.map((transaction, index) => {
             const { account, detailId, done, isCanceled, product, timePaid, user } = transaction;
 

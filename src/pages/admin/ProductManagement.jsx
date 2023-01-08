@@ -8,6 +8,7 @@ import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { useSetRecoilState } from 'recoil';
 import { myAtom } from '../../recoil/atoms';
 import ConfirmModal from '../../components/ui/ConfirmModal';
+import Product from '../../components/total-product/Product';
 
 const ProductManagement = () => {
   const [selectAll, setSelectAll] = useState(false);
@@ -59,7 +60,7 @@ const ProductManagement = () => {
   // };
 
   return (
-    <ul className={style.productList}>
+    <>
       {openConfirmModal ? (
         <ConfirmModal
           title={'선택삭제'}
@@ -68,53 +69,51 @@ const ProductManagement = () => {
           setAnswer={setAnswer}
         />
       ) : null}
-      {removeSelectedProducts.isLoading ? <LoadingModal /> : null}
-      <li className={style.listHeader}>
-        <div>
-          <input
-            type="checkbox"
-            className={style.selectAll}
-            checked={selectAll}
-            onChange={() => setSelectAll((prev) => !prev)}
-          />
-          <span className={style.interfaceMenu} onClick={handleSelectDelete}>
-            선택삭제
-          </span>
-          {/* <span className={style.interfaceMenu} onClick={handleResetProducts}>
-            상품리셋
-          </span> */}
-        </div>
+      {removeSelectedProducts.isLoading && <LoadingModal />}
+      <ul className={style.productList}>
+        {/* 헤더 */}
+        <ProductCard
+          payload={{
+            tableHeader: true,
+            tableFooter: false,
+          }}
+        />
 
-        <Link to="add">
-          <button className={style.btn}>Add</button>
-        </Link>
-        <Outlet />
-      </li>
-      {gettingProducts ? (
-        <LoadingModal />
-      ) : (
-        products.map((product, index) => {
-          const { id, title, price, description, tags, isSoldOut, thumbnail, isC } = product;
-          return (
-            <ProductCard
-              key={`productCard-${id}`}
-              id={id}
-              index={index}
-              title={title}
-              price={price}
-              description={description}
-              tags={tags}
-              isSoldOut={isSoldOut}
-              thumbnail={thumbnail}
-              selectAll={selectAll}
-              assignCheckList={assignCheckList}
-              checkList={checkList}
-              isC={isC}
-            />
-          );
-        })
-      )}
-    </ul>
+        {/* 목록 */}
+        {gettingProducts ? (
+          <LoadingModal />
+        ) : (
+          products.map((product, index) => {
+            const { id, title, price, description, tags, isSoldOut, thumbnail, isC } = product;
+            return (
+              <ProductCard
+                key={`productCard-${id}`}
+                payload={{
+                  id,
+                  index,
+                  title,
+                  price,
+                  description,
+                  tags,
+                  isSoldOut,
+                  thumbnail,
+                  selectAll,
+                  assignCheckList: assignCheckList,
+                  checkList,
+                }}
+              />
+            );
+          })
+        )}
+        {/* 푸터 */}
+        <ProductCard
+          payload={{
+            tableHeader: false,
+            tableFooter: true,
+          }}
+        />
+      </ul>
+    </>
   );
 };
 
