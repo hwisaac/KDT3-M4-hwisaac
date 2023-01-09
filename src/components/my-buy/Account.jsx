@@ -15,7 +15,6 @@ const Account = ({ id, bankName, balance, accountNumber, productsPrice, onChange
   const onChangeInput = () => {
     if (balance >= productsPrice + 3000) {
       onChange(id);
-      console.log('작동');
     } else {
       return alert('해당 계좌에 잔액이 부족하여 결제가 불가능합니다.');
     }

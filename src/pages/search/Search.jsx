@@ -13,6 +13,7 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const title = searchParams.get('q');
 
+  // 태그 탐색을 위한 태그데이터
   const TAGS = [
     '농산물',
     '과일',
@@ -40,6 +41,7 @@ const Search = () => {
     findTitle = titleArr.find((t) => t !== tag);
   }
 
+  // api 호출
   const {
     isLoading,
     data: search,
@@ -52,7 +54,7 @@ const Search = () => {
   // const {filters, filter, setFilter, filtered} = useFilter(search)
   const response = useFilter(search);
   const {filters, filter, setFilter, filtered} = {...response}
-  // console.log(filtered)
+
 
   return (
     <div className={style.wrap}>

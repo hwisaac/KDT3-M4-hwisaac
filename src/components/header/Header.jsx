@@ -7,26 +7,26 @@ import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
 import { adminUser } from '../../api/adminUser';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import UserMenu from '../ui/user-menu/UserMenu';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [home, setHome] = useState(true)
+  const [home, setHome] = useState(true);
   const accessToken = getCookie('accessToken');
   const { isAdmin } = userInfo;
 
   //프레시멘토 로고를 홈화면에서만 보이도록 변경
   const { pathname } = useLocation();
-  useEffect(() => { 
-    if(pathname != '/') {
-      setHome(false)
-    } 
-    if(pathname === '/') {
-      setHome(true)
+  useEffect(() => {
+    if (pathname != '/') {
+      setHome(false);
     }
-  }, [pathname])
+    if (pathname === '/') {
+      setHome(true);
+    }
+  }, [pathname]);
 
   const onClick = async () => {
     try {
@@ -78,12 +78,10 @@ export default function Header() {
           <div className={style.util}>
             {isLoggedIn ? (
               <>
-                <UserMenu text={'마이페이지'} link={"/mypage"}/>
-                {isAdmin && (
-                  <UserMenu text={'관리자 페이지'} link={"/admin/products"}/>
-                )}
-                <UserMenu text={'장바구니'} link={"/mycart"}/>
-                <UserMenu text={'찜한 상품'} link={"/myKeepProducts"}/>
+                <UserMenu text={'마이페이지'} link={'/mypage'} />
+                {isAdmin && <UserMenu text={'관리자 페이지'} link={'/admin/products'} />}
+                <UserMenu text={'장바구니'} link={'/mycart'} />
+                <UserMenu text={'찜한 상품'} link={'/myKeepProducts'} />
                 <span className={style.util_list}>{userInfo.displayName}님</span>
                 <img
                   src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
@@ -96,8 +94,8 @@ export default function Header() {
               </>
             ) : (
               <>
-                <UserMenu text={'로그인'} link={"/login"}/>
-                <UserMenu text={'회원가입'} link={"/signup"}/>
+                <UserMenu text={'로그인'} link={'/login'} />
+                <UserMenu text={'회원가입'} link={'/signup'} />
               </>
             )}
           </div>
@@ -114,6 +112,7 @@ export default function Header() {
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
 
+          {/* 검색 */}
           <form onSubmit={handleSubmit(onValid, onInvalid)} className={style.form}>
             <input
               {...register('search', {
@@ -127,16 +126,16 @@ export default function Header() {
           </form>
         </div>
       </div>
-      {
-       home ? (<div className={style.mainLogo}>
-        <Link to="/">
-          <img
-            src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
-            alt="FRESH MENTOR"
-          />
-        </Link>
-      </div>) : null
-      }
+      {home ? (
+        <div className={style.mainLogo}>
+          <Link to="/">
+            <img
+              src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
+              alt="FRESH MENTOR"
+            />
+          </Link>
+        </div>
+      ) : null}
     </header>
   );
 }
