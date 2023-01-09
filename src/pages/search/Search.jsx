@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { getSearch } from '../../api/productApi';
 import { useSearchParams } from 'react-router-dom';
 import SearchItem from '../../components/search/SearchItem';
@@ -44,11 +43,11 @@ const Search = () => {
   const {
     isLoading,
     data: search,
-  } = useQuery([`${title}`], () => {
+  } = useQuery([title], () => {
     if (findTitle && tag) return getSearch(findTitle, tag);
     else if (tag) return getSearch('', tag);
     else return getSearch(title);
-  });
+  })
 
   // const {filters, filter, setFilter, filtered} = useFilter(search)
   const response = useFilter(search);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import { getProductDetail } from '../../api/productApi';
@@ -11,9 +11,11 @@ import { BsCartX } from 'react-icons/bs';
 import { viewedListState } from '../../recoil/viewedListState';
 import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
+import { BiHeartCircle } from 'react-icons/bi';
 
 const SHIPPING = 3000;
 export default function ProductDetail() {
+  const [heart, setHeart] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const userName = userInfo.displayName;
@@ -40,14 +42,6 @@ export default function ProductDetail() {
   if(isLoading) return <LoadingModal/> 
   // console.log('detail', detail)
   const { id:productId, title, photo, price, description, isSoldOut } = detail;
-  
-  // useEffect(() => {
-  //   // const details = getProductDetail(id);
-  //   // details.then((data) => {
-  //   //   setDetail(data);
-  //   // });
-  // }, [productId]);
-
 
   const handleClickCart = () => {
     if (!isLoggedIn) {
@@ -69,6 +63,16 @@ export default function ProductDetail() {
     } else navigate(`/mybuy`, { state: [detail] });
   };
 
+  //찜하기
+  const handleClickKeepProducts = () => {
+    if (!isLoggedIn) {
+      const result = window.confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
+      if (result === true) window.location = '/login';
+    } else {
+      setHeart((prev) => !prev)
+    }
+  };
+
   return (
     <section className={style.item}>
       <img className={style.img} src={photo} alt={title} />
@@ -84,6 +88,7 @@ export default function ProductDetail() {
           <div className={style.btns}>
             <Button text="구매하기" onClick={handleClickBuy} />
             <Button text="장바구니" onClick={handleClickCart} />
+            <Button text="찜하기" onClick={handleClickKeepProducts} heart={heart}/>
           </div>
         ) : (
           <div className={style.isSoldOut}>
