@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { addProduct, deleteProduct } from '../../api/productApi';
+import { updateProduct } from '../../api/productApi';
 import { getBuy, getAccountInfo } from '../../api/accountApi';
 import { userInfoState } from '../../recoil/userInfo';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import style from './MyBuy.module.css';
 import BuyItem from '../../components/my-buy/BuyItem';
@@ -12,7 +12,7 @@ import useCart from '../../hooks/useCart';
 import { getCookie } from './../../recoil/userInfo';
 import DeliveryForm from '../../components/my-buy/DeliveryForm';
 import { useForm } from 'react-hook-form';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import LoadingModal from './../../components/ui/loading/LoadingModal';
 
 const MyBuy = () => {
@@ -36,7 +36,7 @@ const MyBuy = () => {
   }
 
   /* 유저 정보 */
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [userInfo] = useRecoilState(userInfoState);
   const accessToken = getCookie('accessToken');
 
   /* 계좌 조회 */
@@ -60,19 +60,27 @@ const MyBuy = () => {
     handleSubmit,
     formState: { errors: fromError },
     setValue,
+    setFocus,
   } = useForm();
 
-  // 결제 신청
-  let deliveryId = '';
+  const errorMessage = '일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.';
 
-  const payload = {
-    title: '배송비',
-    price: 3000,
-    description: '배송비 추가',
-  };
+  // 결제 api, 상품 정보 수정 api
+  const productBuy = useMutation(([productId, accountId, accessToken]) => getBuy(productId, accountId, accessToken), {
+    onError: () => {
+      alert(errorMessage);
+    },
+  });
+  const editProduct = useMutation(([id, price]) => updateProduct(id, price), {
+    onError: () => {
+      alert(errorMessage);
+    },
+  });
 
+  // 배송지 정보 O && 결제 로직 실행
   const onValid = async (data) => {
-    /* 배송지정보에 있는 데이터를 보내고 싶으면 바로 위의 data 에서 가져다가 쓰면 됨 */
+    console.log(data); // 입력한 배송지 정보
+
     if (AccountInfo.accounts.length === 0) {
       alert('연결된 계좌가 없어 결제가 불가능합니다. 계좌 연결을 먼저 해주세요.');
       navigate('/mypage');
@@ -82,31 +90,42 @@ const MyBuy = () => {
       return;
     }
 
-    // 결제 로직
-    Promise.all(
-      products.map(async (product) => {
-        let quantity = product.quantity || 1;
+    // try catch 문 없어도 작동, 명시적으로 보이기 위해 작성
+    try {
+      for (let i = 0; i < products.length; i++) {
+        let quantity = products[i].quantity || 1;
         while (quantity > 0) {
-          await getBuy(product.productId || product.id, accountId, accessToken);
-          quantity--;
+          if (i === 0 && quantity === 1) {
+            const test = await editProduct.mutateAsync([
+              products[i].productId || products[i].id,
+              {
+                price: products[i].price + 3000,
+              },
+            ]);
+            await productBuy.mutateAsync([test.id, accountId, accessToken]);
+            await editProduct.mutateAsync([
+              test.id,
+              {
+                price: products[i].price,
+              },
+            ]);
+            quantity--;
+          } else {
+            await productBuy.mutateAsync([products[i].productId || products[i].id, accountId, accessToken]);
+            quantity--;
+          }
         }
-      }),
-    )
-      .then(() => {
-        addProduct(payload).then(async (data) => {
-          deliveryId = data.id;
-          await getBuy(deliveryId, accountId, accessToken);
-          await deleteProduct(deliveryId);
-          alert(`${(productsPrice + 3000).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
-          productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
-        });
-      })
-      .catch(() => {
-        alert('일시적인 오류로 인해 결제가 불가능합니다. 문의 남겨주시면 빠르게 처리 도와드리겠습니다.');
-        navigate('/');
-      });
+      }
+    } catch (error) {
+      alert(errorMessage);
+    } finally {
+      console.log('끝!!!!!!');
+      alert(`${(productsPrice + 3000).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+      productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
+    }
   };
 
+  // 배송지 정보 X
   const onInvalid = () => {
     setErrorStyle(true);
     alert('배송지정보를 올바르게 입력해주세요');
@@ -155,7 +174,13 @@ const MyBuy = () => {
           {/* 배송지정보, 주문자정보 */}
           <div className={style.forms}>
             {/* 배송지정보 */}
-            <DeliveryForm register={register} fromError={fromError} errorStyle={errorStyle} setValue={setValue} />
+            <DeliveryForm
+              register={register}
+              fromError={fromError}
+              errorStyle={errorStyle}
+              setValue={setValue}
+              setFocus={setFocus}
+            />
             {/* 주문자정보 */}
             <div className={style.ordererInfo}>
               <h2>주문자 정보</h2>
