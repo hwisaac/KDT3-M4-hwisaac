@@ -6,7 +6,9 @@
   align-items: center;
 }
 .title {
+  margin: 30px auto;
   font-size: 28px;
+  font-weight: bold;
 }
 
 .btns {
@@ -69,7 +71,7 @@
 }
 .btn_select button::before {
   content: '';
-  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -196px -119px;
+  background: url('../../assets/image/spSs_icon_svg.svg') no-repeat -196px -119px;
   width: 14px;
   height: 10px;
   display: inline-block;
@@ -79,6 +81,7 @@
 
 /* 상품 */
 .product_wrap {
+  margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;

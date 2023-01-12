@@ -109,10 +109,10 @@
   color: #fff;
   padding-right: 20px;
 }
-.header .linkInput .inner .inputBox {
+.header .linkInput .inner .form {
   position: relative;
 }
-.header .linkInput .inner .inputBox input {
+.header .linkInput .inner .form input {
   width: 200px;
   height: 34px;
   padding: 0 32px 0 20px;
@@ -136,10 +136,16 @@ input::-webkit-search-results-button,
 input::-webkit-search-results-decoration {
   display: none;
 }
-.header .linkInput .inner .inputBox .searchIcon {
+.header .linkInput .inner .form button {
   position: absolute;
-  top: 25%;
+  top: 20%;
   right: 5%;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+.header .linkInput .inner .form button .searchIcon {
+  font-size: 17px;
   color: #6b90dc;
 }
 .header .mainLogo {

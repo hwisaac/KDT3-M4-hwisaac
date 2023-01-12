@@ -1,0 +1,67 @@
+.accountInfo {
+  margin-right: 20px;
+}
+.account {
+  width: 230px;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 7px 7px 9px -8px rgb(0 0 0 / 52%);
+  cursor: pointer;
+}
+.kbBank {
+  background-color: #776c61;
+}
+.shBank {
+  background-color: #2b40ab;
+}
+.wrBank {
+  background-color: #0199ca;
+}
+.hnBank {
+  background-color: #009693;
+}
+.kBank {
+  background-color: #343e48;
+}
+.kkoBank {
+  background-color: #fde100;
+}
+.nhBank {
+  background-color: #08b353;
+}
+
+.account [type='radio'] {
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.397);
+  -webkit-mask: url(../../assets/image/check.svg) no-repeat center / cover;
+  mask: url(../../assets/image/check.svg) no-repeat center / cover;
+  vertical-align: middle;
+  appearance: none;
+  cursor: pointer;
+}
+.account [type='radio']:checked {
+  background-color: #09aa5c;
+}
+
+.accountTxt {
+  margin-top: 20px;
+}
+.accountTxt p:nth-child(1) {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+.accountTxt p:nth-child(2) {
+  font-size: 13px;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.accountTxt p:nth-child(3) {
+  font-size: 13px;
+  color: white;
+}

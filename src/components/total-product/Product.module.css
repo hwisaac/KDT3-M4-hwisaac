@@ -3,33 +3,51 @@
   list-style: none;
   margin-bottom: 30px;
   cursor: pointer;
-}
-.link {
-  font-size: 13px;
-  text-decoration: none;
   position: relative;
 }
-.link:hover .btns {
+.soldout {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.445);
+  color: red;
+  font-size: 35px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 250px;
+  cursor: default;
+}
+
+.wrap:hover .btns {
   visibility: visible;
   opacity: 1;
 }
+.wrap > a {
+  display: block;
+  height: 234px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
 .img {
   width: 100%;
-  height: 302px;
+  height: 100%;
+  margin-bottom: 10px;
 }
 .btns {
   position: absolute;
-  bottom: 100px;
-  left: 70px;
+  bottom: 70px;
+  left: 100px;
   visibility: hidden;
   opacity: 0;
   transition: 0.3s;
+  z-index: 100;
+  pointer-events: visible;
 }
 
-.btn_heart {
+.btnHeartBig {
   outline: none;
   border: none;
-  background-image: url('../../imgs/spSs_icon_svg.svg');
+  background-image: url('../../assets/image/spSs_icon_svg.svg');
   background-repeat: no-repeat;
   background-position: -111px -188px;
   background-color: white;
@@ -40,10 +58,10 @@
   margin-right: 20px;
   cursor: pointer;
 }
-.btn_heart__red {
+.btnHeartBig_red {
   outline: none;
   border: none;
-  background-image: url('../../imgs/spSs_icon_svg.svg');
+  background-image: url('../../assets/image/spSs_icon_svg.svg');
   background-repeat: no-repeat;
   background-position: -156px -188px;
   background-color: white;
@@ -54,19 +72,11 @@
   margin-right: 20px;
   cursor: pointer;
 }
-.btn_detail {
-  outline: none;
-  border: none;
-  background: url('../../imgs/spSs_icon_svg.svg') no-repeat -264px -184px;
-  width: 37px;
-  height: 37px;
-  background-color: white;
-  font-size: 0;
-  border-radius: 50px;
-  cursor: pointer;
-}
 .txt {
   position: relative;
+}
+.txt a:hover .title {
+  text-decoration: underline;
 }
 .title {
   white-space: nowrap;
@@ -74,9 +84,12 @@
   text-overflow: ellipsis;
   color: #222;
   font-weight: bold;
+  font-size: 13px;
   padding-right: 20px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid transparent;
 }
-.heart {
+.btnHeartSmall {
   position: absolute;
   top: 2px;
   right: 0;
@@ -84,13 +97,14 @@
   outline: none;
   border: none;
   font-size: 0;
-  background-image: url(../../imgs/icon_heart_15x13_gray.412edbc4.svg);
+  background-image: url(../../assets/image/icon_heart_15x13_gray.412edbc4.svg);
   width: 15px;
   height: 13px;
   cursor: pointer;
+  z-index: 10;
 }
-.heart__red {
-  background-image: url(../../imgs/icon_heart_15x13_red.7c83f183.svg);
+.btnHeartSmall_red {
+  background-image: url(../../assets/image/icon_heart_15x13_red.7c83f183.svg);
   position: absolute;
   top: 2px;
   right: 0;
@@ -98,24 +112,15 @@
   outline: none;
   border: none;
   font-size: 0;
-  background-image: url(../../imgs/icon_heart_15x13_red.7c83f183.svg);
+  background-image: url(../../assets/image/icon_heart_15x13_red.7c83f183.svg);
   width: 15px;
   height: 13px;
   cursor: pointer;
 }
 
-.rower_price {
+.price {
+  margin-top: 5px;
   color: #222;
   font-weight: bold;
-}
-.price {
-  font-size: 12px;
-  color: #888;
-  text-decoration: line-through;
-  margin-left: 5px;
-}
-.sale {
-  color: #6b90dc;
-  font-weight: bolder;
-  margin-left: 10px;
+  font-size: 13px;
 }

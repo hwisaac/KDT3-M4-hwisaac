@@ -1,0 +1,112 @@
+.wrapper {
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.modal {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  width: 520px;
+  height: 120px;
+  border-radius: 2px;
+
+  background-color: whitesmoke;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  -webkit-box-shadow: 0px 0px 15px 7px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 15px 7px rgba(0, 0, 0, 0.1);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  height: 10%;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.modalHeader .headTitle {
+  font-weight: 700;
+  font-size: 30px;
+  color: #182a4d;
+}
+.modalBody {
+  /* border: 3px solid blue; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* border: 1px solid red; */
+}
+.modalBody .contents {
+  /* background-color: yellow; */
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.modalBody .contents .infoCircle {
+  color: #2188ff;
+  font-size: 30px;
+}
+.question {
+  display: none;
+  font-weight: 500;
+  font-size: 35px;
+  height: 100%;
+  width: 90%;
+  /* border: 5px solid green; */
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  color: #727272;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  justify-self: flex-end;
+  /* align-self: flex-end; */
+  gap: 10px;
+  /* border: 1px solid red; */
+}
+
+.btn {
+  border: none;
+  width: 50px;
+  height: 30px;
+  border-radius: 1px;
+  background-color: #007acc;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn:nth-child(1) {
+}
+.btn:nth-child(2) {
+  background-color: #5f6a79;
+}
+.btn:hover {
+  background-color: #0e436c;
+}
+
+.close {
+  color: #182a4d;
+  cursor: pointer;
+  font-size: 25px;
+  border-radius: 50%;
+}
+.close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}

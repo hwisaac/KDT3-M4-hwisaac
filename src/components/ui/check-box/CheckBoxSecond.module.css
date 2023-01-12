@@ -1,0 +1,25 @@
+.label {
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.input {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid gainsboro;
+  border-radius: 100%;
+}
+.input:checked {
+  border-color: transparent;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='rgb(29, 163, 67)' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+  background-size: 130% 130%;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-color: var(--color-light-blue); */
+  /* background-color: var(--color-blue); */
+  border: 1px solid rgb(29, 163, 67);
+}
+.p {
+  margin-left: 0.25rem;
+}

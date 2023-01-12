@@ -1,31 +1,48 @@
-
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { authUrl, HEADERS_USER } from '../../data/API';
-import { loginState, userInfoState } from '../../data/LoginData';
+import { useRecoilState } from 'recoil';
+import { authUrl, HEADERS_USER } from '../../api/commonApi';
+import { loginState, userInfoState, alternativeImg, getCookie, deleteCookie } from '../../recoil/userInfo';
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import style from './Header.module.css';
 import { BiSearch } from 'react-icons/bi';
+import { adminUser } from '../../api/adminUser';
+import RecentlyViewed from '../recently-viewed/RecentlyViewed';
+import { useForm } from 'react-hook-form';
+import UserMenu from '../ui/user-menu/UserMenu';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [home, setHome] = useState(true);
+  const accessToken = getCookie('accessToken');
+  const { isAdmin } = userInfo;
+
+  //프레시멘토 로고를 홈화면에서만 보이도록 변경
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (pathname != '/') {
+      setHome(false);
+    }
+    if (pathname === '/') {
+      setHome(true);
+    }
+  }, [pathname]);
+
   const onClick = async () => {
     try {
       const res = await fetch(`${authUrl}/logout`, {
         method: 'POST',
-        headers: { ...HEADERS_USER, Authorization: userInfo.accessToken },
+        headers: { ...HEADERS_USER, Authorization: accessToken },
       });
       const json = await res.json();
       if (json) {
+        console.log(json);
+        deleteCookie('accessToken');
         setIsLoggedIn(false);
         setUserInfo({
-          user: {
-            email: '',
-            displayName: '',
-            profileImg: '',
-          },
-          accessToken: '',
+          email: '',
+          displayName: '',
+          profileImg: '',
         });
       }
       document.location.href = '/';
@@ -34,17 +51,16 @@ export default function Header() {
     }
   };
 
-  const [value, setValue] = useState('');
+  /* 검색 기능 */
+  const navigate = useNavigate();
 
-  const onKeyDown = (event) => {
-    let inputValue = event.target.value;
-    if (event.key === 'Enter' && !event.isComposing) {
-      if (inputValue !== '') {
-        setValue(inputValue.trim());
-      } else {
-        alert('검색어를 입력해주세요');
-      }
-    }
+  const { register, handleSubmit, setValue } = useForm();
+  const onValid = ({ search }) => {
+    navigate(`/search?q=${search}`);
+    setValue('search');
+  };
+  const onInvalid = () => {
+    return alert('검색어를 입력해주세요');
   };
 
   return (
@@ -60,22 +76,17 @@ export default function Header() {
             </Link>
           </div>
           <div className={style.util}>
-            <Link to="/mypage" className={style.util_list}>
-              마이페이지
-            </Link>
-            <Link to="/mycart" className={style.util_list}>
-              장바구니
-            </Link>
             {isLoggedIn ? (
               <>
-                <span className={style.util_list}>{userInfo.user.displayName}님</span>
+                <UserMenu text={'마이페이지'} link={'/mypage'} />
+                {isAdmin && <UserMenu text={'관리자 페이지'} link={'/admin/products'} />}
+                <UserMenu text={'장바구니'} link={'/mycart'} />
+                <UserMenu text={'찜한 상품'} link={'/myKeepProducts'} />
+                <span className={style.util_list}>{userInfo.displayName}님</span>
                 <img
-                  src={
-                    userInfo.user.profileImg
-                      ? userInfo.user.profileImg
-                      : 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxEHBhAIBw8OFRUODw8QEBMSEBAPEA4SFhMWFhYSFx8YHTQgGRoxHRMTITEhJSkuLi4uFx8zODMsNyktLisBCgoKDg0OGhAQGjYlHyU1Ky0tKy0wKy0tLi0tLS0rLS0tLS0tLS0tKy03NystLSsrNS0tLS03Kzc3LS0rLS0tN//AABEIAOEA4QMBIgACEQEDEQH/xAAaAAEAAgMBAAAAAAAAAAAAAAAABAUCAwYB/8QAMxABAAECAwUFBwQDAQAAAAAAAAECAwQRcQUhMTJBEhNRYXI0gZGhsdHhIkKSwSMzghT/xAAZAQEBAQEBAQAAAAAAAAAAAAAAAwIBBAX/xAAcEQEBAQEBAQEBAQAAAAAAAAAAAQIRAzESQSH/2gAMAwEAAhEDEQA/AOsAe980AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHvHgscLs/d27/8fu5bx2S1At2qrk5W4mdISKdn3J6RGs/ZbUxFMZUxlo9Y/ak84qJ2fcjhETpLRcs1Wv8AZTMfRfExnGUn7L5xzotMVs+Ko7VjdPh0nTwVkx2Zyno3L1O5seAOuAAAAAAAAAAAAAAAAAAANlm33t2KI6yCds3DZR39f/Pl5rAiMoyjoJW9Xk5ABx0AAQto4bt0d7Rxjj5wmhLws7HOjdirXc36qI8d2ktKzzgAAAAAAAAAAAAAAAAACZsunPE5+FMz/X9oabsqcsRMeNM/WHNfHc/VqAkuAAAAAAq9rU5XqavGnL4T+UFYbWn/ACUx5T9fwr1c/ENfQB1wAAAAAAAAAAAAAAAAbsJc7rEU1T45TpO5pAjohFwGI7612auNO6fOPFKRv+PRL0AAAABoxl/uLOccZ3U/cLeK3H3O8xU5dP0/D85oz14tHnt6AAAAAAAAAAAAAAAAAAAAztXJtVxXRxhcYXFU4iMuE9Y+ykexOW+HLOu51x0IqLW0K7cZVZVa8fik07Tp/dTV7piWPzVZuJwgztOn9tNXvyhHu7Qrr3UZU6b5c/NLuLDEYmmxT+rj0jrKnvXZvXO3X+IjwYTPanOp4pM8T1roA6yAAAAAAAAAAAAAAAAAAAAAADKmmauWJnSM2cWK54UV/wAZBqG2cPXHGiv+MsJomnmiY1jIOMQAAAAAAAAAAAAAAAAAAABnatTdq7NuM/6WVjZ0U772+fDp+XLZHZm1W0W5uTlREzpCVb2dVVvrmI+crSmmKYypiI03PWLtSec/qJb2dRTzZz78o+TfRYoo5aafhvbBztakkAHHQAGFVmmvmppn3Q0V7Poq4RMaT90oOlkqsubNmN9uqJ13SiXbNVqcrkTH0XxMZxlLU1WLiOdFtf2fTXvt/pn5K69Yqs1ZXI0npLcsqdzY1AOuAAAAAAAAAADdhcPOIudmOEcZ8GleYSz3NiKevGdXNXjWc9rOzaizR2bcfedWYJLAAAAAAAAAAAADyuiK6ezXGcS9AU2Mwv8A56s6eWeHl5Iy/vW4u2poq6/LzUMx2ZynpuUzeo7zyvAGmQAAAAAAAHtPNGroXPU80aw6FjanmAMKAAAAAAAAAAAAAACixW7E1+qfqvVHi/aq/VLeGPT40gNpAAAAAAAAMqeaNYdA5+nmjWHQMbU8wBhQAAAAAAAAAAAAAAUeL9qr9UrxR4v2qv1S3hj0+NIDaQAAAAAAADKnmjWHQOfo541h0DG1PMAYUAAAAAAAAAAAAAAFHi/aq/VK8UeL9qr9Ut4Y9PjSA2kAAAAAAAAyo541h0AMbU8wBhQAAAAAAAAAAAAAAUeL9qr9Ug3hj0+NIDaQAAAD/9k='
-                  }
+                  src={userInfo.profileImg ? userInfo.profileImg : alternativeImg}
                   className={style.image}
+                  alt="유저이미지"
                 ></img>
                 <span className={style.util_list} onClick={onClick}>
                   로그아웃
@@ -83,12 +94,8 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link to="/login" className={style.util_list}>
-                  로그인
-                </Link>
-                <Link to="/signup" className={style.util_list}>
-                  회원가입
-                </Link>
+                <UserMenu text={'로그인'} link={'/login'} />
+                <UserMenu text={'회원가입'} link={'/signup'} />
               </>
             )}
           </div>
@@ -104,19 +111,31 @@ export default function Header() {
             <p>맛그레이드하세요↗ 식품전문가 프레시멘토의 큐레이션 서비스</p>
             <span className={style.customerNumber}>관심고객수 117,891</span>
           </div>
-          <form action="/search">
-            <input onKeyDown={onKeyDown} type="search" name="s" placeholder="검색어를 입력해보세요" />
+
+          {/* 검색 */}
+          <form onSubmit={handleSubmit(onValid, onInvalid)} className={style.form}>
+            <input
+              {...register('search', {
+                required: '검색어를 입력해주세요',
+              })}
+              type="search"
+            />
+            <button type="submit">
+              <BiSearch className={style.searchIcon} />
+            </button>
           </form>
         </div>
       </div>
-      <div className={style.mainLogo}>
-        <Link to="/">
-          <img
-            src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
-            alt="FRESH MENTOR"
-          />
-        </Link>
-      </div>
+      {home ? (
+        <div className={style.mainLogo}>
+          <Link to="/">
+            <img
+              src="https://shop-phinf.pstatic.net/20191031_66/15725072755036s6lm_PNG/60561378898368862_1948914938.png?type=w640"
+              alt="FRESH MENTOR"
+            />
+          </Link>
+        </div>
+      ) : null}
     </header>
   );
 }

@@ -1,0 +1,46 @@
+.adminPage {
+  padding-top: 50px;
+}
+.inner {
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pageTitle {
+  font-size: 18px;
+  margin: 30px 20px;
+}
+.nav {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  gap: 20px;
+  padding: 30px;
+}
+
+.nav li {
+  padding: 0 10px;
+  height: 30px;
+  width: auto;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--color-light-grey);
+}
+.nav li.focus {
+  color: var(--color-grey);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav li:hover {
+  text-decoration: underline;
+}
+.productList {
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  padding: 30px;
+  -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+}

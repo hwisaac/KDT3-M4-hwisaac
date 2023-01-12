@@ -1,20 +1,23 @@
-import { createBrowserRouter, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import MyPage from './pages/MyPage';
-import MyCart from './pages/MyCart';
-import Home from './pages/Home';
-import LogIn from './components/login/LogIn';
-import SignUp from './components/signup/SignUp';
-import Slider from './components/kv/Slider';
-import ProductDetail from './pages/ProductDetail';
-import Category from './pages/Category';
-import Administrator from './pages/Admininstartor';
-import NotFound from './pages/NotFound';
-import ProductManagement from './components/administrator/ProductManagement';
-import SalesDetails from './components/administrator/SalesDetails';
-import TransactionDetails from './components/administrator/TransactionDetails';
-import Search from './pages/Search';
-import AddModal from './components/administrator/AddModal';
+import MyPage from './pages/my-page/MyPage';
+import MyCart from './pages/my-cart/MyCart';
+import Home from './pages/home/Home';
+import LogIn from './pages/login/LogIn';
+import SignUp from './pages/signup/SignUp';
+import ProductDetail from './pages/products/ProductDetail';
+import Category from './pages/category/Category';
+import Administrator from './pages/admin/Admininstartor';
+import ProductManagement from './pages/admin/ProductManagement';
+import SalesDetails from './pages/admin/SalesDetails';
+import Transactions from './pages/admin/Transactions';
+import Search from './pages/search/Search';
+import MyBuy from './pages/my-buy/MyBuy';
+import AddModal from './components/admin/AddModal';
+import ProtectedRoute from './pages/ProtectedRoute';
+import EditModal from './components/admin/EditModal';
+import AddAccount from './components/my-page/AddAccount';
+import MyKeepProducts from './pages/my-keep-products/MyKeepProducts';
 
 const router = createBrowserRouter([
   {
@@ -27,11 +30,37 @@ const router = createBrowserRouter([
       },
       {
         path: 'mypage',
-        element: <MyPage />,
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: 'addaccount',
+            element: <AddAccount />,
+          },
+        ],
       },
       {
         path: 'mycart',
-        element: <MyCart />,
+        element: (
+          <ProtectedRoute>
+            <MyCart />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'myKeepProducts',
+        element: <MyKeepProducts />,
+      },
+      {
+        path: 'mybuy',
+        element: (
+          <ProtectedRoute>
+            <MyBuy />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'login',
@@ -42,10 +71,6 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: 'slider',
-        element: <Slider />,
-      },
-      {
         path: 'category/:tag',
         element: <Category />,
       },
@@ -54,8 +79,20 @@ const router = createBrowserRouter([
         element: <ProductDetail />,
       },
       {
+        path: 'search',
+        element: <Search />,
+      },
+      {
+        path: 'mybuy',
+        element: <MyBuy />,
+      },
+      {
         path: 'admin',
-        element: <Administrator />,
+        element: (
+          <ProtectedRoute requireAdmin>
+            <Administrator />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: 'products',
@@ -65,6 +102,10 @@ const router = createBrowserRouter([
                 path: 'add',
                 element: <AddModal />,
               },
+              {
+                path: 'edit/:id',
+                element: <EditModal />,
+              },
             ],
           },
           {
@@ -73,7 +114,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'transactions',
-            element: <TransactionDetails />,
+            element: <Transactions />,
           },
         ],
       },

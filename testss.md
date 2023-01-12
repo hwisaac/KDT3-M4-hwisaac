@@ -1,161 +1,58 @@
-## useForm 이 도와주는 일
+## Queries
 
-1. 이벤트 핸들
-2. validation 유효성 검사
-3. state 관리
+https://tanstack.com/query/v4/docs/react/guides/queries
 
-## 사용 : register, watch
+### Query basic
 
-- `const {register, watch} = useForm();`
+- 쿼리란 비동기적인 데이터에 대한 선언적인 의존성(declarative dependency)을 말한다.
+- 쿼리는 method(GET, POST 등)에 기반한 모든 Promise 와 함께 서버에서 데이터를 패칭하는 데 사용할 수 있다.
+- 서버에 대한 데이터를 수정한다면 Mutations 를 사용하는걸 추천
 
-1. register 에다 문자열 인자를 넣어주면 해당 문자열을 key 로 하는 form 이 등록된다.
-2. **register 함수가 리턴하는 값을 원하는 input 에 props로 전달해준다.**
+너의 컴포넌트나 커스텀 훅에 있는 쿼리를 구독하기 위해서는 `useQuery` 훅을 다음과 함꼐 사용해라
 
-   - `registeer("toDo")` 가 리턴하는 객체 : `{name: 'toDo', onChange: f, onBlur: f, ref: f}`
+1. 쿼리에 대한 unique key
+2. roselved data나 error를 던지는 Promise 를 리턴하는 함수
 
-3. watch 함수는 form 의 입력값들의 변화를 관찰할수 있게 해준다.
-4. `watch()` 가 리턴: `{toDo: 'abcdef'}`
+```tsx
+import { useQuery } from "@tanstack/react-query";
 
-```javascript
-function ToDoList() {
-  const { register, watch } = useForm();
-
-  return (
-    <div>
-      <form>
-        <input {...register("toDo")} placeholder='Write a toDo' />
-        <button>Add</button>
-      </form>
-    </div>
-  );
+function App() {
+  const info = useQuery({ queryKey: ["todos"], queryFn: fetchTodoList });
 }
 ```
 
-## form validation
+> **unique key** 는 내부적으로 리패칭, 캐싱, 쿼리를 앱에 공유하는 경우 사용한다.
 
-### handleSubmit
+## Query Functions
 
-- 유효성 검사를 담당한다
-- const { handleSubmit } = useForm();
+https://tanstack.com/query/v4/docs/react/guides/query-functions
 
-#### 사용
+> 쿼리 함수(Query Functions)는 promise를 리턴하는 모든 함수를 말한다. 이 promise 는 resolve the data 혹은 throw an error 를 리턴한다.
 
-1. <form> 에 onSubmit 이벤트를 등록한다.
-2. handleSubmit 호출을 해주는데 handleSubmit 은 2개의 인자를 받는다.
-   - 하나는 데이터가 유효할 때 호출되는 함수(필수) =: onValid
-   - 다른 하나는 데이터가 유효하지 않을때 호출되는 함수
-3. 유효할 경우, handleSubmit 이 onValid에 data 객체를 전달한다.
-4. data = { email: "1234", firstname: "456}
-
-```typescript
-const {register, watch, handleSubmit} =useForm();
-const onValid = (data) =>{
-  console.log(data)  // { email: "1234", firstname: "456}
-}
-
-return (
-  <div>
-    <form onSubmit={handleSubmit(onValid)}>
-      <input {...register("email")}>
-      <input {...register("firstname")}>
-      <button> submit </button>
-  </div>
-)
-
+```tsx
+// 쿼리함수 사용 예시
+useQuery({ queryKey: ["todos"], queryFn: fetchAllTodos });
+useQuery({ queryKey: ["todos", todoId], queryFn: () => fetchTodoById(todoId) });
+useQuery({
+  queryKey: ["todos", todoId],
+  queryFn: async () => {
+    const data = await fetchTodoById(todoId);
+    return data;
+  },
+});
+useQuery({
+  queryKey: ["todos", todoId],
+  queryFn: ({ queryKey }) => fetchTodoById(queryKey[1]),
+});
 ```
 
-#### 유효하지 않은 경우
+## Placeholder Query Data
 
-1. require 넣기
+- placeholder data는 쿼리가 이미 데이터를 가지고 있는 것처럼 작동하게 해준다.<br>
+- `initialData`랑 비슷한데 차이점은 캐시에 유지되진 않는다.
+- 실제 데이터가 백그라운드에서 패치되는 동안 부분적인 자료(혹은 페이크 자료)를 빠르게 랜더링 해서 보여주고 싶은 상황에서 유용하다.
 
-- register 함수에 `{required :true}` 객체 인자를 하나 더 전달한다
-- `{...register("email", {required: true })}` 이 props 가 없는 인풋요소노가 있을떼 submit 이 되면 해당 인풋으로 자동 포커싱 된다.
+캐시에 placeholder data 를 쿼리로 제공하는 방법
 
-2. 최소 문자 길이
-
-- register 함수에 전달하는 객체에 `minLength : 5` 를 추가해준다.
-- `{...register("email", {required: true , minLength: 5})}`
-
-3. `formState` 를 useForm() 에서 하나 더 가져온다
-
-- 에러를 관리할 수 있다.
-- submit 했을 때 invalid 인 경우 해당 에러가 `formState.errors` 객체에 담긴다.
-
-```typescript
-const { register, handleSubmit, formState } = useForm();
-
-console.log(formState.errors);
-/*
-  {
-    email: { message: "" , ref: input, type: "minLength" },
-    firstName: {message:"", ref: input, type: "required"}
-  }
-*/
-```
-
-4. 유효성을 검사하는 객체의 value 에 메세지를 전달할 경우, 해당 에러가 발생하면 메세지를 띄울 수 있다.
-
-```typescript
-// <input {...register("email", {required: "필수 입력사항입니다." , minLength: 5})} type="text"> , input 을 채우지 않고 제출시
-
-console.log(formState.errors);
-
-/*
-  {
-    email: { message: "필수 입력사항입니다." , ref: input, type: "required" },
-    firstName: {message:"", ref: input, type: "required"}
-  }
-*/
-```
-
-```typescript
-<input {...register("email", {
-  required: "필수 입력사항입니다.",
-  minLength: {
-    value: 5,
-    message: "5글자 이상으로 해야 합니다."
-    }
-})} type="text">
-
-console.log(formState.errors)
-
-/*
-  {
-    email: { message: "5글자 이상으로 해야 합니다." , ref: input, type: "minLength" },
-  }
-*/
-
-```
-
-5. 정규식 사용하기
-
-   - 객체에 `pattern : 정규식` 를 추가한다
-   -
-
-```javascript
-<input {...register("email",
-  {
-    required: "필수 입력사항입니다." ,
-    minLength: 5,
-    pattern : {
-      value: /^[A-Z]+naver.com$/
-      message: "패턴이 불일치했습니다."
-    }
-    })} type="text">
-```
-
-#### Tip: error 꺼내기
-
-```javascript
-const { register, handleSubmit, formState } = useForm();
-
-<span>{formState.error?.email?.message}</span>;
-// 대신에 아래처럼 쓸 수 있다.
-const {
-  register,
-  handleSubmit,
-  formState: { error },
-} = useForm();
-
-<span>{error?.email.message}</span>;
-```
+1. 캐시가 비어있으면 placeholderData를 prepopulate 하기
+   ㅔㅔ
