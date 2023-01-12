@@ -1,4 +1,4 @@
-import { API_URL, HEADERS } from './commonApi';
+import { API_URL, HEADERS, HEADERS_USER } from './commonApi';
 
 /**
  * image 를 로드 하면 -> base64 로 인코딩
@@ -216,4 +216,47 @@ export const editTransaction = async (detailId, { isCanceled, done }) => {
   });
   const json = await res.json();
   console.log(json);
+};
+
+/**
+ * 유저의 거래내역 불러오는 함수
+ * @param {string} accessToken
+ * @returns {} 배송비를 제외한 거래내역[]
+ */
+export const getOrderList = async ({ accessToken }) => {
+  const res = await fetch(`${API_URL}products/transactions/details`, {
+    method: 'GET',
+    headers: { ...HEADERS_USER, Authorization: accessToken },
+  });
+  const json = await res.json();
+  let sortedByLatest = [...json].sort((a, b) => new Date(b.timePaid) - new Date(a.timePaid));
+  const exceptDelivery = sortedByLatest.filter((order) => order.product.title !== '배송비');
+  return exceptDelivery;
+};
+/**
+ * 거래내역(주문) 확정 or 취소
+ * @param {string} menu
+ * @param {string} accessToken
+ * @param {detailId} detailId
+ */
+export const handleOrder = async ({ menu, accessToken, detailId }) => {
+  const res = await fetch(`${API_URL}products/${menu === '구매확정' ? 'ok' : 'cancel'}`, {
+    method: 'POST',
+    headers: { ...HEADERS_USER, Authorization: accessToken },
+    body: JSON.stringify({ detailId }),
+  });
+};
+/**
+ * 거래내역 상세정보 불러오기
+ * @param {string} accessToken
+ * @param {string} detailId
+ */
+export const getOrderDetail = async ({ accessToken, detailId }) => {
+  const res = await fetch(`${API_URL}products/transactions/detail`, {
+    method: 'POST',
+    headers: { ...HEADERS_USER, Authorization: accessToken },
+    body: JSON.stringify({ detailId }),
+  });
+  const json = await res.json();
+  return json;
 };

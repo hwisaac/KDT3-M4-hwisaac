@@ -3,6 +3,11 @@
   color: #606e89;
   padding-bottom: 50px;
 }
+.h2 {
+  color: black;
+  font-weight: 600;
+  font-size: 13px;
+}
 .list {
   width: 100%;
   display: flex;

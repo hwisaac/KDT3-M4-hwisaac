@@ -21,8 +21,8 @@ const RecentlyViewed = () => {
 
   const navigate = useNavigate()
   const handleClick = (event) => {
-    navigate(`/products/${event.target.className}`)
-  }
+    navigate(`/products/${event.target.className}`);
+  };
 
   // const scroll = (event)=>{
   //   setScrollLocation(event.target.scrollTop)
@@ -41,6 +41,7 @@ const RecentlyViewed = () => {
           {viewedProducts.map((product) => {
             return (
               <div key={product.id} className={style.product}>
+
                 <img src={product.photo} alt={product.title} className={product.id} onClick={handleClick}/>
                 <p>{product.title}</p>
               </div>
