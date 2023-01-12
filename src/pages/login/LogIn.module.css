@@ -25,6 +25,12 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
+}
+.formContainer .form small {
+  font-size: 10px;
+  color: red;
+  padding-left: 8%;
 }
 .inputContainer {
   display: flex;

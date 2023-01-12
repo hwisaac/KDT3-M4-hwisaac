@@ -1,66 +1,47 @@
-import React, { useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import { ACCOUNT_URL, HEADERS_USER } from '../../api/commonApi';
+import { Link, useNavigate } from 'react-router-dom';
+import { addAccount, getAvailableBank } from '../../api/accountApi';
 import { getCookie } from '../../recoil/userInfo';
+import LoadingModal from '../ui/loading/LoadingModal';
 import style from './AddAccount.module.css';
 
-function AddAccount() {
-  const [banks, setBanks] = useState([]);
-  const [bankDigits, setBankDigits] = useState(0);
+export const AddAccount = () => {
+  const [bankDigits, setBankDigits] = useState(0); // 입력해야할 계좌번호 자리수
   const accessToken = getCookie('accessToken');
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    let json;
-    const getAvailableBank = async () => {
-      try {
-        const res = await fetch(`${ACCOUNT_URL}/banks`, {
-          method: 'GET',
-          headers: { ...HEADERS_USER, Authorization: accessToken },
-        });
-        json = await res.json();
-        let bankList = json;
-        bankList = bankList.filter((bank) => !bank.disabled);
-        setBanks([...bankList]);
-      } catch {
-        alert(json);
-      }
-    };
-    getAvailableBank();
-  }, [accessToken]);
+  const { isLoading, data: banks } = useQuery(['availableBanks'], () => getAvailableBank({ accessToken }));
+  const connectNewAccount = useMutation(({ accessToken, inputData }) => addAccount({ accessToken, inputData }), {
+    onSuccess: () => {
+      alert('계좌가 성공적으로 연결되었습니다.');
+      navigate('/mypage');
+    },
+  });
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onValid = async (data) => {
-    let json;
-    try {
-      const res = await fetch(`${ACCOUNT_URL}`, {
-        method: 'POST',
-        headers: { ...HEADERS_USER, Authorization: accessToken },
-        body: JSON.stringify(data),
-      });
-      json = await res.json();
-      const { id } = json;
-      console.log(id);
-      alert('계좌가 성공적으로 연결되었습니다.');
-      document.location.href = '/mypage';
-    } catch {
-      alert(json);
-    }
-  };
-
+  /**
+   * 계좌추가 가능한 은행중 하나를 선택하면 그 은행의 계좌번호가 몇자리수인지 계산하여 저장
+   * @param {*} event
+   */
   const selectBank = (event) => {
     const selectedBank = banks.filter((bank) => bank.code === event.target.value);
     setBankDigits(selectedBank[0].digits.reduce((a, b) => a + b, 0));
   };
 
+  const onValid = (inputData) => {
+    connectNewAccount.mutate({ accessToken, inputData });
+  };
+
+  if (isLoading) return <LoadingModal />;
   return (
     <div className={style.wrapper}>
       <div className={style.modal}>
@@ -128,6 +109,6 @@ function AddAccount() {
       </div>
     </div>
   );
-}
+};
 
 export default AddAccount;

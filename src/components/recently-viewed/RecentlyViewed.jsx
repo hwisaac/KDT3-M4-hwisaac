@@ -15,28 +15,30 @@ const RecentlyViewed = () => {
     //   });
     // }
 
-    if(watchedProducts){
-      Promise.all(watchedProducts.map(async product =>{
-        return getProductDetail(product);
-      })).then((data)=>{
+    if (watchedProducts) {
+      Promise.all(
+        watchedProducts.map(async (product) => {
+          return getProductDetail(product);
+        }),
+      ).then((data) => {
         setProducts(data);
-      })
+      });
     }
 
-  //   if(watchedProducts){
-  //     Promise.allSettled(watchedProducts.map(async product =>{
-  //       return getProductDetail(product);
-  //     })).then((data)=>{
-  //       console.log('data', data)
-  //       setProducts(data);
-  //     }).catch((error) => console.log(error))
-  //   }
+    //   if(watchedProducts){
+    //     Promise.allSettled(watchedProducts.map(async product =>{
+    //       return getProductDetail(product);
+    //     })).then((data)=>{
+    //       console.log('data', data)
+    //       setProducts(data);
+    //     }).catch((error) => console.log(error))
+    //   }
   }, [watchedProducts]);
-  
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
   const handleClick = (event) => {
-    navigate(`/products/${event.target.className}`)
-  }
+    navigate(`/products/${event.target.className}`);
+  };
 
   return (
     <section className={style.recentlyViewed}>
@@ -48,7 +50,7 @@ const RecentlyViewed = () => {
           {products.map((product) => {
             return (
               <div key={product.id} className={style.product}>
-                <img src={product.photo} alt={product.title} className={product.id} onClick={handleClick}/>
+                <img src={product.photo} alt={product.title} className={product.id} onClick={handleClick} />
                 <h3>{product.title}</h3>
               </div>
             );

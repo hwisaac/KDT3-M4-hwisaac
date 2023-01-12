@@ -1,120 +1,108 @@
 import { useState } from 'react';
-import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import style from './SignUp.module.css';
 import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../recoil/userInfo';
+import { signUp } from '../../api/authApi';
+import { encodeImageFileAsURL } from '../../api/productApi';
+import { useForm } from 'react-hook-form';
 
-function SignUp() {
-  const [inputs, setInputs] = useState({
-    email: '',
-    password: '',
-    displayName: '',
-  });
+export const SignUp = () => {
   const setIsLoggedIn = useSetRecoilState(loginState);
   const setUserInfo = useSetRecoilState(userInfoState);
-
   const [profileImgBase64, setProfileImg] = useState('');
-  const { email, password, displayName } = inputs;
-  const onChange = (event) => {
-    console.log(event.target);
-    const { value, name } = event.target;
-    setInputs({
-      ...inputs,
-      [name]: value.trim(),
-    });
-  };
-  const onImgChange = (event) => {
-    const { files } = event.target;
-    const file = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.addEventListener('load', (e) => {
-      const base64 = e.target.result;
-      setProfileImg(base64);
-    });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onImgChange = async (event) => {
+    const res = await encodeImageFileAsURL(event.target.files, setProfileImg);
   };
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    console.log(email, password, displayName, profileImgBase64);
-    let json;
-    try {
-      const res = await fetch(`${authUrl}/signup`, {
-        method: 'POST',
-        headers: HEADERS_USER,
-        body: JSON.stringify({ email, password, displayName, profileImgBase64 }),
-      });
-      json = await res.json();
-      const {
-        user: { profileImg },
-        accessToken,
-      } = json;
-      setIsLoggedIn(true);
-      setUserInfo({
-        email,
-        displayName,
-        profileImg,
-      });
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
-      document.location.href = '/';
-    } catch {
-      alert(json);
-    }
+  const onValid = async ({ email, password, displayName }) => {
+    const { profileImg, accessToken } = await signUp({ email, password, displayName, profileImgBase64 });
+    setIsLoggedIn(true);
+    setUserInfo({
+      email,
+      displayName,
+      profileImg,
+    });
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
+    document.location.href = '/';
   };
 
   return (
     <section className={style.section}>
-      <Link to="/" className={style.header}>
+      <header className={style.header}>
         <h1 className={style.h1}>회원가입</h1>
-      </Link>
-      <form className={style.form} onSubmit={onSubmit}>
+      </header>
+      <form className={style.form} onSubmit={handleSubmit(onValid)}>
         <div className={style.div}>
-          이메일
+          이메일 *
           <input
-            name="email"
-            type="email"
-            value={email}
-            onChange={onChange}
+            {...register('email', {
+              required: '가입하실 이메일을 입력해주세요.',
+              pattern: { value: new RegExp('[^ @]*@[^ @]*'), message: '이메일 양식이 맞지않습니다. ' },
+            })}
             className={style.input}
-            pattern="[^ @]*@[^ @]*"
-            required
           ></input>
+          <small>{errors?.email?.message}</small>
         </div>
 
         <div className={style.div}>
-          비밀번호
+          비밀번호 *
           <input
-            name="password"
+            {...register('password', {
+              required: '비밀번호를 입력해 주세요.',
+              minLength: { value: 8, message: '최소 8자이상 입력해 주세요.' },
+            })}
             type="password"
-            value={password}
-            onChange={onChange}
             className={style.input}
-            minLength="8"
-            required
           ></input>
+          <small>{errors?.password?.message}</small>
         </div>
 
         <div className={style.div}>
-          아이디
+          아이디 *
           <input
-            name="displayName"
+            {...register('displayName', {
+              required: '사용자 이름을 입력해 주세요.',
+              maxLength: { value: 20, message: '최대 20자까지만 입력가능합니다.' },
+            })}
             type="text"
-            value={displayName}
-            onChange={onChange}
             className={style.input}
-            maxLength="20"
-            required
           ></input>
+          <small>{errors?.displayName?.message}</small>
         </div>
 
         <div className={style.div}>
           프로필 이미지 업로드
-          <input className={`upload-name ${style.file}`} value={profileImgBase64} disabled="disabled" />
-          <label htmlFor="file" className={style.label}>
+          <label htmlFor="file" className={`${style.label} `}>
             파일찾기
           </label>
-          <input id="file" name="profileImg" type="file" onChange={onImgChange} className={style.hidden} />
+          {profileImgBase64 === '' ? (
+            <div className={style.noPreview}>'선택된 파일 없음' </div>
+          ) : (
+            <img src={profileImgBase64} className={style.preview} />
+          )}
+          <input
+            {...register('profileImg', {
+              onChange: onImgChange,
+              validate: (files) => {
+                if (files[0]?.size > 1000000) {
+                  return `1MB 이하여야 합니다.(현재:${(files[0]?.size / 1000000).toFixed(2)}MB)`;
+                } else {
+                  return true;
+                }
+              },
+            })}
+            id="file"
+            type="file"
+            className={style.hidden}
+          />
         </div>
 
         <div className={style.div}>
@@ -123,6 +111,6 @@ function SignUp() {
       </form>
     </section>
   );
-}
+};
 
 export default SignUp;

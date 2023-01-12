@@ -18,6 +18,7 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import EditModal from './components/admin/EditModal';
 import AddAccount from './components/my-page/AddAccount';
 import MyKeepProducts from './pages/my-keep-products/MyKeepProducts';
+import TransactionDetail from './components/my-page/TransactionDetail';
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,19 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'addaccount',
-            element: <AddAccount />,
+            element: (
+              <ProtectedRoute>
+                <AddAccount />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'transactions/:id',
+            element: (
+              <ProtectedRoute>
+                <TransactionDetail />
+              </ProtectedRoute>
+            ),
           },
         ],
       },
