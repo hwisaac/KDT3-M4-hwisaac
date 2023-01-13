@@ -3,7 +3,7 @@ import { useDaumPostcodePopup } from 'react-daum-postcode';
 import style from './AddressForm.module.css';
 import { useState } from 'react';
 
-const AddressBtn = ({ errorStyle, fromError, register, setValue }) => {
+const AddressForm = ({ errorStyle, fromError, register, setValue }) => {
   const [address, setAddress] = useState({});
 
   const open = useDaumPostcodePopup();
@@ -68,4 +68,4 @@ const AddressBtn = ({ errorStyle, fromError, register, setValue }) => {
   );
 };
 
-export default AddressBtn;
+export default AddressForm;
