@@ -1,53 +1,33 @@
-import { useState } from 'react';
-import { authUrl, HEADERS_USER } from '../../api/commonApi';
 import style from './LogIn.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../recoil/userInfo';
+import { logIn } from '../../api/authApi';
+import { useForm } from 'react-hook-form';
 
-export function LogIn() {
+export const LogIn = () => {
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState({
-    email: '',
-    password: '',
-  });
-
   const setIsLoggedIn = useSetRecoilState(loginState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const { email, password } = inputs;
-  const onChange = (event) => {
-    const { value, name } = event.target;
-    setInputs({
-      ...inputs,
-      [name]: value.trim(),
+  const setUserInfo = useSetRecoilState(userInfoState);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onValid = async ({ email, password }) => {
+    const { displayName, profileImg, accessToken } = await logIn({ email, password });
+    setIsLoggedIn(true);
+    setUserInfo({
+      email,
+      displayName,
+      profileImg,
     });
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
+    navigate('/');
   };
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    let json;
-    try {
-      const res = await fetch(`${authUrl}/login`, {
-        method: 'POST',
-        headers: HEADERS_USER,
-        body: JSON.stringify({ email, password }),
-      });
-      json = await res.json();
-      const {
-        user: { displayName, profileImg },
-        accessToken,
-      } = json;
-      setIsLoggedIn(true);
-      setUserInfo({
-        email,
-        displayName,
-        profileImg,
-      });
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24}; secure`;
-      navigate('/');
-    } catch (error) {
-      alert(json);
-    }
-  };
+
   return (
     <section className={style.section}>
       <Link to="/" className={style.header}>
@@ -55,33 +35,32 @@ export function LogIn() {
       </Link>
 
       <div className={style.formContainer}>
-        <form onSubmit={onSubmit} className={style.form}>
+        <form onSubmit={handleSubmit(onValid)} className={style.form}>
           <div className={style.inputContainer}>
-            {/* <div className={style.text}>이메일 로그인</div> */}
             <input
-              className={style.input}
-              name="email"
-              placeholder="email"
+              {...register('email', {
+                required: '가입하신 이메일을 입력해 주세요.',
+              })}
               type="text"
-              value={email}
-              onChange={onChange}
-              required
-            ></input>
-            <input
               className={style.input}
-              name="password"
+              placeholder="email"
+            />
+            <input
+              {...register('password', {
+                required: '비밀번호를 입력해 주세요.',
+              })}
+              className={style.input}
               placeholder="password"
               type="password"
-              value={password}
-              onChange={onChange}
-              required
-            ></input>
+            />
           </div>
+          {errors && <small role="alert">{errors.email?.message}</small>}
+          {errors && <small role="alert">{errors.password?.message}</small>}
           <input type="submit" value="로그인" className={`${style.input} ${style.btn}`} />
         </form>
       </div>
     </section>
   );
-}
+};
 
 export default LogIn;

@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { API_URL, HEADERS_USER } from '../../api/commonApi';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getOrderList, handleOrder } from '../../api/productApi';
+import LoadingModal from '../ui/loading/LoadingModal';
 import style from './MyOrder.module.css';
 
-function MyOrder({ accessToken }) {
-  const [myOrder, setMyOrder] = useState([]);
-  const sorted = [...myOrder].sort((a, b) => a.timePaid - b.timePaid);
-  const [button, setButton] = useState([]);
+export const MyOrder = ({ accessToken }) => {
+  const navigate = useNavigate();
   const orderButton = ['구매확정', '구매취소', '상세정보'];
+
+  const { isLoading, data: myOrder, refetch } = useQuery(['myOrder'], () => getOrderList({ accessToken }));
+  if (isLoading) return <LoadingModal />;
+
   const Button = ({ order, orderButton, handleClick }) => {
     return (
       <button className={style.button} onClick={handleClick} name={orderButton} data-id={order.detailId}>
@@ -15,46 +19,15 @@ function MyOrder({ accessToken }) {
       </button>
     );
   };
-  useEffect(() => {
-    const getOrderList = async () => {
-      let json;
-      try {
-        const res = await fetch(`${API_URL}products/transactions/details`, {
-          method: 'GET',
-          headers: { ...HEADERS_USER, Authorization: accessToken },
-        });
-        json = await res.json();
-        let sorted = [...json].sort((a, b) => new Date(b.timePaid) - new Date(a.timePaid));
-        const exceptDelivery = sorted.filter((order) => order.product.title !== '배송비');
-        setMyOrder([...exceptDelivery]);
-      } catch {
-        console.log(json);
-      }
-    };
-    getOrderList();
-  }, [button]);
 
   const handleClick = async (event) => {
     const menu = event.target.name;
     const detailId = event.target.dataset.id;
-    if (menu === '구매확정') {
-      const res = await fetch(`${API_URL}products/ok`, {
-        method: 'POST',
-        headers: { ...HEADERS_USER, Authorization: accessToken },
-        body: JSON.stringify({ detailId }),
-      });
-      setButton([...button, '확정']);
-      return;
-    } else if (menu === '구매취소') {
-      const res = await fetch(`${API_URL}products/cancel`, {
-        method: 'POST',
-        headers: { ...HEADERS_USER, Authorization: accessToken },
-        body: JSON.stringify({ detailId }),
-      });
-      setButton([...button, '취소']);
-      return;
+    if (menu === '상세정보') {
+      navigate(`transactions/${detailId}`, { state: { detailId, accessToken } });
     } else {
-      console.log('상세정보');
+      await handleOrder({ menu, accessToken, detailId });
+      refetch();
     }
   };
 
@@ -64,8 +37,8 @@ function MyOrder({ accessToken }) {
       <hr />
       {myOrder ? (
         myOrder.map((order) => (
-          <>
-            <div className={style.list} key={order.detailId}>
+          <div key={order.detailId}>
+            <div className={style.list}>
               <div className={style.left}>
                 <img src={order.product.thumbnail} alt={order.product.title} className={style.img} />
                 <div className={style.text}>
@@ -82,10 +55,15 @@ function MyOrder({ accessToken }) {
                   </li>
                 </div>
               </div>
-              <div className={style.right} key={order.detailId}>
+              <div className={style.right}>
                 {!order.done && !order.isCanceled ? (
-                  orderButton.map((button, index) => (
-                    <Button key={order.detailId + index} order={order} orderButton={button} handleClick={handleClick} />
+                  orderButton.map((button) => (
+                    <Button
+                      key={order.detailId + button}
+                      order={order}
+                      orderButton={button}
+                      handleClick={handleClick}
+                    />
                   ))
                 ) : (
                   <Button order={order} orderButton={orderButton[2]} handleClick={handleClick} />
@@ -93,13 +71,13 @@ function MyOrder({ accessToken }) {
               </div>
             </div>
             <hr />
-          </>
+          </div>
         ))
       ) : (
         <span>구매내역이 없습니다.</span>
       )}
     </section>
   );
-}
+};
 
 export default MyOrder;
