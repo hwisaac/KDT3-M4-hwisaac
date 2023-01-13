@@ -2,7 +2,11 @@ import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { updateProduct } from '../../api/productApi';
 import { getBuy, getAccountInfo } from '../../api/accountApi';
+<<<<<<< HEAD
 import { getCookie, userInfoState } from '../../recoil/userInfo';
+=======
+import { userInfoState } from '../../recoil/userInfo';
+>>>>>>> 2f3b24df05caf8d80a84604f0314a9dacdae644b
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import style from './MyBuy.module.css';
