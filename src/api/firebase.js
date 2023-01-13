@@ -33,3 +33,19 @@ export async function removeFromCart(username, productIds) {
   }
   return;
 }
+
+export async function getKeepProducts(username) {
+  return get(ref(database, `keep-products/${username}`)) //
+    .then((snapshot) => {
+      const items = snapshot.val() || {};
+      return Object.values(items);
+    });
+}
+
+export async function addOrUpdateToKeepProducts(username, product) {
+  return set(ref(database, `keep-products/${username}/${product.productId}`), product);
+}
+
+export async function removeFromKeepProducts(username, productIds) {
+  remove(ref(database, `keep-products/${username}/${productIds}`));
+}

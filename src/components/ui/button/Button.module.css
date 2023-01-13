@@ -1,6 +1,7 @@
 .btn,
-.buyBtn {
-  width: 50%;
+.cartBtn {
+  position: relative;
+  width: 35%;
   height: 3rem;
   border: 1px solid var(--color-blue);
   background-color: var(--color-white);
@@ -8,17 +9,43 @@
   color: var(--color-grey);
   font-size: 1rem;
   margin: 0.1rem;
+  cursor: pointer;
 }
 
 .btn:hover {
   border: 1px solid var(--color-grey);
 }
 
-.buyBtn {
+.cartBtn {
   color: var(--color-white);
   background-color: var(--color-blue);
 }
 
-.buyBtn:hover {
+.cartBtn:hover {
   filter: brightness(85%);
 }
+
+.btn .heartIcon {
+  position: absolute;
+  top: 16px;
+  right: 35px;
+  font-size: 0;
+  background-image: url(../../../assets/image/icon_heart_15x13_gray.412edbc4.svg);
+  width: 15px;
+  height: 13px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.heartIcon_red {
+  position: absolute;
+  top: 16px;
+  right: 35px;
+  background-image: url(./../../../assets/image/icon_heart_15x13_red.7c83f183.svg);
+  font-size: 0;
+  width: 15px;
+  height: 13px;
+  cursor: pointer;
+}
+
+
