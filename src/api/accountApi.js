@@ -44,8 +44,7 @@ export const getBuy = async (productId, accountId, accessToken) => {
         accountId,
       }),
     });
-
-    console.log('getBuy >>', res);
+    console.log(res);
     return res;
   } catch (error) {
     console.error(error.message);
