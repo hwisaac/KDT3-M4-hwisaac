@@ -107,8 +107,6 @@ export async function updateProduct(id, payload) {
   });
   const json = await res.json();
   console.log('updateProduct >> ', json);
-
-  return json;
 }
 
 export const deleteAll = async () => {
