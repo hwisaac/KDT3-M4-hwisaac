@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { getSearch } from '../../api/productApi';
 import { useSearchParams } from 'react-router-dom';
 import SearchItem from '../../components/search/SearchItem';
@@ -46,31 +45,16 @@ const Search = () => {
   const {
     isLoading,
     data: search,
-    refetch,
-  } = useQuery(
-    ['search'],
-    () => {
-      if (findTitle && tag) return getSearch(findTitle, tag);
-      else if (tag) return getSearch('', tag);
-      else return getSearch(title);
-    },
-    {
-      onError: () => {
-        alert('현재 검색을 이용할 수 없으니 문의 바랍니다.');
-      },
-    },
-  );
+  } = useQuery([title], () => {
+    if (findTitle && tag) return getSearch(findTitle, tag);
+    else if (tag) return getSearch('', tag);
+    else return getSearch(title);
+  })
 
-  useEffect(() => {
-    refetch();
-  }, [refetch, title]);
-
-  // const [filters, filter, setFilter, filtered] = useFilter(search)
   // const {filters, filter, setFilter, filtered} = useFilter(search)
   const response = useFilter(search);
-  // console.log('search', response)
-  const { filters, filter, setFilter, filtered } = { ...response };
-  // console.log(filtered)
+  const {filters, filter, setFilter, filtered} = {...response}
+
 
   return (
     <div className={style.wrap}>

@@ -2,19 +2,25 @@ import React from 'react';
 import style from './TotalProduct.module.css';
 import Product from './Product';
 import SortButton from '../ui/button/SortButton';
-import useProducts from '../../hooks/useProducts';
 import LoadingModal from './../ui/loading/LoadingModal';
 import useFilter from '../../hooks/useFilter';
+import RecentlyViewed from '../recently-viewed/RecentlyViewed';
+import { useQuery } from '@tanstack/react-query';
+import { getProducts } from '../../api/productApi';
 
 const TotalProduct = () => {
-  const { loading, error, products } = useProducts('total');
-  const { filters, filter, setFilter, filtered } = useFilter(products);
+  // const { loading, error, products} = useProducts('total');
+  const {isLoading, error, data:products} = useQuery(['total'], () => getProducts())
+
+  //가격순 상품 재정렬
+  const reponse = useFilter(products)
+  const {filters, filter, setFilter, filtered} = {...reponse}
 
   return (
     <>
       {error ? (
         <p>Error...</p>
-      ) : loading ? (
+      ) : isLoading ? (
         <LoadingModal />
       ) : (
         <div className={style.total}>
@@ -35,6 +41,7 @@ const TotalProduct = () => {
           </ul>
         </div>
       )}
+      <RecentlyViewed/>
     </>
   );
 };

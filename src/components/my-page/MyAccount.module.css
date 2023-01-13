@@ -5,11 +5,14 @@
   align-items: flex-start;
   gap: 5px;
   margin-bottom: 30px;
+  font-size: 12px;
 }
 .p {
-  margin-bottom: 10px;
+  color: black;
+  font-weight: 600;
+  font-size: 13px;
 }
-.list {
+.ul {
   color: black;
   width: 100%;
   display: flex;
@@ -21,9 +24,28 @@
   width: 100%;
   padding: 10px;
   display: flex;
+  align-items: center;
   box-sizing: border-box;
 }
-.li {
+
+.li:nth-child(1) {
   flex-basis: 50%;
   text-align: center;
+}
+.li:nth-child(2),
+.li:nth-child(3) {
+  flex-basis: 25%;
+  text-align: center;
+}
+.li button {
+  font-size: 10px;
+  color: inherit;
+  cursor: pointer;
+  padding: 3px 6px;
+  border: 0.8px solid #606e89;
+  background-color: transparent;
+}
+.li button:hover {
+  background-color: #606e89;
+  color: #f6f9fa;
 }

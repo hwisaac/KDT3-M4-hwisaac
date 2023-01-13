@@ -1,43 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import MyAccount from '../../components/my-page/MyAccount';
 import MyOrder from '../../components/my-page/MyOrder';
 import { alternativeImg, getCookie, userInfoState } from '../../recoil/userInfo';
-import { ACCOUNT_URL, HEADERS_USER } from '../../api/commonApi';
 import style from './MyPage.module.css';
 import { Link, Outlet } from 'react-router-dom';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
+import { getAccountInfo } from '../../api/accountApi';
+import { useQuery } from '@tanstack/react-query';
 
-export default function MyPage() {
-  const [loading, setLoading] = useState(false);
+export const MyPage = () => {
   const userInfo = useRecoilValue(userInfoState);
-  const [myAccount, setMyAccount] = useState({ totalBalance: 0, accounts: [] });
   const accessToken = getCookie('accessToken');
 
-  useEffect(() => {
-    let json;
-    const getAccount = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`${ACCOUNT_URL}`, {
-          method: 'GET',
-          headers: { ...HEADERS_USER, Authorization: accessToken },
-        });
-        json = await res.json();
-        const { totalBalance, accounts } = json;
-        console.log(json);
-        setMyAccount({ totalBalance, accounts });
-      } catch {
-        alert(json);
-      }
-      setLoading(false);
-    };
-    getAccount();
-  }, [accessToken]);
+  const { isLoading, data: myAccount, refetch } = useQuery(['myAccount'], () => getAccountInfo({ accessToken }));
 
+  if (isLoading) return <LoadingModal />;
   return (
     <main className={style.main}>
-      {loading ? <LoadingModal /> : ''}
       <div className={style.flex}>
         <div className={style.left}>
           <div className={style.profile}>
@@ -50,8 +30,9 @@ export default function MyPage() {
             <span className={style.email}>{userInfo.email}</span>
           </div>
           <p className={style.money}>
-            <p>총 보유 금액</p>
-            <span className={style.number}>{myAccount ? myAccount?.totalBalance?.toLocaleString() : 0}</span>
+            <span>총 보유 금액</span>
+            <br />
+            <span className={style.number}>{myAccount.totalBalance ? myAccount.totalBalance.toLocaleString() : 0}</span>
             <span>원</span>
           </p>
           <Link to="addaccount" className={style.button}>
@@ -60,10 +41,11 @@ export default function MyPage() {
           <Outlet />
         </div>
         <ul className={style.right}>
-          <MyAccount className={style.account} myAccount={myAccount} userInfo={userInfo} />
+          <MyAccount className={style.account} accessToken={accessToken} myAccount={myAccount} refetch={refetch} />
           <MyOrder className={style.order} accessToken={accessToken} />
         </ul>
       </div>
     </main>
   );
-}
+};
+export default MyPage;
