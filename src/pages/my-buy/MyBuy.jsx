@@ -3,7 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { addProduct, deleteProduct } from '../../api/productApi';
 import { getBuy, getAccountInfo } from '../../api/accountApi';
 import { getCookie, userInfoState } from '../../recoil/userInfo';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import style from './MyBuy.module.css';
 import BuyItem from '../../components/my-buy/BuyItem';
