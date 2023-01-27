@@ -7,14 +7,15 @@ import useFilter from '../../hooks/useFilter';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '../../api/productApi';
+import ImgProduct from './ImgProduct';
 
 const TotalProduct = () => {
   // const { loading, error, products} = useProducts('total');
-  const {isLoading, error, data:products} = useQuery(['total'], () => getProducts())
+  const { isLoading, error, data: products } = useQuery(['total'], () => getProducts());
 
   //가격순 상품 재정렬
-  const reponse = useFilter(products)
-  const {filters, filter, setFilter, filtered} = {...reponse}
+  const reponse = useFilter(products);
+  const { filters, filter, setFilter, filtered } = { ...reponse };
 
   return (
     <>
@@ -28,7 +29,7 @@ const TotalProduct = () => {
           <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
           <ul className={style.product_wrap}>
             {filtered?.map((product) => (
-              <Product
+              <ImgProduct
                 key={product.id}
                 id={product.id}
                 title={product.title}
@@ -41,7 +42,7 @@ const TotalProduct = () => {
           </ul>
         </div>
       )}
-      <RecentlyViewed/>
+      <RecentlyViewed />
     </>
   );
 };

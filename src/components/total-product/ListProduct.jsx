@@ -1,22 +1,24 @@
 import React from 'react';
-import style from './SearchItem.module.css';
+import style from './ListProduct.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const SearchItem = ({ id, img, title, price, description }) => {
+const ListProduct = ({ id, img, title, price, description, soldOut, grid }) => {
   const navigate = useNavigate();
   const [heart, setHeart] = useState(false);
   const onClickHeart = () => {
     setHeart((prev) => !prev);
   };
   const onClickItem = (e) => {
-    if (e.target.nodeName !== 'BUTTON') {
+    if (e.target.nodeName !== 'BUTTON' && !soldOut) {
       navigate(`/products/${id}`, { state: { id, title, img, price } });
     }
   };
 
   return (
-    <li className={style.item} onClick={onClickItem}>
+    <li className={style[grid]} onClick={onClickItem}>
+      {soldOut ? <div className={style.soldout}>SOLDOUT</div> : null}
+
       <div className={style.container}>
         <img className={style.img} src={img} alt={title} />
         <div>
@@ -35,4 +37,4 @@ const SearchItem = ({ id, img, title, price, description }) => {
   );
 };
 
-export default SearchItem;
+export default ListProduct;
