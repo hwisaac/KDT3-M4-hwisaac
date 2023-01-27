@@ -1,0 +1,126 @@
+.wrap {
+  width: 234px;
+  list-style: none;
+  margin-bottom: 30px;
+  cursor: pointer;
+  position: relative;
+}
+.soldout {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.445);
+  color: red;
+  font-size: 35px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 250px;
+  cursor: default;
+}
+
+.wrap:hover .btns {
+  visibility: visible;
+  opacity: 1;
+}
+.wrap > a {
+  display: block;
+  height: 234px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 10px;
+}
+.btns {
+  position: absolute;
+  bottom: 70px;
+  left: 100px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+  z-index: 100;
+  pointer-events: visible;
+}
+
+.btnHeartBig {
+  outline: none;
+  border: none;
+  background-image: url('../../assets/image/spSs_icon_svg.svg');
+  background-repeat: no-repeat;
+  background-position: -111px -188px;
+  background-color: white;
+  width: 37px;
+  height: 37px;
+  font-size: 0;
+  border-radius: 50px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.btnHeartBig_red {
+  outline: none;
+  border: none;
+  background-image: url('../../assets/image/spSs_icon_svg.svg');
+  background-repeat: no-repeat;
+  background-position: -156px -188px;
+  background-color: white;
+  width: 37px;
+  height: 37px;
+  font-size: 0;
+  border-radius: 50px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.txt {
+  position: relative;
+}
+.txt a:hover .title {
+  text-decoration: underline;
+}
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #222;
+  font-weight: bold;
+  font-size: 13px;
+  padding-right: 20px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid transparent;
+}
+.btnHeartSmall {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 0;
+  background-image: url(../../assets/image/icon_heart_15x13_gray.412edbc4.svg);
+  width: 15px;
+  height: 13px;
+  cursor: pointer;
+  z-index: 10;
+}
+.btnHeartSmall_red {
+  background-image: url(../../assets/image/icon_heart_15x13_red.7c83f183.svg);
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 0;
+  background-image: url(../../assets/image/icon_heart_15x13_red.7c83f183.svg);
+  width: 15px;
+  height: 13px;
+  cursor: pointer;
+}
+
+.price {
+  margin-top: 5px;
+  color: #222;
+  font-weight: bold;
+  font-size: 13px;
+}

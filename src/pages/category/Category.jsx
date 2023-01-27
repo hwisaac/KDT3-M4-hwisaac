@@ -39,7 +39,7 @@ export default function Category() {
   return (
     <main className={style.main}>
       <h2 className={style.h2}>{tag}</h2>
-      <div style={{ width: '80%', display: 'flex', justifyContent: 'space-between' }}>
+      <div className={style.select} >
         <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
         <ul className={style.gridWrap} style={{ display: 'flex' }}>
           {grids.map((grid) => (
