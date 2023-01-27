@@ -17,3 +17,35 @@
   gap: 25px;
   justify-items: center;
 }
+.select {
+  width: 1280px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 그리드 정렬 */
+.list_items {
+  width: 1280px;
+  margin-top: 30px;
+}
+.image_items {
+  width: 1280px;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+}
+.bigImage_items {
+  width: 1280px;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+.gallery_items {
+  width: 1280px;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
