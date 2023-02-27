@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import { getProductDetail } from '../../api/productApi';
@@ -25,30 +25,37 @@ export default function ProductDetail() {
   // const { id: productId, title, photo, price, description, isSoldOut } = detail;
 
   //최근 본 상품 목록 recoil에 저장
-  const setViewedList = useSetRecoilState(viewedListState)
+  const setViewedList = useSetRecoilState(viewedListState);
 
-  const {isLoading, data : detail} = useQuery([id], () => {
-    return  getProductDetail(id)
-   }, {onSuccess: (data) => {
-     setViewedList((prevArr) => [
-       {
-         id: data.id,
-         title: data.title,
-         photo: data.photo,
-       }, ...prevArr
-     ])
-   }})
+  const { isLoading, data: detail } = useQuery(
+    [id],
+    () => {
+      return getProductDetail(id);
+    },
+    {
+      onSuccess: (data) => {
+        setViewedList((prevArr) => [
+          {
+            id: data.id,
+            title: data.title,
+            photo: data.photo,
+          },
+          ...prevArr,
+        ]);
+      },
+    },
+  );
 
-  if(isLoading) return <LoadingModal/> 
-  // console.log('detail', detail)
-  const { id:productId, title, photo, price, description, isSoldOut } = detail;
+  if (isLoading) return <LoadingModal />;
+  // console.log('detail', detail);
+  const { id: productId, title, photo, price, description, isSoldOut } = detail;
 
   const handleClickCart = () => {
     if (!isLoggedIn) {
       const result = window.confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
       if (result === true) window.location = '/login';
     } else {
-      const product = { productId, title, photo, price, isSoldOut, quantity: 1, isChecked: true };
+      const product = { productId, title, photo, price, isSoldOut, quantity: 1 };
       addOrUpdateToCart(userName, product);
       const result = window.confirm(`장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?`);
       if (result === true) navigate(`/mycart`);
@@ -69,7 +76,7 @@ export default function ProductDetail() {
       const result = window.confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?');
       if (result === true) window.location = '/login';
     } else {
-      setHeart((prev) => !prev)
+      setHeart((prev) => !prev);
     }
   };
 
@@ -88,7 +95,7 @@ export default function ProductDetail() {
           <div className={style.btns}>
             <Button text="구매하기" onClick={handleClickBuy} />
             <Button text="장바구니" onClick={handleClickCart} />
-            <Button text="찜하기" onClick={handleClickKeepProducts} heart={heart}/>
+            <Button text="찜하기" onClick={handleClickKeepProducts} heart={heart} />
           </div>
         ) : (
           <div className={style.isSoldOut}>
