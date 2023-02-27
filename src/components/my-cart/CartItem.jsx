@@ -11,9 +11,10 @@ import { getProducts } from '../../api/productApi';
 
 export default function CartItem({
   product,
-  product: { productId, quantity, title, price, photo, isChecked, isSoldOut },
-  allChecked,
+  product: { productId, quantity, title, price, photo, isSoldOut },
   setGetSoldOutId,
+  onChange,
+  checked,
 }) {
   const { addOrUpdateItem, removeItem } = useCart();
   const { isLoading, data: products } = useQuery(['products'], getProducts);
@@ -21,19 +22,17 @@ export default function CartItem({
   const getProduct = products && products.filter((item) => item.id === productId)[0];
 
   useEffect(() => {
-    let newAllChecked = allChecked;
     if (hasGetProducts) {
       const { isSoldOut: getSoldOut } = getProduct;
       addOrUpdateItem.mutate({
         ...product,
-        isChecked: newAllChecked,
         isSoldOut: getSoldOut,
       });
       setTimeout(() => {
-        if (isSoldOut && allChecked) alert('품절된 상품이 있습니다.');
+        if (isSoldOut) alert('품절된 상품이 있습니다.');
       }, 100);
     }
-  }, [allChecked, isSoldOut]);
+  }, [isSoldOut]);
 
   const navigate = useNavigate();
 
@@ -54,11 +53,6 @@ export default function CartItem({
     navigate('/mybuy', { state: [product] });
   };
 
-  const handleChecked = () => {
-    let newChecked = !product.isChecked;
-    addOrUpdateItem.mutate({ ...product, isChecked: newChecked });
-  };
-
   const handleToProduct = (event) => {
     if (event.target.nodeName !== 'svg') navigate(`/products/${productId}`);
   };
@@ -73,7 +67,7 @@ export default function CartItem({
   return (
     <li className={isSoldOut ? style.soldout : style.item}>
       <div className={style.itme__info}>
-        <input type="checkbox" className={style.checkbox} checked={isChecked} onChange={handleChecked} />
+        <input type="checkbox" className={style.checkbox} value={productId} onChange={onChange} checked={checked} />
         <div className={style.item__desciption} onClick={handleToProduct}>
           <img className={style.image} src={photo} alt={title} />
           <div className={style.card}>
