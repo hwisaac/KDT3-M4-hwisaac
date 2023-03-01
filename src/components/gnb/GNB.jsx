@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import style from './GNB.module.css';
-import GNBDepth from './GNBDepth';
+import GNBDepth from './GnbDepth';
 
 const GNB = () => {
   const LINKS = [
@@ -57,7 +57,7 @@ const GNB = () => {
                 handleChange(i);
               }}
               onMouseOut={() => {
-                setSelected(null)
+                setSelected(null);
               }}
             >
               <Link className={style.gnbLink} to={`/category/${link.mainLink}`} data-link={link.mainLink} key={i}>
