@@ -1,12 +1,14 @@
 import React from 'react';
-import { MdOutlineClear } from 'react-icons/md';
-import styles from './SmallButton.module.css';
+import styled from 'styled-components';
 
 export default function SmallButton({ text, onClick }) {
-  return (
-    <button className={styles.btn} onClick={onClick}>
-      {text === '선택 삭제' && <MdOutlineClear />}
-      {text}
-    </button>
-  );
+  return <Button onClick={onClick}>{text}</Button>;
 }
+
+const Button = styled.button`
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+  max-width: 150px;
+  padding: 2rem 0;
+`;
