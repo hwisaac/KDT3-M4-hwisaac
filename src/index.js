@@ -5,6 +5,7 @@ import router from './Router';
 import './App.css';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import 'typeface-fahkwang';
 
 const queryClient = new QueryClient();
 
