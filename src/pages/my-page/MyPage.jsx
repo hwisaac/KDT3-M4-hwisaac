@@ -8,6 +8,24 @@ import { Link, Outlet } from 'react-router-dom';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { getAccountInfo } from '../../api/accountApi';
 import { useQuery } from '@tanstack/react-query';
+import styled from 'styled-components';
+
+const Section = styled.section`
+  margin: auto;
+  height: 80%;
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 7rem 1rem;
+`;
+
+const H3 = styled.h3`
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-default-black);
+`;
 
 export const MyPage = () => {
   const userInfo = useRecoilValue(userInfoState);
@@ -17,7 +35,8 @@ export const MyPage = () => {
 
   if (isLoading) return <LoadingModal />;
   return (
-    <main className={style.main}>
+    <Section>
+      <H3>MY PAGE</H3>
       <div className={style.flex}>
         <div className={style.left}>
           <div className={style.profile}>
@@ -45,7 +64,7 @@ export const MyPage = () => {
           <MyOrder className={style.order} accessToken={accessToken} />
         </ul>
       </div>
-    </main>
+    </Section>
   );
 };
 export default MyPage;

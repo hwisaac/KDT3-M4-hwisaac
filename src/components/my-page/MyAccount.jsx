@@ -7,7 +7,7 @@ export const MyAccount = ({ accessToken, myAccount, refetch }) => {
     const signature = window.confirm('해당 계좌를 삭제하시겠습니까 ?');
     if (signature) {
       deleteAccount({ accessToken, accountId, signature });
-      refetch();
+      // refetch();
     }
   };
 

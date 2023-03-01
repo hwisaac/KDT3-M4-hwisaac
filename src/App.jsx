@@ -10,10 +10,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 function App() {
   return (
     <>
-      <Header />
-      <GNB />
+      {/* <Header /> */}
+      {/* <GNB /> */}
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
       <ReactQueryDevtools initialIsOpen={false} />
     </>
   );

@@ -1,9 +1,88 @@
-import style from './LogIn.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { loginState, userInfoState } from '../../recoil/userInfo';
 import { logIn } from '../../api/authApi';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+
+const Section = styled.div`
+  margin: auto;
+  height: 80%;
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 7rem 1rem;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 3rem 0;
+  width: 25rem;
+  border: solid 1px var(--color-default-light-black);
+`;
+
+const Head3 = styled.h3`
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-default-black);
+`;
+
+const Form = styled.form`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: auto;
+  height: 6rem;
+  width: 80%;
+  border: solid 1px #dadada;
+  position: relative;
+`;
+
+const Input = styled.input`
+  height: 5rem;
+  padding-left: 0.5rem;
+  border: none;
+  background: transparent;
+  &:first-child {
+    border-bottom: solid 1px #dadada;
+  }
+`;
+
+const Errors = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 80%;
+  font-size: 12px;
+  color: var(--color-default-brown);
+`;
+
+const Btn = styled.input`
+  height: 3rem;
+  width: 20rem;
+  margin: auto;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Fahkwang';
+  background-color: var(--color-default-light-black);
+`;
 
 export const LogIn = () => {
   const navigate = useNavigate();
@@ -29,37 +108,43 @@ export const LogIn = () => {
   };
 
   return (
-    <section className={style.section}>
-      <Link to="/" className={style.header}>
-        <h1 className={style.h1}>로그인</h1>
-      </Link>
+    <Section>
+      <Container>
+        <Link to="/">
+          <Head3>LOG IN</Head3>
+        </Link>
 
-      <div className={style.formContainer}>
-        <form onSubmit={handleSubmit(onValid)} className={style.form}>
-          <div className={style.inputContainer}>
-            <input
+        <Form onSubmit={handleSubmit(onValid)}>
+          <InputContainer>
+            <Input
               {...register('email', {
-                required: '가입하신 이메일을 입력해 주세요.',
+                required: 'Enter your email.',
               })}
               type="text"
-              className={style.input}
               placeholder="email"
             />
-            <input
+            <Input
               {...register('password', {
-                required: '비밀번호를 입력해 주세요.',
+                required: 'Enter your password.',
               })}
-              className={style.input}
               placeholder="password"
               type="password"
             />
-          </div>
-          {errors && <small role="alert">{errors.email?.message}</small>}
-          {errors && <small role="alert">{errors.password?.message}</small>}
-          <input type="submit" value="로그인" className={`${style.input} ${style.btn}`} />
-        </form>
-      </div>
-    </section>
+          </InputContainer>
+
+          <Errors>
+            {errors && <small role="alert">{errors.email?.message}</small>}
+            {errors && <small role="alert">{errors.password?.message}</small>}
+          </Errors>
+
+          <Btn type="submit" value="LOG IN" />
+        </Form>
+
+        <div>
+          Don't have an account ? <Link to="/signup">Sign up</Link>
+        </div>
+      </Container>
+    </Section>
   );
 };
 
