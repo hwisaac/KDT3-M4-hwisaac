@@ -50,7 +50,14 @@
 :root {
   --height: 50vh;
   --width: 100%;
-
+  /* 혜원 */
+  --brown: #936836;
+  --black: #1b1b1b;
+  --semi-black: #303631;
+  --gray: #969d97;
+  --semi-gray: #8a8a8a;
+  --white: #f4f4f4;
+  /* 이삭 */
   --color-white: #f4f4f4;
   --color-brown: #936836;
   --color-black1: #1b1b1b;
@@ -76,28 +83,12 @@
 }
 
 body {
-<<<<<<< HEAD
   font-family: 'Pangram', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-=======
-  font-family: 'Nanum Gothic', sans-serif, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
->>>>>>> 7eb4796 (Design: Update mycart page)
     'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   line-height: 1.3;
   color: var(--color-black2);
   background-color: var(--color-white);
-}
-
-@font-face {
-  font-family: 'Pangram';
-  src: url('./styles/fonts/Pangram-Regular.otf') format('opentype');
-}
-
-.inner {
-  display: flex;
-  width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .hidden {

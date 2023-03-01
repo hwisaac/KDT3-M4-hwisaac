@@ -1,6 +1,5 @@
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
-import GNB from './components/gnb/GNB';
 import { Outlet } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect } from 'react';
@@ -18,7 +17,6 @@ export default function App() {
   return (
     <Layout>
       <Header />
-      {/* <GNB /> */}
       <Outlet />
       <Footer />
       <ReactQueryDevtools initialIsOpen={false} />
