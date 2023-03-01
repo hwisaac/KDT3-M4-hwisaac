@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CartItem from '../../components/my-cart/CartItem';
 import PriceCard from '../../components/my-cart/PriceCard';
 import { BiPlus } from 'react-icons/bi';
@@ -12,9 +12,6 @@ import SmallButton from '../../components/ui/button/SmallButton';
 const SHIPPING = 3000;
 
 export default function MyCart() {
-  const [allChecked, setAllChecked] = useState(true);
-  const [getSoldOutId, setGetSoldOutId] = useState([]);
-
   const {
     cartQuery: { isLoading, data: products },
     removeItem,
@@ -22,26 +19,52 @@ export default function MyCart() {
   } = useCart();
   const navigate = useNavigate();
 
+  const [getSoldOutId, setGetSoldOutId] = useState([]);
+  const [selectedItems, setSelectedItems] = useState({});
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+
+  /** 개별상품 체크 */
+  const handleCheck = (productId) => {
+    setSelectedItems((prevItems) => ({
+      ...prevItems,
+      [productId]: !prevItems[productId],
+    }));
+  };
+
+  /** 전체상품 체크 */
+  const handleSelectAll = () => {
+    const selectAll = !selectAllChecked;
+    const updatedItems = products.reduce((acc, item) => {
+      acc[item.productId] = selectAll;
+      return acc;
+    }, {});
+    setSelectedItems(updatedItems);
+    setSelectAllChecked(selectAll);
+  };
+
+  useEffect(() => {
+    if (Object.keys(selectedItems).length === 0) {
+      setSelectAllChecked(false);
+    } else if (Object.keys(selectedItems).length === products?.length) {
+      const allValues = Object.values(selectedItems);
+      setSelectAllChecked(allValues.every((value) => value === true));
+    }
+  }, [selectedItems]);
+
   if (isLoading) return <p>Loading...</p>;
 
   const hasProducts = products && products.length > 0;
-  const checkedItem = products && products.filter((product) => product.isChecked === true && !product.isSoldOut);
-  const onlyChecked = products && products.filter((product) => product.isChecked === true);
-  const totalPrice = products && checkedItem.reduce((prev, current) => prev + current.price * current.quantity, 0);
-  const shippingPrice = checkedItem.length !== 0 ? SHIPPING : 0;
-
-  const handleAllChecked = () => {
-    setAllChecked((prev) => !prev);
-    // const newAllChecked = !allChecked;
-    // products.map((product) => addOrUpdateItem.mutate({ ...product, isChecked: newAllChecked }));
-  };
-  const isChecked = onlyChecked.length;
+  const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
+  const shippingPrice = selectedItems.length !== 0 ? SHIPPING : 0;
+  const numberCheckedItems = checkedItems.length;
   const totalChecked = products.length;
   const soldOutItem = getSoldOutId.length;
-  const isAllChecked = isChecked === products.length;
+  const totalPrice = checkedItems.reduce((prev, current) => prev + parseInt(current.price) * current.quantity, 0);
 
-  const handleToBuy = () => {
-    const buyProduct = products.filter((product) => product.isChecked === true && !product.isSoldOut);
+  /** 구매페이지 이동 */
+  const handleToBuy = (event) => {
+    event.preventDefault();
+    const buyProduct = products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
     if (buyProduct.length === 0) {
       alert('주문하실 상품을 선택해 주세요.');
     } else if (soldOutItem > 0) {
@@ -50,9 +73,11 @@ export default function MyCart() {
       navigate('/mybuy', { state: buyProduct });
     }
   };
+
+  /** 선택삭제 */
   const handleSelectDeleteClick = () => {
-    const selected = products && products.map((product) => product.isChecked === true && product.productId);
-    selected.map((productId) => removeItem.mutate(productId));
+    const selected = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
+    selected.map((product) => removeItem.mutate(product.productId));
   };
 
   return (
@@ -71,12 +96,7 @@ export default function MyCart() {
         <article className={style.container}>
           <div className={style.title}>
             <div className={style.titleInput}>
-              <input
-                type="checkbox"
-                id="title"
-                checked={(allChecked && isAllChecked) || (!allChecked && isAllChecked)}
-                onChange={handleAllChecked}
-              />
+              <input type="checkbox" id="title" checked={selectAllChecked} onChange={handleSelectAll} />
               <label htmlFor="title">프레시멘토</label>
               <GrHome />
             </div>
@@ -88,8 +108,9 @@ export default function MyCart() {
                 <CartItem
                   key={product.productId}
                   product={product}
-                  allChecked={allChecked}
                   setGetSoldOutId={setGetSoldOutId}
+                  onChange={() => handleCheck(product.productId)}
+                  checked={selectedItems[product.productId]}
                 />
               ))}
           </ul>
@@ -97,9 +118,9 @@ export default function MyCart() {
             <PriceCard text="선택상품금액" price={totalPrice} />
             <BiPlus className={style.icons} />
             <PriceCard text="총 배송비" price={shippingPrice} />
-            <PriceCard text="주문 금액" price={totalPrice + shippingPrice} />
+            <PriceCard text="주문 금액" price={totalPrice + SHIPPING} />
             <button className={totalChecked !== 0 ? style.btn : style.disabledBtn} onClick={handleToBuy}>
-              프레시멘토 {isChecked}건 주문하기
+              프레시멘토 {numberCheckedItems}건 주문하기
             </button>
           </div>
         </article>
