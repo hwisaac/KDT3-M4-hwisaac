@@ -126,7 +126,7 @@ const ImageContainer = styled.div`
 const Product = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.6rem;
   width: 60%;
   vertical-align: top;
   padding-right: 0.5rem;
@@ -140,10 +140,11 @@ const Quantity = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 20%;
+  width: 25%;
+  font-size: 0.75rem;
 `;
 
-const DeleteBtn = styled.button`
+const DeleteBtn = styled.div`
   width: 5%;
   align-self: flex-start;
   cursor: pointer;

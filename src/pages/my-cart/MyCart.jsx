@@ -50,15 +50,14 @@ export default function MyCart() {
   }, [selectedItems]);
 
   if (isLoading) return <p>Loading...</p>;
+  console.log('products:', products);
 
   const hasProducts = products && products.length > 0;
   const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
-  const shippingPrice = selectedItems.length !== 0 ? SHIPPING : 0;
   const numberCheckedItems = checkedItems.length;
-  const totalChecked = products.length;
   const soldOutItem = getSoldOutId.length;
   const totalPrice = checkedItems.reduce((prev, current) => prev + parseInt(current.price) * current.quantity, 0);
-  const freeShipping = totalPrice >= 30000 ? 0 : SHIPPING;
+  const shippingPrice = totalPrice >= 30000 ? 0 : SHIPPING;
 
   /** 구매페이지 이동 */
   const handleToBuy = (event) => {
@@ -111,7 +110,7 @@ export default function MyCart() {
                   />
                 ))}
             </CartItemContainer>
-            <SmallButton text="선택 삭제" onClick={handleSelectDeleteClick} />
+            <SmallButton text="선택삭제" onClick={handleSelectDeleteClick} />
           </LeftContainer>
           <RightContainer>
             <PriceContainer>
@@ -119,15 +118,15 @@ export default function MyCart() {
               <PriceCardContainer>
                 <PriceInfo>
                   <PriceCard text="Price" price={totalPrice} />
-                  <PriceCard text="Shipping" price={freeShipping} />
+                  <PriceCard text="Shipping" price={shippingPrice} />
                 </PriceInfo>
                 <ShipMsg>* 30,000원 이상 구매시 무료배송 혜택</ShipMsg>
                 <TotalPrice>
-                  <PriceCard text="Total" price={totalPrice && totalPrice + freeShipping} />
+                  <PriceCard text="Total" price={totalPrice && totalPrice + shippingPrice} />
                 </TotalPrice>
               </PriceCardContainer>
             </PriceContainer>
-            <Button>Ordeing {numberCheckedItems} cases</Button>
+            <Button onClick={handleToBuy}>Ordeing {numberCheckedItems} cases</Button>
           </RightContainer>
         </Article>
       )}
@@ -212,8 +211,9 @@ const TotalPrice = styled.div`
 const ShipMsg = styled.div`
   border-top: 1px solid var(--color-gray1);
   border-bottom: 1px solid var(--color-light-gray3);
-  padding: 3rem 0;
+  padding: 2rem 0;
   color: var(--color-brown);
+  font-size: 0.5rem;
 `;
 
 const Button = styled.div`
@@ -226,10 +226,9 @@ const Button = styled.div`
   color: var(--color-white);
   cursor: pointer;
   &:hover {
-    filter: brightness(2);
+    filter: brightness(3);
     transition: filter 0.3s ease-in-out;
   }
-  /* -webkit-transition: background-color 0.3s ease-in-out,border-color 0.3s ease-in-out,color 0.3s ease-in-out; */
 `;
 
 const CustomCheckbox = styled.input`
@@ -250,7 +249,7 @@ const CustomCheckbox = styled.input`
 
 const NoProduct = styled.div`
   max-width: 1000px;
-  padding: 2rem 3.25rem;
+  padding: 2rem 0rem;
   margin: 0 auto 2rem;
   text-align: left;
   color: var(--color-black1);

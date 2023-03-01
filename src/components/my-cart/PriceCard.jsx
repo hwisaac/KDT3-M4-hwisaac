@@ -17,14 +17,12 @@ const Price = styled.div`
 `;
 
 const PriceSummaryT = styled.div`
-  /* font-weight: bold; */
   width: 40%;
-  font-size: ${(props) => (props.text === 'total' ? '2rem' : '1.5rem')};
+  font-size: ${(props) => (props.text === 'total' ? '1.25rem' : '1rem')};
 `;
 
 const PriceSummaryD = styled.div`
-  /* font-weight: bold; */
   width: 60%;
   text-align: right;
-  font-size: ${(props) => (props.text === 'total' ? '2rem' : '1.5rem')};
+  font-size: ${(props) => (props.text === 'total' ? '1.25rem' : '1rem')};
 `;

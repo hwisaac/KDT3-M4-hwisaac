@@ -10,5 +10,6 @@ const Button = styled.div`
   display: flex;
   justify-content: start;
   max-width: 150px;
-  padding: 2rem 0;
+  padding: 1.25rem 0;
+  font-size: 0.75rem;
 `;
