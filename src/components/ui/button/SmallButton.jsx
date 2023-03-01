@@ -5,7 +5,7 @@ export default function SmallButton({ text, onClick }) {
   return <Button onClick={onClick}>{text}</Button>;
 }
 
-const Button = styled.button`
+const Button = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: start;
