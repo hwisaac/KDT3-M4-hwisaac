@@ -1,3 +1,52 @@
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pangram';
+  src: url('../public/fonts/Pangram-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
 :root {
   --height: 50vh;
   --width: 100%;
@@ -27,9 +76,9 @@
 }
 
 body {
-  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
-    'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', sans-serif;
+  font-family: 'Pangram', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   line-height: 1.3;
   color: var(--color-black2);
   background-color: var(--color-white);

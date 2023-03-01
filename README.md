@@ -1,7 +1,17 @@
 # 4차 과제 : 스마트 스토어 만들기
 
-배포:https://kdt3-m4-of-team4.netlify.app/
-클론 사이트: https://smartstore.naver.com/freshmentor
+배포
+https://kdt3-m4-of-team4.netlify.app/
+
+메인 디자인
+https://www.behance.net/gallery/112849833/nowaste-online-store
+
+서브 디자인(메인에 없는 경우 참고)
+https://www.aromatica.co.kr/member/join.html
+
+자료
+https://theunwasteshop.com/collections/body-care
+
 멤버: 강해경, 김혜인, 김지원, 홍혜원, 황이삭
 
 ## 프로젝트 목표

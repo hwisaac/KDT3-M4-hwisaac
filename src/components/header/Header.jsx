@@ -41,6 +41,17 @@ export default function Header() {
           </User>
         </Right>
       </Wrapper>
+      <div style={{ fontSize: '40px' }}>
+        <span>Pangram</span>
+        <span style={{ fontWeight: '200' }}>200</span>
+        <span style={{ fontWeight: '300' }}>300</span>
+        <span style={{ fontWeight: '400' }}>400</span>
+        <span style={{ fontWeight: '500' }}>500</span>
+        <span style={{ fontWeight: '600' }}>600</span>
+        <span style={{ fontWeight: '700' }}>700</span>
+        <span style={{ fontWeight: '800' }}>800</span>
+        <span style={{ fontWeight: '900' }}>900</span>
+      </div>
     </HeaderComponent>
   );
 }
