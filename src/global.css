@@ -1,9 +1,17 @@
 :root {
   --height: 50vh;
   --width: 100%;
+
+  --color-white: #f4f4f4;
+  --color-brown: #936836;
+  --color-black1: #1b1b1b;
+  --color-black2: #303631;
+  --color-gray1: #8a8a8a;
+  --color-gray2: #969d97;
+
   --color-red: orangered;
   --color-green: #09ae4f;
-  --color-white: #ffffff;
+
   --color-grey: #444444;
   --color-light-grey: #c7c7c7;
   --color-light-grey1: #939393;
@@ -23,6 +31,8 @@ body {
     'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', sans-serif;
   line-height: 1.3;
+  color: var(--color-black2);
+  background-color: var(--color-white);
 }
 
 .inner {
@@ -34,6 +44,12 @@ body {
 
 .hidden {
   display: none;
+}
+
+.fah {
+  font-family: 'Fahkwang', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 }
 
 a {
