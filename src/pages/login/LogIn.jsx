@@ -23,14 +23,14 @@ const Container = styled.div`
   gap: 2rem;
   padding: 3rem 0;
   width: 25rem;
-  border: solid 1px var(--color-default-light-black);
+  border: solid 1px var(--color-black2);
 `;
 
-const Head3 = styled.h3`
+const H3 = styled.h3`
   text-align: center;
   font-size: 2rem;
   font-weight: 800;
-  color: var(--color-default-black);
+  color: var(--color-black2);
 `;
 
 const Form = styled.form`
@@ -50,7 +50,7 @@ const InputContainer = styled.div`
   margin: auto;
   height: 6rem;
   width: 80%;
-  border: solid 1px #dadada;
+  border: solid 1px var(--color-gray2);
   position: relative;
 `;
 
@@ -60,7 +60,7 @@ const Input = styled.input`
   border: none;
   background: transparent;
   &:first-child {
-    border-bottom: solid 1px #dadada;
+    border-bottom: solid 1px var(--color-gray2);
   }
 `;
 
@@ -70,18 +70,18 @@ const Errors = styled.div`
   margin: auto;
   width: 80%;
   font-size: 12px;
-  color: var(--color-default-brown);
+  color: var(--color-brown);
 `;
 
 const Btn = styled.input`
   height: 3rem;
   width: 20rem;
   margin: auto;
-  color: white;
+  color: var(--color-white);
   font-size: 1rem;
-  font-weight: 600;
-  font-family: 'Fahkwang';
-  background-color: var(--color-default-light-black);
+  font-weight: 500;
+  border: none;
+  background-color: var(--color-black2);
 `;
 
 export const LogIn = () => {
@@ -111,21 +111,21 @@ export const LogIn = () => {
     <Section>
       <Container>
         <Link to="/">
-          <Head3>LOG IN</Head3>
+          <H3 className="fah">LOG IN</H3>
         </Link>
 
         <Form onSubmit={handleSubmit(onValid)}>
           <InputContainer>
             <Input
               {...register('email', {
-                required: 'Enter your email.',
+                required: 'Enter your email',
               })}
               type="text"
               placeholder="email"
             />
             <Input
               {...register('password', {
-                required: 'Enter your password.',
+                required: 'Enter your password',
               })}
               placeholder="password"
               type="password"
@@ -137,7 +137,7 @@ export const LogIn = () => {
             {errors && <small role="alert">{errors.password?.message}</small>}
           </Errors>
 
-          <Btn type="submit" value="LOG IN" />
+          <Btn type="submit" value="LOGIN" />
         </Form>
 
         <div>

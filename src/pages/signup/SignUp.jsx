@@ -16,9 +16,9 @@ const Section = styled.section`
   padding: 7rem 1rem;
 `;
 
-const Head = styled.h3`
+const H3 = styled.h3`
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
 `;
 
 const FormWrapper = styled.form`
@@ -28,10 +28,8 @@ const FormWrapper = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  background-color: var(--color-default-gray2);
-  padding-top: 5rem;
-  padding-bottom: 3rem;
+  gap: 2rem;
+  padding: 2rem 1rem;
   box-sizing: content-box;
 `;
 
@@ -55,8 +53,8 @@ const Input = styled.input.attrs({
 `;
 
 const ErrorMessage = styled.small`
-  font-size: 8px;
-  color: var(--color-default-brown);
+  font-size: 12px;
+  color: var(--color-brown);
   margin-top: -5px;
 `;
 
@@ -80,14 +78,19 @@ const BtnWrapper = styled.div`
 
 const Btn = styled.input`
   width: fit-content;
-  color: #303631;
+  color: var(--color-black2);
   font-size: 1rem;
   font-family: 'Fahkwang';
   font-weight: 700;
   border: NONE;
   padding: 1rem 4rem;
-  background-color: #f4f4f4;
+  border: 1px solid var(--color-gray1);
   cursor: pointer;
+  &:hover {
+    color: var(--color-white);
+    background-color: var(--color-black2);
+    transition: all 0.5s;
+  }
 `;
 
 export const SignUp = () => {
@@ -119,25 +122,28 @@ export const SignUp = () => {
 
   return (
     <Section>
-      <Head>SIGN UP</Head>
+      <H3 className="fah">SIGN UP</H3>
       <FormWrapper onSubmit={handleSubmit(onValid)}>
         <FormDiv>
           E-MAIL *
           <Input
             {...register('email', {
-              required: '가입하실 이메일을 입력해주세요.',
-              pattern: { value: new RegExp('[^ @]*@[^ @]*'), message: '이메일 양식이 맞지않습니다. ' },
+              required: 'This field is required',
+              pattern: {
+                value: new RegExp('[^ @]*@[^ @]*'),
+                message: 'Please enter an email address in the correct format',
+              },
             })}
           ></Input>
           <ErrorMessage>{errors?.email?.message}</ErrorMessage>
         </FormDiv>
 
         <FormDiv>
-          ID
+          USER NAME *
           <Input
             {...register('displayName', {
-              required: '사용자 이름을 입력해 주세요.',
-              maxLength: { value: 20, message: '최대 20자까지만 입력가능합니다.' },
+              required: 'This field is required',
+              maxLength: { value: 20, message: 'Your username cannot be more than 20 characters long' },
             })}
             type="text"
           ></Input>
@@ -145,23 +151,11 @@ export const SignUp = () => {
         </FormDiv>
 
         <FormDiv>
-          PASSWORD
+          PASSWORD *
           <Input
             {...register('password', {
-              required: '비밀번호를 입력해 주세요.',
-              minLength: { value: 8, message: '최소 8자이상 입력해 주세요.' },
-            })}
-            type="password"
-          ></Input>
-          <ErrorMessage>{errors?.password?.message}</ErrorMessage>
-        </FormDiv>
-
-        <FormDiv>
-          CONFIRM PASSWORD *
-          <Input
-            {...register('password', {
-              required: '비밀번호를 입력해 주세요.',
-              minLength: { value: 8, message: '최소 8자이상 입력해 주세요.' },
+              required: 'This field is required',
+              minLength: { value: 8, message: 'Your password must be more than 8 characters long' },
             })}
             type="password"
           ></Input>

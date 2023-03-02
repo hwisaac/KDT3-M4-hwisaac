@@ -1,11 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { getOrderList, handleOrder } from '../../api/productApi';
 import LoadingModal from '../ui/loading/LoadingModal';
 import style from './MyOrder.module.css';
+import styled from 'styled-components';
 
-export const MyOrder = ({ accessToken }) => {
+const Section = styled.section`
+  margin: auto;
+  height: 80%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+  padding: 7rem 1rem;
+`;
+
+export const MyOrder = () => {
+  const { accessToken } = useOutletContext();
   const navigate = useNavigate();
   const orderButton = ['구매확정', '구매취소', '상세정보'];
 
@@ -32,7 +45,7 @@ export const MyOrder = ({ accessToken }) => {
   };
 
   return (
-    <section className={style.myOrder}>
+    <Section>
       <h2 className={style.h2}>주문내역</h2>
       <hr />
       {myOrder ? (
@@ -76,7 +89,7 @@ export const MyOrder = ({ accessToken }) => {
       ) : (
         <span>구매내역이 없습니다.</span>
       )}
-    </section>
+    </Section>
   );
 };
 
