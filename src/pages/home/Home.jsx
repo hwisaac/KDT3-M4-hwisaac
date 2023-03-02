@@ -3,10 +3,9 @@ import { useRecoilState } from 'recoil';
 import { adminUser } from '../../api/adminUser';
 import { loginState, userInfoState } from '../../recoil/userInfo';
 import styled from 'styled-components';
-import { AiOutlinePlus } from 'react-icons/ai';
 import EcoSection from 'components/home/EcoSection';
 import Bestseller from 'components/home/Bestseller';
-import Slider from 'components/home/Slider';
+import Slider from 'components/kv/Slider';
 import kvImg from 'assets/image/home/kv.jpg';
 
 export default function Home() {
