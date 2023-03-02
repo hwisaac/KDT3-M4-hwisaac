@@ -29,6 +29,11 @@ export default function Header() {
     setSearchOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (searchOpen) document.body.style = 'overflow: hidden';
+    else document.body.style = 'overflow: auto';
+  }, [searchOpen]);
+
   return (
     <>
       <HeaderComponent>
@@ -155,7 +160,7 @@ const Search = styled.button`
 
 const SearchModal = styled(motion.div)`
   position: fixed;
-  top: 101px;
+  top: 81px;
   left: 0;
   width: 100vw;
   height: 100vh;
