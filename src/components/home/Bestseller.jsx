@@ -22,7 +22,7 @@ const Bestseller = () => {
       </SubNav>
       <BestsellerInfoContent>
         {[0, 1, 2].map((x) => (
-          <div></div>
+          <div key={x}></div>
         ))}
       </BestsellerInfoContent>
     </BestsellerInfo>
