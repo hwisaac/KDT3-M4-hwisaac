@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import CartItem from '../../components/my-cart/CartItem';
 import PriceCard from '../../components/my-cart/PriceCard';
-import { BiPlus } from 'react-icons/bi';
-import { GrHome } from 'react-icons/gr';
-import style from './MyCart.module.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
@@ -53,15 +50,14 @@ export default function MyCart() {
   }, [selectedItems]);
 
   if (isLoading) return <p>Loading...</p>;
+  console.log('products:', products);
 
   const hasProducts = products && products.length > 0;
   const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
-  const shippingPrice = selectedItems.length !== 0 ? SHIPPING : 0;
   const numberCheckedItems = checkedItems.length;
-  const totalChecked = products.length;
   const soldOutItem = getSoldOutId.length;
   const totalPrice = checkedItems.reduce((prev, current) => prev + parseInt(current.price) * current.quantity, 0);
-  const freeShipping = totalPrice >= 30000 ? 0 : SHIPPING;
+  const shippingPrice = totalPrice >= 30000 ? 0 : SHIPPING;
 
   /** 구매페이지 이동 */
   const handleToBuy = (event) => {
@@ -84,11 +80,11 @@ export default function MyCart() {
 
   return (
     <Container>
-      <Title>Cart</Title>
+      <h1 className="fah">CART</h1>
 
       {!hasProducts && (
         <NoProduct>
-          <SubTitle>Product</SubTitle>
+          <SubTitle className="fah">Product</SubTitle>
           <Message>
             <p>장바구니가 비어있습니다.</p>
             <Link to="/">쇼핑 계속하기</Link>
@@ -97,8 +93,8 @@ export default function MyCart() {
       )}
       {hasProducts && (
         <Article>
-          <ProductContainer>
-            <SubTitle>Product</SubTitle>
+          <LeftContainer>
+            <SubTitle className="fah">Product</SubTitle>
             <CheckboxContainer>
               <CustomCheckbox type="checkbox" id="title" checked={selectAllChecked} onChange={handleSelectAll} />
             </CheckboxContainer>
@@ -114,23 +110,23 @@ export default function MyCart() {
                   />
                 ))}
             </CartItemContainer>
-            <SmallButton text="선택 삭제" onClick={handleSelectDeleteClick} />
-          </ProductContainer>
+            <SmallButton text="선택삭제" onClick={handleSelectDeleteClick} />
+          </LeftContainer>
           <RightContainer>
             <PriceContainer>
-              <SubTitle>Total</SubTitle>
+              <SubTitle className="fah">Total</SubTitle>
               <PriceCardContainer>
                 <PriceInfo>
                   <PriceCard text="Price" price={totalPrice} />
-                  <PriceCard text="Shipping" price={freeShipping} />
+                  <PriceCard text="Shipping" price={shippingPrice} />
                 </PriceInfo>
                 <ShipMsg>* 30,000원 이상 구매시 무료배송 혜택</ShipMsg>
                 <TotalPrice>
-                  <PriceCard text="Total" price={totalPrice && totalPrice + freeShipping} />
+                  <PriceCard text="Total" price={totalPrice && totalPrice + shippingPrice} />
                 </TotalPrice>
               </PriceCardContainer>
             </PriceContainer>
-            <Button>Ordeing {numberCheckedItems} cases</Button>
+            <Button onClick={handleToBuy}>Ordeing {numberCheckedItems} cases</Button>
           </RightContainer>
         </Article>
       )}
@@ -139,17 +135,17 @@ export default function MyCart() {
 }
 
 const Container = styled.div`
-  background-color: var(--white);
-  color: var(--black);
-`;
-
-const Title = styled.h1`
-  font-size: 5rem;
-  font-weight: bold;
+  background-color: var(--color-white);
+  color: var(--color-black1);
   max-width: 1000px;
-  margin: 6rem auto 2rem;
-  text-align: left;
-  padding: 0 1rem;
+  width: 1000px;
+  margin: 3rem auto 8rem;
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: 0.2rem;
+    text-align: left;
+    margin-bottom: 1rem;
+  }
 `;
 
 const CheckboxContainer = styled.div`
@@ -158,45 +154,43 @@ const CheckboxContainer = styled.div`
 
 const Article = styled.article`
   display: flex;
-  max-width: 1000px;
-  padding: 0 1rem;
   margin: auto;
-  gap: 2rem;
+  gap: 1.1rem;
 `;
 
-const ProductContainer = styled.div`
+const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #faf8f3;
+  background-color: var(--color-beige);
   padding: 3rem;
-  width: 50%;
+  width: 45%;
 `;
 
 const CartItemContainer = styled.ul`
   padding: 2rem 0;
-  border-top: 1px solid var(--gray);
-  border-bottom: 1px solid var(--gray);
+  border-top: 1px solid var(--color-light-gray3);
+  border-bottom: 1px solid var(--color-light-gray3);
 `;
 
 const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 55%;
 `;
 
 const PriceContainer = styled.div`
   display: flex;
+  /* width: 100%; */
   flex-direction: column;
-  background-color: #faf8f3;
+  background-color: var(--color-beige);
   padding: 3rem;
   margin-bottom: 2rem;
 `;
 
 const SubTitle = styled.h5`
-  font-size: 3rem;
+  font-size: 1.75rem;
   font-weight: 400;
-  letter-spacing: 0.01em;
-  border-bottom: 1px solid var(--gray);
+  border-bottom: 1px solid var(--color-light-gray3);
   padding-bottom: 1.25rem;
   margin-bottom: 1rem;
 `;
@@ -215,33 +209,33 @@ const TotalPrice = styled.div`
 `;
 
 const ShipMsg = styled.div`
-  border-top: 1px solid var(--gray);
-  border-bottom: 1px solid var(--gray);
-  padding: 3rem 0;
-  color: var(--brown);
+  border-top: 1px solid var(--color-gray1);
+  border-bottom: 1px solid var(--color-light-gray3);
+  padding: 2rem 0;
+  color: var(--color-brown);
+  font-size: 0.5rem;
 `;
 
 const Button = styled.div`
-  width: 100%;
+  width: 80%;
   margin-top: 0.25rem;
-  padding: 2rem 3rem;
-  font-size: 1.5rem;
+  padding: 1rem 3rem;
+  font-size: 1rem;
   text-align: center;
-  background-color: var(--black);
-  color: var(--white);
+  background-color: var(--color-black1);
+  color: var(--color-white);
   cursor: pointer;
   &:hover {
-    filter: brightness(2);
+    filter: brightness(3);
     transition: filter 0.3s ease-in-out;
   }
-  /* -webkit-transition: background-color 0.3s ease-in-out,border-color 0.3s ease-in-out,color 0.3s ease-in-out; */
 `;
 
 const CustomCheckbox = styled.input`
   appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: #deded3;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color-light-gray3);
 
   &:checked {
     border-color: transparent;
@@ -249,17 +243,19 @@ const CustomCheckbox = styled.input`
     background-size: 100% 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: var(--brown);
+    background-color: var(--color-brown);
   }
 `;
 
 const NoProduct = styled.div`
   max-width: 1000px;
-  padding: 3.25rem;
+  padding: 2rem 0rem;
   margin: 0 auto 2rem;
   text-align: left;
-  background-color: var(--semi-gray);
-  color: var(--black);
+  color: var(--color-black1);
+  a {
+    color: var(--color-brown);
+  }
 `;
 
 const Message = styled.p`

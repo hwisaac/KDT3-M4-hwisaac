@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
-import style from './CartItem.module.css';
 import { MdOutlineClear } from 'react-icons/md';
-import { CiSquareMinus } from 'react-icons/ci';
 import { HiMinusSm, HiOutlinePlusSm } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import { useQuery } from '@tanstack/react-query';
-import SmallButton from '../ui/button/SmallButton';
 import { getProducts } from '../../api/productApi';
 import styled from 'styled-components';
 
@@ -71,7 +68,7 @@ export default function CartItem({
         <CustomCheckbox type="checkbox" value={productId} onChange={onChange} checked={checked} />
       </CheckboxContainer>
       <ImageContainer onClick={handleToProduct}>
-        <ProductImage src={photo} alt={title} />
+        <img src={photo} alt={title} />
       </ImageContainer>
       <Product>
         <Text>{title}</Text>
@@ -103,8 +100,8 @@ const CheckboxContainer = styled.div`
 
 const CustomCheckbox = styled.input`
   appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
   background-color: #deded3;
   margin: 0;
   &:checked {
@@ -113,45 +110,41 @@ const CustomCheckbox = styled.input`
     background-size: 100% 100%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: var(--brown);
+    background-color: var(--color-brown);
   }
 `;
 
 const ImageContainer = styled.div`
-  width: 35%;
+  width: 30%;
   margin-right: 1.5rem;
   margin-left: 1rem;
-`;
-
-const ProductImage = styled.img`
-  width: 100%;
-  max-width: 12rem;
-  height: auto;
-  display: block;
+  img {
+    width: 100%;
+  }
 `;
 
 const Product = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 55%;
+  gap: 0.6rem;
+  width: 60%;
   vertical-align: top;
   padding-right: 0.5rem;
 `;
 
 const Text = styled.div`
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 0.8rem;
 `;
 
 const Quantity = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 20%;
+  width: 25%;
+  font-size: 0.75rem;
 `;
 
-const DeleteBtn = styled.button`
+const DeleteBtn = styled.div`
   width: 5%;
   align-self: flex-start;
   cursor: pointer;

@@ -50,20 +50,16 @@
 :root {
   --height: 50vh;
   --width: 100%;
-  /* 혜원 */
-  --brown: #936836;
-  --black: #1b1b1b;
-  --semi-black: #303631;
-  --gray: #969d97;
-  --semi-gray: #8a8a8a;
-  --white: #f4f4f4;
+
   /* 이삭 */
   --color-white: #f4f4f4;
   --color-brown: #936836;
+  --color-beige: #faf8f3;
   --color-black1: #1b1b1b;
   --color-black2: #303631;
   --color-gray1: #8a8a8a;
   --color-gray2: #969d97;
+  --color-light-gray3: #deded3;
 
   --color-red: orangered;
   --color-green: #09ae4f;
