@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import EcoSection from '../../components/home/EcoSection';
 import Bestseller from '../../components/home/Bestseller';
+import Slider from '../../components/home/Slider';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -35,6 +36,7 @@ export default function Home() {
       </DescriptionUs>
       <EcoSection />
       <Bestseller />
+      <Slider />
     </HomePage>
   );
 }
