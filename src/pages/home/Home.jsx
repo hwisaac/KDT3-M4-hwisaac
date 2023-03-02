@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { adminUser } from '../../api/adminUser';
 import { loginState, userInfoState } from '../../recoil/userInfo';
 import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import EcoSection from '../../components/home/EcoSection';
+import Bestseller from '../../components/home/Bestseller';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -33,6 +34,7 @@ export default function Home() {
         <span>ABOUT US</span>
       </DescriptionUs>
       <EcoSection />
+      <Bestseller />
     </HomePage>
   );
 }

@@ -74,17 +74,22 @@ const Menues = styled.ul`
   gap: 40px;
   height: 100%;
 
-  .active {
-    font-weight: 500;
-    li {
-      box-shadow: inset 0 -1.5px 0 var(--color-black2);
-    }
-  }
   li {
     display: flex;
     align-items: center;
     height: 100%;
+    opacity: 0.5;
     box-shadow: inset 0 -1.5px 0 rgba(0, 0, 0, 0);
+    transition: all 0.3s;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  .active {
+    li {
+      opacity: 1;
+      box-shadow: inset 0 -1.5px 0 var(--color-black2);
+    }
   }
 `;
 const Right = styled.div``;
