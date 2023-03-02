@@ -53,6 +53,7 @@
 
   /* 이삭 */
   --color-white: #f4f4f4;
+  --color-white2: #e5e5e5;
   --color-brown: #936836;
   --color-beige: #faf8f3;
   --color-black1: #1b1b1b;
@@ -100,3 +101,7 @@ body {
 a {
   text-decoration: none;
 }
+
+/* em {
+  color: var(--color-brown);
+} */

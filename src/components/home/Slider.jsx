@@ -49,7 +49,6 @@ const Slider = () => {
 export default Slider;
 
 const Wrapper = styled.div`
-  border: 1px solid black;
   background-color: var(--color-black2);
   color: var(--color-white);
   height: 500px;
@@ -71,13 +70,13 @@ const Slides = styled(motion.div)`
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, 300px);
-  border: 1px solid red;
+  /* border: 1px solid red; */
   width: 100%;
   overflow: hidden;
   grid-gap: 20px;
   div {
-    /* background-color: gray; */
-    border: 1px solid white;
+    background-color: var(--color-black1);
+    /* border: 1px solid white; */
   }
   div:last-child {
     margin-right: 20px;
