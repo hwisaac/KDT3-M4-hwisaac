@@ -9,6 +9,9 @@ import useFilter from '../../hooks/useFilter';
 import SortButton from '../../components/ui/button/SortButton';
 import Product from './../../components/total-product/Product';
 import GridButton from '../../components/ui/button/GridButton';
+import styled from 'styled-components';
+import { CiSearch } from 'react-icons/ci';
+import useGridFilter from './../../hooks/useGridFilter';
 
 const Search = () => {
   // 쿼리 값 가져오기
@@ -56,40 +59,112 @@ const Search = () => {
   const { filters, filter, setFilter, filtered } = { ...response };
 
   // 그리드
-  const grids = ['list', 'image', 'bigImage', 'gallery'];
-  const [grid, setGrid] = useState('list');
-  const [select, setSelect] = useState('list');
+  const { grids, grid, setGrid } = useGridFilter();
 
   // 보이는 목록수
 
   return (
-    <div className={style.wrap}>
+    <>
       {isLoading ? (
         <LoadingModal />
-      ) : search.length === 0 ? (
-        <p className={style.none}>입력하신 '{title}'에 대한 스토어 내 검색결과가 없습니다.</p>
       ) : (
-        <>
-          <div className={style.head}>
-            <h1>{title}</h1> <span>검색 결과(총 {search.length}개)</span>
-          </div>
-          <div className={style.select}>
-            <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
-            <ul className={style.gridWrap}>
-              {grids.map((grid) => (
-                <GridButton key={grid} grid={grid} setGrid={setGrid} select={select} setSelect={setSelect} />
-              ))}
-            </ul>
-          </div>
-          <ul className={style[`${grid}_items`]}>
-            {filtered?.map((data) => (
-              <Product key={data.id} data={data} grid={grid} />
-            ))}
-          </ul>
-        </>
+        <Wrapper>
+          <Header>
+            <Text>
+              <h1>PRODUCT SEARCH</h1>
+              {search.length === 0 ? (
+                <p>No results could be found for "{title}"</p>
+              ) : (
+                <p>
+                  {search.length} results for "{title}"
+                </p>
+              )}
+            </Text>
+
+            <Form>
+              <input type="text" placeholder="SEARCH" />
+              <button type="submit">
+                <CiSearch size={28} />
+              </button>
+            </Form>
+          </Header>
+
+          {search.length === 0 ? null : (
+            <Main>
+              <MenuBar>
+                <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
+                <GridButton grids={grids} grid={grid} setGrid={setGrid} />
+              </MenuBar>
+              <ul className={style[`${grid}_items`]}>
+                {filtered?.map((data) => (
+                  <Product key={data.id} data={data} grid={grid} />
+                ))}
+              </ul>
+            </Main>
+          )}
+        </Wrapper>
       )}
-    </div>
+    </>
   );
 };
+
+const Wrapper = styled.div`
+  width: 1200px;
+  margin: 100px auto;
+  font-family: 'Pangram';
+`;
+
+const Header = styled.div`
+  width: 100%;
+  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Text = styled.div`
+  margin-bottom: 30px;
+  text-align: center;
+  h1 {
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+`;
+
+const Form = styled.form`
+  position: relative;
+  width: 40%;
+  display: flex;
+  input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+    font-weight: 400;
+    font-size: 20px;
+    ::placeholder {
+      color: var(--color-gray2);
+    }
+  }
+  button {
+    position: absolute;
+    right: 0;
+    outline: none;
+    border: none;
+    background-color: var(--color-white);
+    cursor: pointer;
+  }
+`;
+
+const Main = styled.div``;
+
+const MenuBar = styled.div`
+  display: flex;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-gray1);
+`;
 
 export default Search;
