@@ -2,8 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { AiFillExclamationCircle, AiOutlineArrowRight, AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import style from './Footer.module.css';
-import { SiNaver } from 'react-icons/si';
 import styled from 'styled-components';
 import { GrFacebookOption } from 'react-icons/gr';
 import { motion } from 'framer-motion';
@@ -38,18 +36,32 @@ export default function Footer() {
       <List>
         <h3>HELP</h3>
         <ul>
-          <li>support</li>
-          <li>contact us</li>
-          <li>shipping&returns</li>
-          <li>faqs</li>
+          <li>
+            <span>support</span>
+          </li>
+          <li>
+            <span>contact us</span>
+          </li>
+          <li>
+            <span>shipping&returns</span>
+          </li>
+          <li>
+            <span>faqs</span>
+          </li>
         </ul>
       </List>
       <List>
         <h3>COMPANY</h3>
         <ul>
-          <li>about us</li>
-          <li>blog</li>
-          <li>shop</li>
+          <li>
+            <span>about us</span>
+          </li>
+          <li>
+            <span>blog</span>
+          </li>
+          <li>
+            <span>shop</span>
+          </li>
         </ul>
       </List>
       <List>
@@ -106,6 +118,28 @@ const List = styled.div`
     display: flex;
     flex-direction: column;
     gap: 15px;
+    li {
+      span {
+        cursor: pointer;
+        display: inline;
+        position: relative;
+
+        &:after {
+          content: '';
+          display: inline;
+          position: absolute;
+          bottom: 0px;
+          left: 0;
+          height: 1px;
+          width: 0%;
+          background-color: var(--color-black2);
+          transition: all 0.3s;
+        }
+        &:hover:after {
+          width: 100%;
+        }
+      }
+    }
   }
 `;
 const Icons = styled.div`
