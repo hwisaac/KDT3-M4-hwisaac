@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import CartItem from '../../components/my-cart/CartItem';
 import PriceCard from '../../components/my-cart/PriceCard';
-import { BiPlus } from 'react-icons/bi';
-import { GrHome } from 'react-icons/gr';
-import style from './MyCart.module.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import SmallButton from '../../components/ui/button/SmallButton';
+import styled from 'styled-components';
 
 const SHIPPING = 3000;
 
@@ -52,14 +50,14 @@ export default function MyCart() {
   }, [selectedItems]);
 
   if (isLoading) return <p>Loading...</p>;
+  console.log('products:', products);
 
   const hasProducts = products && products.length > 0;
   const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
-  const shippingPrice = selectedItems.length !== 0 ? SHIPPING : 0;
   const numberCheckedItems = checkedItems.length;
-  const totalChecked = products.length;
   const soldOutItem = getSoldOutId.length;
   const totalPrice = checkedItems.reduce((prev, current) => prev + parseInt(current.price) * current.quantity, 0);
+  const shippingPrice = totalPrice >= 30000 ? 0 : SHIPPING;
 
   /** 구매페이지 이동 */
   const handleToBuy = (event) => {
@@ -81,50 +79,191 @@ export default function MyCart() {
   };
 
   return (
-    <section className={style.myCart}>
-      <h2 className={style.h2}>장바구니</h2>
+    <Container>
+      <h1 className="fah">CART</h1>
+
       {!hasProducts && (
-        <div>
-          <p>장바구니에 담긴 상품이 없습니다.</p>
-          <p>원하는 상품을 장바구니에 담아보세요!</p>
-          <button>
+        <NoProduct>
+          <SubTitle className="fah">Product</SubTitle>
+          <Message>
+            <p>장바구니가 비어있습니다.</p>
             <Link to="/">쇼핑 계속하기</Link>
-          </button>
-        </div>
+          </Message>
+        </NoProduct>
       )}
       {hasProducts && (
-        <article className={style.container}>
-          <div className={style.title}>
-            <div className={style.titleInput}>
-              <input type="checkbox" id="title" checked={selectAllChecked} onChange={handleSelectAll} />
-              <label htmlFor="title">프레시멘토</label>
-              <GrHome />
-            </div>
-            <SmallButton text="선택 삭제" onClick={handleSelectDeleteClick} />
-          </div>
-          <ul>
-            {products &&
-              products.map((product) => (
-                <CartItem
-                  key={product.productId}
-                  product={product}
-                  setGetSoldOutId={setGetSoldOutId}
-                  onChange={() => handleCheck(product.productId)}
-                  checked={selectedItems[product.productId]}
-                />
-              ))}
-          </ul>
-          <div className={style.totalPrice}>
-            <PriceCard text="선택상품금액" price={totalPrice} />
-            <BiPlus className={style.icons} />
-            <PriceCard text="총 배송비" price={shippingPrice} />
-            <PriceCard text="주문 금액" price={totalPrice + SHIPPING} />
-            <button className={totalChecked !== 0 ? style.btn : style.disabledBtn} onClick={handleToBuy}>
-              프레시멘토 {numberCheckedItems}건 주문하기
-            </button>
-          </div>
-        </article>
+        <Article>
+          <LeftContainer>
+            <SubTitle className="fah">Product</SubTitle>
+            <CheckboxContainer>
+              <CustomCheckbox type="checkbox" id="title" checked={selectAllChecked} onChange={handleSelectAll} />
+            </CheckboxContainer>
+            <CartItemContainer>
+              {products &&
+                products.map((product) => (
+                  <CartItem
+                    key={product.productId}
+                    product={product}
+                    setGetSoldOutId={setGetSoldOutId}
+                    onChange={() => handleCheck(product.productId)}
+                    checked={selectedItems[product.productId]}
+                  />
+                ))}
+            </CartItemContainer>
+            <SmallButton text="선택삭제" onClick={handleSelectDeleteClick} />
+          </LeftContainer>
+          <RightContainer>
+            <PriceContainer>
+              <SubTitle className="fah">Total</SubTitle>
+              <PriceCardContainer>
+                <PriceInfo>
+                  <PriceCard text="Price" price={totalPrice} />
+                  <PriceCard text="Shipping" price={shippingPrice} />
+                </PriceInfo>
+                <ShipMsg>* 30,000원 이상 구매시 무료배송 혜택</ShipMsg>
+                <TotalPrice>
+                  <PriceCard text="Total" price={totalPrice && totalPrice + shippingPrice} />
+                </TotalPrice>
+              </PriceCardContainer>
+            </PriceContainer>
+            <Button onClick={handleToBuy}>Ordeing {numberCheckedItems} cases</Button>
+          </RightContainer>
+        </Article>
       )}
-    </section>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  background-color: var(--color-white);
+  color: var(--color-black1);
+  max-width: 1000px;
+  width: 1000px;
+  margin: 3rem auto 8rem;
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: 0.2rem;
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+`;
+
+const CheckboxContainer = styled.div`
+  padding-bottom: 1rem;
+`;
+
+const Article = styled.article`
+  display: flex;
+  margin: auto;
+  gap: 1.1rem;
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-beige);
+  padding: 3rem;
+  width: 45%;
+`;
+
+const CartItemContainer = styled.ul`
+  padding: 2rem 0;
+  border-top: 1px solid var(--color-light-gray3);
+  border-bottom: 1px solid var(--color-light-gray3);
+`;
+
+const RightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+`;
+
+const PriceContainer = styled.div`
+  display: flex;
+  /* width: 100%; */
+  flex-direction: column;
+  background-color: var(--color-beige);
+  padding: 3rem;
+  margin-bottom: 2rem;
+`;
+
+const SubTitle = styled.h5`
+  font-size: 1.75rem;
+  font-weight: 400;
+  border-bottom: 1px solid var(--color-light-gray3);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1rem;
+`;
+
+const PriceCardContainer = styled.div`
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const PriceInfo = styled.div`
+  padding-bottom: 1rem;
+`;
+
+const TotalPrice = styled.div`
+  padding: 1rem 0;
+`;
+
+const ShipMsg = styled.div`
+  border-top: 1px solid var(--color-gray1);
+  border-bottom: 1px solid var(--color-light-gray3);
+  padding: 2rem 0;
+  color: var(--color-brown);
+  font-size: 0.5rem;
+`;
+
+const Button = styled.div`
+  width: 80%;
+  margin-top: 0.25rem;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  text-align: center;
+  background-color: var(--color-black1);
+  color: var(--color-white);
+  cursor: pointer;
+  &:hover {
+    filter: brightness(3);
+    transition: filter 0.3s ease-in-out;
+  }
+`;
+
+const CustomCheckbox = styled.input`
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color-light-gray3);
+
+  &:checked {
+    border-color: transparent;
+    background-image: url('https://aromatica.co.kr/layout/basic/img/ico_checkbox.svg');
+    background-size: 100% 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-color: var(--color-brown);
+  }
+`;
+
+const NoProduct = styled.div`
+  max-width: 1000px;
+  padding: 2rem 0rem;
+  margin: 0 auto 2rem;
+  text-align: left;
+  color: var(--color-black1);
+  a {
+    color: var(--color-brown);
+  }
+`;
+
+const Message = styled.p`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.75rem 0;
+  padding: 3.25rem 0;
+  text-align: center;
+  background-color: transparent;
+`;

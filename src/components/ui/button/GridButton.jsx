@@ -10,8 +10,8 @@ const GridButton = ({ grids, grid, setGrid }) => {
       <DefaultText onClick={() => setDrop((prev) => !prev)}>{grid ? grid : 'Grid'} +</DefaultText>
       {drop && (
         <ItemWrapper>
-          {grids.map((item) => (
-            <Item variants={vars}>
+          {grids.map((item, index) => (
+            <Item key={index} variants={vars}>
               <button
                 onClick={() => {
                   setGrid(item);
@@ -53,7 +53,7 @@ const ItemWrapper = styled.ul`
 `;
 
 const Item = styled.li`
-  padding: 3px;
+  padding: 3px 0;
   button {
     border: none;
     outline: none;

@@ -16,9 +16,11 @@ import MyBuy from './pages/my-buy/MyBuy';
 import AddModal from './components/admin/AddModal';
 import ProtectedRoute from './pages/ProtectedRoute';
 import EditModal from './components/admin/EditModal';
-import AddAccount from './components/my-page/AddAccount';
 import MyKeepProducts from './pages/my-keep-products/MyKeepProducts';
 import TransactionDetail from './components/my-page/TransactionDetail';
+import MyAccount from './components/my-page/MyAccount';
+import MyOrder from './components/my-page/MyOrder';
+import AddAccount from './components/my-page/AddAccount';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,22 @@ const router = createBrowserRouter([
         ),
         children: [
           {
+            index: true,
+            element: (
+              <ProtectedRoute>
+                <MyAccount />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'myorder',
+            element: (
+              <ProtectedRoute>
+                <MyOrder />
+              </ProtectedRoute>
+            ),
+          },
+          {
             path: 'addaccount',
             element: (
               <ProtectedRoute>
@@ -45,16 +63,9 @@ const router = createBrowserRouter([
               </ProtectedRoute>
             ),
           },
-          {
-            path: 'transactions/:id',
-            element: (
-              <ProtectedRoute>
-                <TransactionDetail />
-              </ProtectedRoute>
-            ),
-          },
         ],
       },
+
       {
         path: 'mycart',
         element: (

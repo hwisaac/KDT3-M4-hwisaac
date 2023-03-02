@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getSearch } from '../../api/productApi';
-import { useSearchParams } from 'react-router-dom';
-import ListProduct from '../../components/total-product/ListProduct';
-import style from './Search.module.css';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import useFilter from '../../hooks/useFilter';
 import SortButton from '../../components/ui/button/SortButton';
-import Product from './../../components/total-product/Product';
 import GridButton from '../../components/ui/button/GridButton';
 import styled from 'styled-components';
 import { CiSearch } from 'react-icons/ci';
 import useGridFilter from './../../hooks/useGridFilter';
+import { useForm } from 'react-hook-form';
+import ProductWrap from '../../components/total-product/ProductWrap';
 
 const Search = () => {
+  const navigate = useNavigate();
   // 쿼리 값 가져오기
   const [searchParams, setSearchParams] = useSearchParams();
   const title = searchParams.get('q');
@@ -36,10 +36,11 @@ const Search = () => {
     '간편간식',
   ];
 
-  // 키워드가 두개이상 일 때 구분
   let titleArr;
   let tag = TAGS.find((tag) => title.includes(tag));
   let findTitle;
+
+  // 키워드가 두개이상 일 때 구분
   if (title.includes(' ')) {
     titleArr = title.split(' ');
     tag = TAGS.find((tag) => titleArr.includes(tag));
@@ -63,6 +64,17 @@ const Search = () => {
 
   // 보이는 목록수
 
+  // 검색 input
+  const { register, handleSubmit, setValue } = useForm();
+
+  const onValid = ({ search }) => {
+    navigate(`/search?q=${search}`);
+    setValue('search');
+  };
+  const onInvalid = () => {
+    return alert('검색어를 입력해주세요');
+  };
+
   return (
     <>
       {isLoading ? (
@@ -81,8 +93,14 @@ const Search = () => {
               )}
             </Text>
 
-            <Form>
-              <input type="text" placeholder="SEARCH" />
+            <Form onSubmit={handleSubmit(onValid, onInvalid)}>
+              <input
+                {...register('search', {
+                  required: '검색어를 입력해주세요',
+                })}
+                type="search"
+                placeholder="SEARCH"
+              />
               <button type="submit">
                 <CiSearch size={28} />
               </button>
@@ -95,11 +113,8 @@ const Search = () => {
                 <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
                 <GridButton grids={grids} grid={grid} setGrid={setGrid} />
               </MenuBar>
-              <ul className={style[`${grid}_items`]}>
-                {filtered?.map((data) => (
-                  <Product key={data.id} data={data} grid={grid} />
-                ))}
-              </ul>
+
+              <ProductWrap data={filtered} grid={grid} />
             </Main>
           )}
         </Wrapper>
@@ -163,7 +178,7 @@ const Main = styled.div``;
 
 const MenuBar = styled.div`
   display: flex;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   border-bottom: 1px solid var(--color-gray1);
 `;
 
