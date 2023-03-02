@@ -18,7 +18,7 @@ export default function App() {
     <Layout>
       <Header />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
       <ReactQueryDevtools initialIsOpen={false} />
     </Layout>
   );
