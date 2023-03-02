@@ -3,6 +3,8 @@ import { useRecoilState } from 'recoil';
 import { adminUser } from '../../api/adminUser';
 import { loginState, userInfoState } from '../../recoil/userInfo';
 import styled from 'styled-components';
+import { AiOutlinePlus } from 'react-icons/ai';
+import EcoSection from '../../components/home/EcoSection';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -12,7 +14,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <HomePage>
       <Welcome>
         <span>your personal guide to</span>
         <h1 className="fah">ZERO WASTE</h1>
@@ -30,10 +32,14 @@ export default function Home() {
         </p>
         <span>ABOUT US</span>
       </DescriptionUs>
-    </main>
+      <EcoSection />
+    </HomePage>
   );
 }
 
+const HomePage = styled.main`
+  padding-bottom: 100px;
+`;
 const Welcome = styled.section`
   height: 500px;
   width: 100%;
