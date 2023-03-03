@@ -1,13 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams, useLocation, NavLink } from 'react-router-dom';
 import { BsBag } from 'react-icons/bs';
+import { CiSearch } from 'react-icons/ci';
+import { adminUser } from '../../api/adminUser';
+import RecentlyViewed from '../recently-viewed/RecentlyViewed';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 
 export default function Header() {
+  const { scrollY } = useScroll();
+
   /* 검색 기능 */
   const navigate = useNavigate();
-  const { scrollY } = useScroll();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { register, handleSubmit, setValue } = useForm();
+
+  const onValid = ({ search }) => {
+    navigate(`/search?q=${search}`);
+    setValue('search');
+    setSearchOpen(false);
+  };
+  const onInvalid = () => {
+    return alert('검색어를 입력해주세요');
+  };
+  const onSearchBtn = () => {
+    setSearchOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (searchOpen) document.body.style = 'overflow: hidden';
+    else document.body.style = 'overflow: auto';
+  }, [searchOpen]);
+
   return (
     <>
       <HeaderComponent>
@@ -27,6 +53,30 @@ export default function Header() {
             </Menues>
           </Left>
           <Right>
+            <Search onClick={onSearchBtn}>
+              <CiSearch size={22} />
+            </Search>
+            <AnimatePresence>
+              {searchOpen && (
+                <SearchModal initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <motion.div initial={{ height: 0 }} animate={{ height: 200 }} exit={{ height: 0 }}>
+                    <form onSubmit={handleSubmit(onValid, onInvalid)}>
+                      <input
+                        {...register('search', {
+                          required: '검색어를 입력해주세요',
+                        })}
+                        type="search"
+                        placeholder="SEARCH"
+                      />
+                      <button type="submit">
+                        <CiSearch size={28} />
+                      </button>
+                    </form>
+                  </motion.div>
+                </SearchModal>
+              )}
+            </AnimatePresence>
+
             <User>
               <Link to="/mypage">
                 <li>ACCOUNT</li>
@@ -92,12 +142,72 @@ const Menues = styled.ul`
     }
   }
 `;
-const Right = styled.div``;
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Search = styled.button`
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const SearchModal = styled(motion.div)`
+  position: fixed;
+  top: 81px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 10;
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-white);
+    form {
+      width: 35%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      input {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        border-bottom: 1px solid black;
+        font-family: 'Fahkwang';
+        font-weight: 600;
+        font-size: 20px;
+        ::placeholder {
+          color: var(--color-gray2);
+        }
+      }
+      button {
+        position: absolute;
+        right: 0;
+        outline: none;
+        border: none;
+        background-color: var(--color-white);
+        cursor: pointer;
+      }
+    }
+  }
+`;
 
 const Logo = styled.div`
   font-size: 27px;
   margin-right: 40px;
 `;
+
 const User = styled.ul`
   display: flex;
   gap: 30px;

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Product from '../../components/total-product/Product';
-import style from './Category.module.css';
 import SortButton from '../../components/ui/button/SortButton';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import useFilter from '../../hooks/useFilter';
@@ -8,6 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 import { getCategorizedProducts, getProducts } from '../../api/productApi';
 import { useParams } from 'react-router-dom';
 import GridButton from './../../components/ui/button/GridButton';
+import useGridFilter from './../../hooks/useGridFilter';
+import styled from 'styled-components';
+import ProductWrap from './../../components/total-product/ProductWrap';
 
 export default function Category() {
   // const {loading, products, tag} = useProducts('category');
@@ -30,29 +31,45 @@ export default function Category() {
   const { filters, filter, setFilter, filtered } = { ...response };
 
   // 그리드 정렬
-  const grids = ['list', 'image', 'bigImage', 'gallery'];
-  const [grid, setGrid] = useState('image');
-  const [select, setSelect] = useState('image');
+  const { grids, grid, setGrid } = useGridFilter();
 
   if (isLoading) return <LoadingModal />;
   if (error) return <p>Error ...</p>;
   return (
-    <main className={style.main}>
-      <h2 className={style.h2}>{tag}</h2>
-      <div className={style.select} >
+    <Wrapper>
+      <TextArea>
+        browse all of our reusable and plastic free
+        <br />
+        products that we have designed to help you
+        <br />
+        live a more sustainable lifestyle.
+      </TextArea>
+      <MenuBar>
         <SortButton filter={filter} filters={filters} onFilterChange={(filter) => setFilter(filter)} />
-        <ul className={style.gridWrap} style={{ display: 'flex' }}>
-          {grids.map((grid) => (
-            <GridButton key={grid} grid={grid} setGrid={setGrid} select={select} setSelect={setSelect} />
-          ))}
-        </ul>
-      </div>
+        <GridButton grids={grids} grid={grid} setGrid={setGrid} />
+      </MenuBar>
 
-      <ul className={style[`${grid}_items`]}>
-        {filtered?.map((data) => (
-          <Product key={data.id} data={data} grid={grid} />
-        ))}
-      </ul>
-    </main>
+      <ProductWrap data={filtered} grid={grid} />
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.main`
+  width: 1200px;
+  margin: 100px auto;
+  font-family: 'Pangram';
+`;
+
+const TextArea = styled.div`
+  margin-bottom: 100px;
+  text-align: center;
+  font-family: 'Fahkwang';
+  font-size: 20px;
+`;
+
+const MenuBar = styled.div`
+  width: 100%;
+  display: flex;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--color-gray1);
+`;
