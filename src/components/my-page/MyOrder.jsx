@@ -1,20 +1,55 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
 import { getOrderList, handleOrder } from '../../api/productApi';
 import LoadingModal from '../ui/loading/LoadingModal';
-import style from './MyOrder.module.css';
 import styled from 'styled-components';
 
 const Section = styled.section`
   margin: auto;
-  height: 80%;
-  width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 5rem;
-  padding: 7rem 1rem;
+  justify-content: space-between;
+  opacity: 1;
+`;
+
+const H3 = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-black1);
+  width: 100%;
+  margin-bottom: 2rem;
+`;
+
+const TableHead = styled.ul`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  place-items: center;
+  margin: 0.3rem 0;
+  color: var(--color-white);
+  font-weight: 400;
+`;
+
+const TableRow = styled.ul`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-row: auto;
+  place-items: center;
+  margin: 0.5rem 0;
+  color: var(--color-white);
+  font-weight: 300;
+  font-size: 0.85rem;
+  cursor: pointer;
+`;
+
+const HorizontalLine = styled.div`
+  width: var(--width);
+  height: 1px;
+  opacity: 0.3;
+  background-color: var(--color-white);
+  margin: 1rem 0;
 `;
 
 export const MyOrder = () => {
@@ -27,7 +62,7 @@ export const MyOrder = () => {
 
   const Button = ({ order, orderButton, handleClick }) => {
     return (
-      <button className={style.button} onClick={handleClick} name={orderButton} data-id={order.detailId}>
+      <button onClick={handleClick} name={orderButton} data-id={order.detailId}>
         {orderButton}
       </button>
     );
@@ -46,29 +81,30 @@ export const MyOrder = () => {
 
   return (
     <Section>
-      <h2 className={style.h2}>주문내역</h2>
-      <hr />
+      <Outlet />
+      <H3 className="fah">MY ORDERS ({myOrder.length})</H3>
+      <TableHead>
+        <li>PRODUCT</li>
+        <li>PRICE</li>
+        <li>DATE</li>
+        <li>STATUS</li>
+      </TableHead>
+      <HorizontalLine />
       {myOrder ? (
         myOrder.map((order) => (
-          <div key={order.detailId}>
-            <div className={style.list}>
-              <div className={style.left}>
-                <img src={order.product.thumbnail} alt={order.product.title} className={style.img} />
-                <div className={style.text}>
-                  <li className={style.title}>{order.product.title}</li>
-                  <li>
-                    {order.product.price.toLocaleString()}원 | {new Date(order.timePaid).toLocaleString()}
-                  </li>
-                  <li className={style.description}>
-                    {order.done
-                      ? '구매확정 상태입니다. 확정 후에는 취소가 불가합니다.'
-                      : order.isCanceled
-                      ? '결제 취소'
-                      : `배송완료 후 구매확정 버튼을 눌러주세요.`}
-                  </li>
-                </div>
-              </div>
-              <div className={style.right}>
+          <TableRow
+            key={order.detailId}
+            onClick={() => {
+              const detailId = order.detailId;
+              navigate(`transactions/${detailId}`, { state: { detailId, accessToken } });
+            }}
+          >
+            <li>{order.product.title}</li>
+            <li>₩ {order.product.price.toLocaleString()}</li>
+            <li> {new Date(order.timePaid).toLocaleString('en-GB', { timeZone: 'UTC' })}</li>
+            <li>{order.done ? 'Confirmed' : order.isCanceled ? 'Cancelled' : `Pending`}</li>
+
+            {/* <div className={style.right}>
                 {!order.done && !order.isCanceled ? (
                   orderButton.map((button) => (
                     <Button
@@ -81,10 +117,8 @@ export const MyOrder = () => {
                 ) : (
                   <Button order={order} orderButton={orderButton[2]} handleClick={handleClick} />
                 )}
-              </div>
-            </div>
-            <hr />
-          </div>
+              </div> */}
+          </TableRow>
         ))
       ) : (
         <span>구매내역이 없습니다.</span>

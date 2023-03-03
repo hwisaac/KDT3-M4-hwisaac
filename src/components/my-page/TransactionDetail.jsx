@@ -11,7 +11,7 @@ export const TransactionDetail = () => {
   const detailId = location.state.detailId;
   const accessToken = location.state.accessToken;
 
-  const { isLoading, data: orderDetail } = useQuery(['myOrder', 'orderDetail'], () =>
+  const { isLoading, data: orderDetail } = useQuery(['myOrder', `${detailId}`], () =>
     getOrderDetail({ accessToken, detailId }),
   );
 
@@ -22,7 +22,7 @@ export const TransactionDetail = () => {
       <div className={style.modal}>
         <div className={style.modalHeader}>
           <h2 className={style.headTitle}>결제상세정보</h2>
-          <Link to="/mypage">
+          <Link to="/mypage/myorder">
             <AiFillCloseCircle className={style.AiFillCloseCircle} />
           </Link>
         </div>

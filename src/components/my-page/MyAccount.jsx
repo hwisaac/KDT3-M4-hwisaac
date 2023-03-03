@@ -65,7 +65,7 @@ export const MyAccount = () => {
 
   return (
     <Section>
-      <H3 className="fah">MY ACCOUNT</H3>
+      <H3 className="fah">MY ACCOUNTS</H3>
       <div>
         <TableHead>
           <li>BANK ACCOUNT NUM.</li>
