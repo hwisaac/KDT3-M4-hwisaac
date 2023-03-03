@@ -62,6 +62,7 @@ const KeyVisual = styled.img`
   background-color: gray;
   height: 600px;
   width: 100%;
+  object-fit: cover;
 `;
 
 const DescriptionUs = styled.section`
