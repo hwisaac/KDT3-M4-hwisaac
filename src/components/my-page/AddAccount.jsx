@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { addAccount, getAvailableBank } from '../../api/accountApi';
 import { getCookie } from '../../recoil/userInfo';
 import LoadingModal from '../ui/loading/LoadingModal';
-import style from './AddAccount.module.css';
+import styled from 'styled-components';
 
 export const AddAccount = () => {
   const [bankDigits, setBankDigits] = useState(0); // 입력해야할 계좌번호 자리수
@@ -18,7 +18,7 @@ export const AddAccount = () => {
   const connectNewAccount = useMutation(({ accessToken, inputData }) => addAccount({ accessToken, inputData }), {
     onSuccess: () => {
       alert('계좌가 성공적으로 연결되었습니다.');
-      // navigate('/mypage');
+      navigate('/mypage/myaccount');
     },
   });
 
@@ -43,72 +43,201 @@ export const AddAccount = () => {
 
   if (isLoading) return <LoadingModal />;
   return (
-    <div className={style.wrapper}>
-      <div className={style.modal}>
-        <div className={style.modalHeader}>
-          <h2 className={style.headTitle}>계좌 연결하기</h2>
-          <Link to="/mypage">
-            <AiFillCloseCircle className={style.AiFillCloseCircle} />
+    <Wrapper>
+      <Modal>
+        <ModalHeader>
+          <H5>Add my account</H5>
+          <Link to="/mypage/myaccount">
+            <AiFillCloseCircle size={25} />
           </Link>
-        </div>
-        <form className={style.modalBody} onSubmit={handleSubmit(onValid)}>
-          <ul className={style.inputs}>
-            <li>
-              <span className={style.listName}>은행명</span>
-              <select
-                {...register('bankCode', { required: '연결할 은행을 선택해 주세요.' })}
-                type="text"
-                onChange={selectBank}
-              >
-                <option value="">===은행===</option>
-                {banks.map((bank) => (
-                  <option value={bank.code} key={bank.code}>
-                    {bank.name}({bank.code})
-                  </option>
-                ))}
-              </select>
-              <span className={style.errorMessage}>{errors?.bankCode?.message}</span>
-            </li>
-            <li>
-              <span className={style.listName}>계좌번호</span>
-              <input
+        </ModalHeader>
+        <ModalBody onSubmit={handleSubmit(onValid)}>
+          <FormWrapper>
+            <FormDiv>
+              BANK
+              <SelectBox>
+                <select
+                  {...register('bankCode', { required: 'Choose the bank you want to connect to.' })}
+                  type="text"
+                  onChange={selectBank}
+                >
+                  <option value="">===BANK===</option>
+                  {banks.map((bank) => (
+                    <option value={bank.code} key={bank.code}>
+                      {bank.name}({bank.code})
+                    </option>
+                  ))}
+                </select>
+              </SelectBox>
+              <Errors>{errors?.bankCode?.message}</Errors>
+            </FormDiv>
+            <FormDiv>
+              ACCOUNT NUMBER
+              <Input
                 {...register('accountNumber', {
-                  required: '계좌번호를 입력해 주세요.',
-                  pattern: { value: new RegExp(`^[0-9]{${bankDigits}}$`), message: '계좌번호를 확인해 주세요.' },
+                  required: 'This field is required.',
+                  pattern: {
+                    value: new RegExp(`^[0-9]{${bankDigits}}$`),
+                    message: `Enter your ${bankDigits} digits of account number without '-'`,
+                  },
                 })}
                 type="text"
-                placeholder={`'-'없이 계좌번호 ${bankDigits}자리를 입력해 주세요.`}
+                placeholder={`Enter your ${bankDigits} digits of account number without '-'`}
               />
-              <span className={style.errorMessage}>{errors?.accountNumber?.message}</span>
-            </li>
-            <li>
-              <span className={style.listName}>전화번호</span>
-              <input
+              <Errors>{errors?.accountNumber?.message}</Errors>
+            </FormDiv>
+            <FormDiv>
+              PHONE NUMBER
+              <Input
                 {...register('phoneNumber', {
-                  required: '전화번호를 입력해 주세요.',
-                  pattern: { value: /^[0-9]{11}$/, message: '전화번호를 확인해 주세요.' },
+                  required: 'This field is required.',
+                  pattern: { value: /^[0-9]{11}$/, message: 'Check your phone number.' },
                 })}
                 type="text"
                 placeholder="01012345678"
               />
-              <span className={style.errorMessage}>{errors?.phoneNumber?.message}</span>
-            </li>
-            <li>
-              <input {...register('signature', { required: '위 내용을 확인 후 체크해 주세요.' })} type="checkbox" />위
-              내용을 모두 확인하였으며, 해당 계좌를 연결하겠습니다.
-              <span className={style.errorMessage}>{errors?.signature?.message}</span>
-            </li>
-          </ul>
+              <Errors>{errors?.phoneNumber?.message}</Errors>
+            </FormDiv>
+            <FormDiv>
+              <CheckBox>
+                <input
+                  {...register('signature', { required: 'Please check this box.' })}
+                  type="checkbox"
+                  id="signature"
+                />
+                <label for="signature">Checked all of the above, and be sure to add my account.</label>
+              </CheckBox>
 
-          <div className={style.modalFooter}>
-            <button type="submit" className={style.btn}>
-              계좌 연결하기
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+              <Errors>{errors?.signature?.message}</Errors>
+            </FormDiv>
+          </FormWrapper>
+          <ModalFooter>
+            <BigBtn type="submit" value="Connect this account"></BigBtn>
+          </ModalFooter>
+        </ModalBody>
+      </Modal>
+    </Wrapper>
   );
 };
 
 export default AddAccount;
+
+const Wrapper = styled.div`
+  background-color: rgba(0, 0, 0, 0.7);
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+`;
+
+const Modal = styled.div`
+  width: 25vw;
+  background-color: var(--color-white);
+  padding: 3rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1001;
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 10%;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const H5 = styled.h5`
+  padding: auto;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-black2);
+  width: 100%;
+`;
+
+const ModalBody = styled.form`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const FormWrapper = styled.ul`
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  box-sizing: content-box;
+`;
+
+const FormDiv = styled.li`
+  width: 100%;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+`;
+
+const Input = styled.input.attrs({
+  placeholderTextColor: '#303631 ',
+})`
+  width: 80%;
+  height: 1.5rem;
+  border: none;
+  border-bottom: 1px solid #303631;
+  background-color: transparent;
+  font-size: 13px;
+`;
+
+const Errors = styled.div`
+  font-size: 12px;
+  color: var(--color-brown);
+`;
+
+const SelectBox = styled.div`
+  width: 90%;
+`;
+
+const CheckBox = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+`;
+
+const ModalFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+`;
+
+const BigBtn = styled.input`
+  width: 50%;
+  height: 3rem;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  color: var(--color-black2);
+  background-color: var(--color-white2);
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  &:hover {
+    color: var(--color-white);
+    background-color: var(--color-black2);
+    transition: all 0.5s;
+  }
+`;

@@ -78,7 +78,7 @@ export default function Header() {
             </AnimatePresence>
 
             <User>
-              <Link to="/mypage">
+              <Link to="/mypage/myaccount">
                 <li>ACCOUNT</li>
               </Link>
 

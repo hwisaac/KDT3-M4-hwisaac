@@ -55,7 +55,6 @@ const HorizontalLine = styled.div`
 export const MyOrder = () => {
   const { accessToken } = useOutletContext();
   const navigate = useNavigate();
-  const orderButton = ['구매확정', '구매취소', '상세정보'];
 
   const { isLoading, data: myOrder, refetch } = useQuery(['myOrder'], () => getOrderList({ accessToken }));
   if (isLoading) return <LoadingModal />;
@@ -96,28 +95,13 @@ export const MyOrder = () => {
             key={order.detailId}
             onClick={() => {
               const detailId = order.detailId;
-              navigate(`transactions/${detailId}`, { state: { detailId, accessToken } });
+              navigate(`transactions/${detailId}`, { state: { detailId, accessToken, refetch } });
             }}
           >
             <li>{order.product.title}</li>
             <li>₩ {order.product.price.toLocaleString()}</li>
             <li> {new Date(order.timePaid).toLocaleString('en-GB', { timeZone: 'UTC' })}</li>
             <li>{order.done ? 'Confirmed' : order.isCanceled ? 'Cancelled' : `Pending`}</li>
-
-            {/* <div className={style.right}>
-                {!order.done && !order.isCanceled ? (
-                  orderButton.map((button) => (
-                    <Button
-                      key={order.detailId + button}
-                      order={order}
-                      orderButton={button}
-                      handleClick={handleClick}
-                    />
-                  ))
-                ) : (
-                  <Button order={order} orderButton={orderButton[2]} handleClick={handleClick} />
-                )}
-              </div> */}
           </TableRow>
         ))
       ) : (
