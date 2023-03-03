@@ -43,14 +43,16 @@ export default function MyCart() {
   useEffect(() => {
     if (Object.keys(selectedItems).length === 0) {
       setSelectAllChecked(false);
-    } else if (Object.keys(selectedItems).length === products?.length) {
+    } else {
       const allValues = Object.values(selectedItems);
       setSelectAllChecked(allValues.every((value) => value === true));
     }
   }, [selectedItems]);
 
   if (isLoading) return <p>Loading...</p>;
-  console.log('products:', products);
+
+  console.log('products', products);
+  console.log('selectedItems', selectedItems);
 
   const hasProducts = products && products.length > 0;
   const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
