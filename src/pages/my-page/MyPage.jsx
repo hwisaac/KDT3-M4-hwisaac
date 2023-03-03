@@ -1,11 +1,12 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { alternativeImg, getCookie, userInfoState } from '../../recoil/userInfo';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { alternativeImg, deleteCookie, getCookie, loginState, userInfoState } from '../../recoil/userInfo';
 import { Link, Outlet } from 'react-router-dom';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { getAccountInfo } from '../../api/accountApi';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { logOut } from 'api/authApi';
 
 const Section = styled.section`
   margin: auto;
@@ -111,8 +112,17 @@ const BlackLink = styled(Link)`
   color: var(--color-black1);
 `;
 
+const Button = styled.button`
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: var(--color-white);
+  cursor: pointer;
+`;
+
 export const MyPage = () => {
-  const userInfo = useRecoilValue(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const accessToken = getCookie('accessToken');
   const subMenu = ['account', 'order', 'post', 'review'];
 
@@ -141,7 +151,23 @@ export const MyPage = () => {
           <H5 className="fah">MY INFO</H5>
           <Between>
             <span>Welcome, {userInfo.displayName}</span>
-            <span>Log Out</span>
+            <Button
+              onClick={async () => {
+                const res = await logOut({ accessToken });
+                console.log(res);
+                if (res) {
+                  deleteCookie('accessToken');
+                  setIsLoggedIn(false);
+                  setUserInfo({
+                    email: '',
+                    displayName: '',
+                    profileImg: '',
+                  });
+                }
+              }}
+            >
+              Log Out
+            </Button>
           </Between>
 
           <HorizontalLine />

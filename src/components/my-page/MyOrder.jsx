@@ -59,25 +59,6 @@ export const MyOrder = () => {
   const { isLoading, data: myOrder, refetch } = useQuery(['myOrder'], () => getOrderList({ accessToken }));
   if (isLoading) return <LoadingModal />;
 
-  const Button = ({ order, orderButton, handleClick }) => {
-    return (
-      <button onClick={handleClick} name={orderButton} data-id={order.detailId}>
-        {orderButton}
-      </button>
-    );
-  };
-
-  const handleClick = async (event) => {
-    const menu = event.target.name;
-    const detailId = event.target.dataset.id;
-    if (menu === '상세정보') {
-      navigate(`transactions/${detailId}`, { state: { detailId, accessToken } });
-    } else {
-      await handleOrder({ menu, accessToken, detailId });
-      refetch();
-    }
-  };
-
   return (
     <Section>
       <Outlet />
@@ -95,7 +76,7 @@ export const MyOrder = () => {
             key={order.detailId}
             onClick={() => {
               const detailId = order.detailId;
-              navigate(`transactions/${detailId}`, { state: { detailId, accessToken, refetch } });
+              navigate(`transactions/${detailId}`, { state: { detailId, accessToken } });
             }}
           >
             <li>{order.product.title}</li>

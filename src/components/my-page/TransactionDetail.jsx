@@ -10,14 +10,12 @@ export const TransactionDetail = () => {
   const location = useLocation();
   const detailId = location.state.detailId;
   const accessToken = location.state.accessToken;
-  const refetch = location.state.refetch;
 
   const orderButton = ['구매확정', '구매취소'];
   const handleClick = async (event) => {
     const button = event.target.innerText;
     const detailId = event.target.dataset.id;
     await handleOrder({ button, accessToken, detailId });
-    refetch();
   };
 
   const { isLoading, data: orderDetail } = useQuery(['myOrder', `${detailId}`], () =>
