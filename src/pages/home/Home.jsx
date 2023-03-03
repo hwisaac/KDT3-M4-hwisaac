@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { adminUser } from '../../api/adminUser';
 import { loginState, userInfoState } from '../../recoil/userInfo';
 import styled from 'styled-components';
-import { AiOutlinePlus } from 'react-icons/ai';
-import EcoSection from '../../components/home/EcoSection';
+import EcoSection from 'components/home/EcoSection';
+import Bestseller from 'components/home/Bestseller';
+import Slider from 'components/kv/Slider';
+import kvImg from 'assets/image/home/kv.jpg';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
@@ -19,7 +21,7 @@ export default function Home() {
         <span>your personal guide to</span>
         <h1 className="fah">ZERO WASTE</h1>
       </Welcome>
-      <KeyVisual />
+      <KeyVisual src={kvImg} />
       <DescriptionUs>
         <p className="fah">
           we help people like you make positive changes
@@ -32,7 +34,9 @@ export default function Home() {
         </p>
         <span>ABOUT US</span>
       </DescriptionUs>
+      <Bestseller />
       <EcoSection />
+      <Slider />
     </HomePage>
   );
 }
