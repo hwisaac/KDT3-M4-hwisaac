@@ -5,15 +5,15 @@ import { getBuy, getAccountInfo } from '../../api/accountApi';
 import { userInfoState } from '../../recoil/userInfo';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import style from './MyBuy.module.css';
 import BuyItem from '../../components/my-buy/BuyItem';
-import Account from '../../components/my-buy/Account';
 import useCart from '../../hooks/useCart';
 import { getCookie } from './../../recoil/userInfo';
-import DeliveryForm from '../../components/my-buy/DeliveryForm';
+import ShippingForm from '../../components/my-buy/ShippingForm';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import LoadingModal from './../../components/ui/loading/LoadingModal';
+import styled from 'styled-components';
+import PaymentForm from './../../components/my-buy/PaymentForm';
 
 const MyBuy = () => {
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
@@ -68,12 +68,12 @@ const MyBuy = () => {
   // 결제 api, 상품 정보 수정 api
   const productBuy = useMutation(([productId, accountId, accessToken]) => getBuy(productId, accountId, accessToken), {
     onError: () => {
-      alert(errorMessage);
+      return alert(errorMessage);
     },
   });
   const editProduct = useMutation(([id, price]) => updateProduct(id, price), {
     onError: () => {
-      alert(errorMessage);
+      return alert(errorMessage);
     },
   });
 
@@ -116,149 +116,182 @@ const MyBuy = () => {
           }
         }
       }
-    } catch (error) {
-      return alert(errorMessage);
-    } finally {
-      console.log('끝!!!!!!');
+
       alert(`${(productsPrice + 3000).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
       productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
+    } catch (error) {
+      alert(errorMessage);
+    } finally {
+      console.log('끝!!!!!!');
     }
   };
 
   // 배송지 정보 X
-  const onInvalid = () => {
+  const onInValid = () => {
     setErrorStyle(true);
     alert('배송지정보를 올바르게 입력해주세요');
   };
 
   return (
-    <div className={style.body}>
-      <div className={style.wrap}>
-        <h1>주문/결제</h1>
-        <div className={style.infos}>
-          <table>
-            <caption>주문내역</caption>
-            <colgroup>
-              <col width="450" />
-              <col width="120" />
-              <col width="100" />
-              <col width="120" />
-            </colgroup>
-            <thead className={style.infoHead}>
-              <tr>
-                <th scope="col">정보</th>
-                <th scope="col">판매자</th>
-                <th scope="col">수량</th>
-                <th scope="col">금액</th>
-              </tr>
-            </thead>
-            <tbody className={style.infoBody}>
-              {/* 장바구니 상품 구매 */}
-              {products
-                ? products.map((product) => (
-                    <BuyItem
-                      key={product.productId || product.id}
-                      id={product.productId || product.id}
-                      photo={product.photo}
-                      title={product.title}
-                      quantity={product.quantity || 1}
-                      price={product.price}
-                    />
-                  ))
-                : null}
-            </tbody>
-          </table>
-        </div>
-
-        <div className={style.infosBottom}>
-          {/* 배송지정보, 주문자정보 */}
-          <div className={style.forms}>
-            {/* 배송지정보 */}
-            <DeliveryForm
-              register={register}
-              fromError={fromError}
-              errorStyle={errorStyle}
-              setValue={setValue}
-              setFocus={setFocus}
-            />
-            {/* 주문자정보 */}
-            <div className={style.ordererInfo}>
-              <h2>주문자 정보</h2>
+    <>
+      {isLoading ? (
+        <LoadingModal />
+      ) : (
+        <Wrapper>
+          <Infos>
+            <Details>
+              <h1>DETAILS</h1>
               <p>
-                <span>성함</span> {userInfo.displayName}
+                <span>NAME</span> {userInfo.displayName}
               </p>
               <p>
-                <span>이메일</span> {userInfo.email}
+                <span>E-MAIL</span> {userInfo.email}
               </p>
-            </div>
-          </div>
+            </Details>
+            <Adress>
+              <h1>SHIPPING ADRESS</h1>
+              <ShippingForm
+                register={register}
+                fromError={fromError}
+                errorStyle={errorStyle}
+                setValue={setValue}
+                setFocus={setFocus}
+              />
+            </Adress>
+            <Payment>
+              <h1>PAYMENT</h1>
+              <PaymentForm infos={AccountInfo} productsPrice={productsPrice} onChange={onChange} />
+            </Payment>
+          </Infos>
 
-          {/* 결제수단, 결제상세 */}
-          <div className={style.pay}>
-            {/* 결제수단 */}
-            <div className={style.paySelect}>
-              <h2>결제수단</h2>
+          <Orders>
+            <h1>YOUR ORDER</h1>
+            <ProductWrap>
+              {products &&
+                products.map((product) => (
+                  <BuyItem
+                    key={product.productId || product.id}
+                    id={product.productId || product.id}
+                    photo={product.photo}
+                    title={product.title}
+                    quantity={product.quantity || 1}
+                    price={product.price}
+                  />
+                ))}
+            </ProductWrap>
+            <TotalPrice>
+              <span>TOTAL</span>
+              <span>$ {productsPrice + 3000}</span>
+            </TotalPrice>
 
-              <div className={style.accountInfos}>
-                <ul>
-                  {isLoading ? (
-                    <LoadingModal />
-                  ) : AccountInfo.accounts?.length === 0 ? null : (
-                    AccountInfo.accounts?.map((account) => (
-                      <Account
-                        key={account.id}
-                        id={account.id}
-                        bankName={account.bankName}
-                        balance={account.balance}
-                        accountNumber={account.accountNumber}
-                        productsPrice={productsPrice}
-                        onChange={onChange}
-                      />
-                    ))
-                  )}
-                  {/* 계좌 연결 X */}
-                  <li className={style.accountInfoNone}>
-                    <Link
-                      to={'/mypage'}
-                      onClick={() => {
-                        alert('계좌 추가 페이지로 이동합니다');
-                      }}
-                    >
-                      <div>
-                        <span>icon</span>
-                        <p>계좌 추가</p>
-                      </div>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* 결제상세 */}
-            <div className={style.payDetail}>
-              <h2>결제상세</h2>
-              <p>
-                <strong>주문금액</strong> <span>{productsPrice.toLocaleString()}원</span>
-              </p>
-              <p>
-                <strong>배송비</strong> <span>3,000원</span>
-              </p>
-              <p>
-                <strong>총 결제 금액</strong> <span>{(productsPrice + 3000).toLocaleString()}원</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* 결제하기 */}
-        <div className={style.payBtn}>
-          <button type="submit" onClick={handleSubmit(onValid, onInvalid)}>
-            결제하기
-          </button>
-        </div>
-      </div>
-    </div>
+            <ButtonArea>
+              <ErrorMassage>{fromError?.checkbox?.message}</ErrorMassage>
+              <label>
+                <input
+                  type="checkbox"
+                  {...register('checkbox', { required: 'You must check to be able to purchase.' })}
+                />
+                <span>I have read and agree to the terms and conditions</span>
+              </label>
+              <button onClick={handleSubmit(onValid, onInValid)}>place order</button>
+            </ButtonArea>
+          </Orders>
+        </Wrapper>
+      )}
+    </>
   );
 };
+
+const Wrapper = styled.div`
+  width: 1200px;
+  margin: 60px auto;
+  font-family: 'Pangram';
+  display: flex;
+
+  h1 {
+    margin-bottom: 30px;
+    font-family: 'Fahkwang';
+    font-size: 35px;
+  }
+`;
+const Infos = styled.div`
+  width: 60%;
+`;
+const Details = styled.div`
+  margin-bottom: 60px;
+  p {
+  }
+  span {
+    display: inline-block;
+    width: 100px;
+    font-family: 'Fahkwang';
+    line-height: 30px;
+  }
+`;
+const Adress = styled.div`
+  margin-bottom: 60px;
+`;
+const Payment = styled.div``;
+const Orders = styled.div`
+  width: 40%;
+  height: fit-content;
+  padding: 30px;
+  border: 1px solid var(--color-light-grey);
+`;
+const ProductWrap = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  li {
+    border-bottom: 1px solid var(--color-light-grey1);
+    :nth-child(1) {
+      border-top: 1px solid var(--color-light-grey1);
+    }
+  }
+`;
+const TotalPrice = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-top: 30px;
+  span {
+    :nth-child(1) {
+      margin-right: 20px;
+    }
+  }
+`;
+const ButtonArea = styled.div`
+  margin-top: 60px;
+  input {
+    appearance: none;
+    ::after {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--color-light-grey1);
+      margin-right: 5px;
+    }
+    :checked::after {
+      background-color: black;
+    }
+  }
+  span {
+    font-size: 15px;
+    color: var(--color-light-grey1);
+  }
+  button {
+    width: 100%;
+    padding: 20px 0;
+    margin-top: 15px;
+    border: none;
+    outline: none;
+    background-color: #303631;
+    color: var(--color-white);
+    font-size: 20px;
+    font-family: 'Fahkwang';
+  }
+`;
+
+const ErrorMassage = styled.p``;
 
 export default MyBuy;
