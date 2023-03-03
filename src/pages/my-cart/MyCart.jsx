@@ -134,12 +134,17 @@ export default function MyCart() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.section`
   background-color: var(--color-white);
   color: var(--color-black1);
   max-width: 1000px;
-  width: 1000px;
   margin: 3rem auto 8rem;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+  }
   h1 {
     font-size: 2.5rem;
     letter-spacing: 0.2rem;
@@ -156,6 +161,10 @@ const Article = styled.article`
   display: flex;
   margin: auto;
   gap: 1.1rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const LeftContainer = styled.div`
@@ -164,6 +173,9 @@ const LeftContainer = styled.div`
   background-color: var(--color-beige);
   padding: 3rem;
   width: 45%;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const CartItemContainer = styled.ul`
@@ -176,11 +188,13 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 55%;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const PriceContainer = styled.div`
   display: flex;
-  /* width: 100%; */
   flex-direction: column;
   background-color: var(--color-beige);
   padding: 3rem;
@@ -217,9 +231,9 @@ const ShipMsg = styled.div`
 `;
 
 const Button = styled.div`
-  width: 80%;
+  width: 100%;
   margin-top: 0.25rem;
-  padding: 1rem 3rem;
+  padding: 1rem 0;
   font-size: 1rem;
   text-align: center;
   background-color: var(--color-black1);

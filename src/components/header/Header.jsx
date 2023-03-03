@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
+import useCart from 'hooks/useCart';
 
 export default function Header() {
   const { scrollY } = useScroll();
@@ -33,6 +34,14 @@ export default function Header() {
     if (searchOpen) document.body.style = 'overflow: hidden';
     else document.body.style = 'overflow: auto';
   }, [searchOpen]);
+
+  const {
+    cartQuery: { isLoading, data: products },
+  } = useCart();
+
+  if (isLoading) return;
+
+  const countCartItems = products && products.length;
 
   return (
     <>
@@ -82,9 +91,12 @@ export default function Header() {
                 <li>ACCOUNT</li>
               </Link>
 
-              <li>
-                <BsBag /> (0)
-              </li>
+              <Link to="/mycart">
+                <li>
+                  <BsBag />
+                  <span>({countCartItems})</span>
+                </li>
+              </Link>
             </User>
           </Right>
         </Wrapper>
