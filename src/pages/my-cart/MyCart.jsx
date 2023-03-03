@@ -41,7 +41,7 @@ export default function MyCart() {
   };
 
   useEffect(() => {
-    if (Object.keys(selectedItems).length === 0) {
+    if (Object.keys(selectedItems).length === 0 || Object.keys(selectedItems)?.length !== products?.length) {
       setSelectAllChecked(false);
     } else {
       const allValues = Object.values(selectedItems);
@@ -49,10 +49,14 @@ export default function MyCart() {
     }
   }, [selectedItems]);
 
-  if (isLoading) return <p>Loading...</p>;
+  useEffect(() => {
+    const selectedItemsCount = selectedItems && Object.values(selectedItems).filter(Boolean).length;
+    console.log('selectedItemsCount:', selectedItemsCount);
+    setSelectAllChecked(products && selectedItemsCount === products.length && selectedItemsCount !== 0);
+  }, [selectedItems, products]);
 
-  console.log('products', products);
-  console.log('selectedItems', selectedItems);
+  if (isLoading) return <p>Loading...</p>;
+  console.log('selectedItems:', selectedItems);
 
   const hasProducts = products && products.length > 0;
   const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
@@ -71,6 +75,14 @@ export default function MyCart() {
       alert('품절된 상품은 구매가 불가능합니다.');
     } else {
       navigate('/mybuy', { state: buyProduct });
+    }
+  };
+
+  // 전체 선택 체크박스의 상태를 업데이트하는 함수
+  const updateSelectAllChecked = () => {
+    if (products) {
+      const selectedCount = products.filter((item) => selectedItems[item.productId] && !item.isSoldOut).length;
+      setSelectAllChecked(selectedCount === products.length);
     }
   };
 
@@ -109,6 +121,8 @@ export default function MyCart() {
                     setGetSoldOutId={setGetSoldOutId}
                     onChange={() => handleCheck(product.productId)}
                     checked={selectedItems[product.productId]}
+                    setSelectedItems={setSelectedItems}
+                    updateSelectAllChecked={updateSelectAllChecked}
                   />
                 ))}
             </CartItemContainer>
