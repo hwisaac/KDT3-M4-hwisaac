@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import style from './AddressForm.module.css';
 import { useState } from 'react';
+import styled from 'styled-components';
 
-const AddressBtn = ({ errorStyle, fromError, register, setValue }) => {
+const AddressForm = ({ errorStyle, fromError, register, setValue }) => {
   const [address, setAddress] = useState({});
 
   const open = useDaumPostcodePopup();
@@ -32,40 +32,93 @@ const AddressBtn = ({ errorStyle, fromError, register, setValue }) => {
   };
 
   return (
-    <div className={style.deliveryForm}>
-      <span>배송지 주소 *</span>
-      <div>
+    <Wrap>
+      <ZipCode>
         <input
           value={address.zonecode || ''}
-          className={style.post}
           readOnly
           onClick={handleClick}
           {...register('postcode', {
-            required: '필수 입력 항목입니다',
+            required: 'Required field.',
           })}
-          placeholder="우편번호"
+          placeholder="ZIP CODE *"
         />
-        <button className={style.btn} type="button" onClick={handleClick}>
-          주소 찾기
+        <button type="button" onClick={handleClick}>
+          FIND ADDRESS
         </button>
+        <ErrorMassage>{fromError?.postcode?.message || fromError?.addressDefault?.message}</ErrorMassage>
+      </ZipCode>
 
-        <strong className={errorStyle ? style.setError : style.error}>
-          {fromError?.postcode?.message || fromError?.addressDefault?.message}
-        </strong>
+      <MainAddress>
+        <Input
+          value={address.fullAddress || ''}
+          readOnly
+          {...register('addressDefault', {
+            required: 'Required field.',
+          })}
+          placeholder="MAIN ADDRESS *"
+        />
+        <ErrorMassage>{fromError?.postcode?.message || fromError?.addressDefault?.message}</ErrorMassage>
+      </MainAddress>
 
-        <div className={style.address}>
-          <input
-            value={address.fullAddress || ''}
-            readOnly
-            {...register('addressDefault', {
-              required: '필수 입력 항목입니다',
-            })}
-          />
-          <input {...register('addressAdd')} placeholder="추가 주소 입력" />
-        </div>
-      </div>
-    </div>
+      <Input {...register('addressAdd')} placeholder="ADDITIONAL ADDRESS" />
+    </Wrap>
   );
 };
 
-export default AddressBtn;
+const Wrap = styled.div`
+  margin-bottom: 10px;
+`;
+const ZipCode = styled.div`
+  position: relative;
+  input {
+    width: 20%;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid var(--color-light-grey);
+    outline: none;
+    background-color: transparent;
+    font-size: 15px;
+    font-family: 'Pangram';
+    ::placeholder {
+      font-family: 'Fahkwang';
+    }
+  }
+  button {
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    background-color: #303631;
+    color: var(--color-white);
+    font-family: 'Fahkwang';
+  }
+`;
+
+const MainAddress = styled.div`
+  position: relative;
+`;
+
+const Input = styled.input`
+  width: 80%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid var(--color-light-grey);
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-family: 'Pangram';
+  ::placeholder {
+    font-family: 'Fahkwang';
+  }
+`;
+
+const ErrorMassage = styled.p`
+  position: absolute;
+  top: 15%;
+  right: 20%;
+`;
+
+export default AddressForm;
