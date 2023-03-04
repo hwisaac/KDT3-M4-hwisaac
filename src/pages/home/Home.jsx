@@ -5,7 +5,7 @@ import { loginState, userInfoState } from '../../recoil/userInfo';
 import styled from 'styled-components';
 import EcoSection from 'components/home/EcoSection';
 import Bestseller from 'components/home/Bestseller';
-import Slider from 'components/kv/Slider';
+import Slider from 'components/home/Slider';
 import kvImg from 'assets/image/home/kv.jpg';
 
 export default function Home() {
@@ -61,6 +61,7 @@ const KeyVisual = styled.img`
   background-color: gray;
   height: 600px;
   width: 100%;
+  object-fit: cover;
 `;
 
 const DescriptionUs = styled.section`

@@ -19,9 +19,8 @@ const SHIPPING = 3000;
 export default function ProductDetail() {
   const {
     cartQuery: { data: cartItems },
-    removeItem,
-    addOrUpdateItem,
   } = useCart();
+
   const [heart, setHeart] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
@@ -126,12 +125,19 @@ const Container = styled.section`
   gap: 7rem;
   justify-content: space-between;
   margin: 3rem auto;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const LeftContainer = styled.div`
   width: 50%;
   img {
     width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 80%;
   }
 `;
 
@@ -147,6 +153,9 @@ const RightContainer = styled.div`
     padding: 0.5em 0;
     margin-top: 1.25rem;
     font-size: 1.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    width: 80%;
   }
 `;
 

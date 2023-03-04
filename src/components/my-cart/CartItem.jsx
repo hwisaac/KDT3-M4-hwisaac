@@ -13,6 +13,8 @@ export default function CartItem({
   setGetSoldOutId,
   onChange,
   checked,
+  setSelectedItems,
+  updateSelectAllChecked,
 }) {
   const { addOrUpdateItem, removeItem } = useCart();
   const { isLoading, data: products } = useQuery(['products'], getProducts);
@@ -41,14 +43,14 @@ export default function CartItem({
 
   const handlePlus = () => !isSoldOut && addOrUpdateItem.mutate({ ...product, quantity: quantity + 1 });
 
-  const handleDelete = () => removeItem.mutate(productId);
-
-  const handleBuyClick = () => {
-    if (isSoldOut) {
-      alert('품절된 상품입니다!');
-      return;
-    }
-    navigate('/mybuy', { state: [product] });
+  const handleDelete = () => {
+    removeItem.mutate(productId);
+    setSelectedItems((prevItems) => {
+      const updatedItems = { ...prevItems };
+      delete updatedItems[productId];
+      return updatedItems;
+    });
+    updateSelectAllChecked();
   };
 
   const handleToProduct = (event) => {
