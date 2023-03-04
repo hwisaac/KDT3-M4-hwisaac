@@ -97,9 +97,6 @@ a:visited,
 a:link,
 a:active {
   text-decoration: none;
-  color: none;
-}
-a:visited {
   color: var(--color-black2);
 }
 a:hover {

@@ -10,8 +10,18 @@ import slideImg4 from 'assets/image/home/home-slider4.jpg';
 import slideImg5 from 'assets/image/home/home-slider5.jpg';
 import slideImg6 from 'assets/image/home/home-slider6.jpg';
 import slideImg7 from 'assets/image/home/home-slider7.jpg';
+import Slider from 'react-slick';
 
-const Slider = () => {
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  arrows: true,
+};
+
+const HomeSlider = () => {
   const slideRef = useRef();
 
   const handleNextClick = () => {
@@ -40,35 +50,36 @@ const Slider = () => {
           <BsChevronRight onClick={handleNextClick} />
         </Btns>
       </Title>
-      <div></div>
+
       <Slides ref={slideRef}>
         <div>
-          <img src={slideImg0} alt="" />
+          <img src="https://i.postimg.cc/KYvqp6bc/home-slider0.jpg" alt="" />
         </div>
         <div>
-          <img src={slideImg1} alt="" />
+          <img src="https://i.postimg.cc/4x125JrF/home-slider1.jpg" alt="" />
         </div>
         <div>
-          <img src={slideImg2} alt="" />
+          <img src="https://i.postimg.cc/htn3TJ3d/home-slider2.jpg" alt="" />
+        </div>
+
+        <div>
+          <img src="https://i.postimg.cc/J4Z2s3K8/home-slider4.jpg" alt="" />
         </div>
         <div>
-          <img src={slideImg3} alt="" />
+          <img src="https://i.postimg.cc/y6J5HCZk/home-slider5.jpg" alt="" />
         </div>
         <div>
-          <img src={slideImg4} alt="" />
+          <img src="https://i.postimg.cc/d1hWwGDz/home-slider6.jpg" alt="" />
         </div>
         <div>
-          <img src={slideImg5} alt="" />
-        </div>
-        <div>
-          <img src={slideImg6} alt="" />
+          <img src="https://i.postimg.cc/k51j0TMQ/home-slider7.jpg" alt="" />
         </div>
       </Slides>
     </Wrapper>
   );
 };
 
-export default Slider;
+export default HomeSlider;
 
 const Wrapper = styled.div`
   background-color: var(--color-black2);
@@ -88,21 +99,22 @@ const Title = styled.h2`
   position: relative;
 `;
 
-const Slides = styled(motion.div)`
+const Slides = styled.div`
   position: relative;
   display: grid;
-  grid-template-columns: repeat(7, 350px);
+  grid-template-columns: repeat(7, 300px);
   /* border: 1px solid red; */
   width: 100%;
   overflow: hidden;
   grid-gap: 20px;
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    /* height: 100%; */
+    /* object-fit: cover; */
+    filter: grayscale(40%);
   }
   div {
-    background-color: var(--color-black1);
+    /* background-color: var(--color-black1); */
     /* border: 1px solid white; */
   }
   div:last-child {

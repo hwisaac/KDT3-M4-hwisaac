@@ -4,7 +4,8 @@ export function adminUser(userInfo, setUserInfo) {
     userInfo.email === 'gorud0929@naver.com' ||
     userInfo.email === 'wh2ssac@naver.com' ||
     userInfo.email === 'hyein@naver.com' ||
-    userInfo.email === 'jiwon@gmail.com'
+    userInfo.email === 'jiwon@gmail.com' ||
+    userInfo.email === 'admin@adin.com'
       ? setUserInfo({ ...userInfo, isAdmin: true })
       : setUserInfo({ ...userInfo, isAdmin: false });
   return adminUser;
