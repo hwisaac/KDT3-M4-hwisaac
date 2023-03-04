@@ -52,6 +52,12 @@ const HorizontalLine = styled.div`
   margin: 1rem 0;
 `;
 
+const Nothing = styled.div`
+  width: 100%;
+  display: grid;
+  padding: auto;
+`;
+
 export const MyOrder = () => {
   const { accessToken } = useOutletContext();
   const navigate = useNavigate();
@@ -62,7 +68,7 @@ export const MyOrder = () => {
   return (
     <Section>
       <Outlet />
-      <H3 className="fah">MY ORDERS ({myOrder.length})</H3>
+      <H3 className="fah">MY ORDERS ({myOrder ? myOrder.length : '0'})</H3>
       <TableHead>
         <li>PRODUCT</li>
         <li>PRICE</li>
@@ -86,7 +92,7 @@ export const MyOrder = () => {
           </TableRow>
         ))
       ) : (
-        <span>구매내역이 없습니다.</span>
+        <Nothing>No order history.</Nothing>
       )}
     </Section>
   );
