@@ -6,7 +6,6 @@ import './App.css';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'typeface-fahkwang';
-// import GlobalStyle from './styles/GlobalStyle';
 
 const queryClient = new QueryClient();
 
@@ -15,7 +14,6 @@ root.render(
   // <React.StrictMode>
   <RecoilRoot>
     <QueryClientProvider client={queryClient}>
-      {/* <GlobalStyle /> */}
       <RouterProvider router={router} />
     </QueryClientProvider>
   </RecoilRoot>,

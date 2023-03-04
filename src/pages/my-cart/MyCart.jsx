@@ -41,16 +41,22 @@ export default function MyCart() {
   };
 
   useEffect(() => {
-    if (Object.keys(selectedItems).length === 0) {
+    if (Object.keys(selectedItems).length === 0 || Object.keys(selectedItems)?.length !== products?.length) {
       setSelectAllChecked(false);
-    } else if (Object.keys(selectedItems).length === products?.length) {
+    } else {
       const allValues = Object.values(selectedItems);
       setSelectAllChecked(allValues.every((value) => value === true));
     }
   }, [selectedItems]);
 
+  useEffect(() => {
+    const selectedItemsCount = selectedItems && Object.values(selectedItems).filter(Boolean).length;
+    console.log('selectedItemsCount:', selectedItemsCount);
+    setSelectAllChecked(products && selectedItemsCount === products.length && selectedItemsCount !== 0);
+  }, [selectedItems, products]);
+
   if (isLoading) return <p>Loading...</p>;
-  console.log('products:', products);
+  console.log('selectedItems:', selectedItems);
 
   const hasProducts = products && products.length > 0;
   const checkedItems = products && products.filter((item) => selectedItems[item.productId] && !item.isSoldOut);
@@ -69,6 +75,14 @@ export default function MyCart() {
       alert('품절된 상품은 구매가 불가능합니다.');
     } else {
       navigate('/mybuy', { state: buyProduct });
+    }
+  };
+
+  // 전체 선택 체크박스의 상태를 업데이트하는 함수
+  const updateSelectAllChecked = () => {
+    if (products) {
+      const selectedCount = products.filter((item) => selectedItems[item.productId] && !item.isSoldOut).length;
+      setSelectAllChecked(selectedCount === products.length);
     }
   };
 
@@ -107,6 +121,8 @@ export default function MyCart() {
                     setGetSoldOutId={setGetSoldOutId}
                     onChange={() => handleCheck(product.productId)}
                     checked={selectedItems[product.productId]}
+                    setSelectedItems={setSelectedItems}
+                    updateSelectAllChecked={updateSelectAllChecked}
                   />
                 ))}
             </CartItemContainer>
@@ -134,12 +150,17 @@ export default function MyCart() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.section`
   background-color: var(--color-white);
   color: var(--color-black1);
   max-width: 1000px;
-  width: 1000px;
   margin: 3rem auto 8rem;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+  }
   h1 {
     font-size: 2.5rem;
     letter-spacing: 0.2rem;
@@ -156,6 +177,10 @@ const Article = styled.article`
   display: flex;
   margin: auto;
   gap: 1.1rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const LeftContainer = styled.div`
@@ -164,6 +189,9 @@ const LeftContainer = styled.div`
   background-color: var(--color-beige);
   padding: 3rem;
   width: 45%;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const CartItemContainer = styled.ul`
@@ -176,11 +204,13 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 55%;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const PriceContainer = styled.div`
   display: flex;
-  /* width: 100%; */
   flex-direction: column;
   background-color: var(--color-beige);
   padding: 3rem;
@@ -217,9 +247,9 @@ const ShipMsg = styled.div`
 `;
 
 const Button = styled.div`
-  width: 80%;
+  width: 100%;
   margin-top: 0.25rem;
-  padding: 1rem 3rem;
+  padding: 1rem 0;
   font-size: 1rem;
   text-align: center;
   background-color: var(--color-black1);

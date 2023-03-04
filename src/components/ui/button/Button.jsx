@@ -33,7 +33,8 @@ const Btn = styled.div`
     css`
       background-color: var(--color-black2);
       color: var(--color-white);
-      width: 80%;
+      width: 100%;
+      padding: 1rem 0;
       &:hover {
         background-color: transparent;
         color: var(--color-black2);
