@@ -10,10 +10,13 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { AiOutlineSearch } from 'react-icons/ai';
 import useInputFocus from 'hooks/useInputFocus';
+import { useRecoilValue } from 'recoil';
+import { loginState } from 'recoil/userInfo';
+import useCart from 'hooks/useCart';
 
 export default function Header() {
   const { scrollY } = useScroll();
-
+  const isLoggedIn = useRecoilValue(loginState);
   /* 검색 기능 */
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -57,6 +60,14 @@ export default function Header() {
   //   else document.body.style = 'overflow: auto';
   // }, [searchOpen]);
 
+  const {
+    cartQuery: { isLoading, data: products },
+  } = useCart();
+
+  if (isLoading) return;
+
+  const countCartItems = products && products.length;
+
   return (
     <>
       <HeaderComponent>
@@ -89,12 +100,22 @@ export default function Header() {
               />
             </Search>
             <User>
-              <Link to="/mypage">
-                <li>ACCOUNT</li>
+              {isLoggedIn ? (
+                <Link to="/mypage/myaccount">
+                  <li>ACCOUNT</li>
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <li>LOGIN</li>
+                </Link>
+              )}
+
+              <Link to="/mycart">
+                <li>
+                  <BsBag />
+                  <span>({countCartItems})</span>
+                </li>
               </Link>
-              <li>
-                <BsBag /> (0)
-              </li>
             </User>
           </Right>
         </Wrapper>

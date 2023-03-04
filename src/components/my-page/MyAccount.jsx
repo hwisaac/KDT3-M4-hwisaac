@@ -1,4 +1,4 @@
-import { useOutletContext } from 'react-router-dom';
+import { Link, Outlet, useOutletContext } from 'react-router-dom';
 import { deleteAccount } from '../../api/accountApi';
 import styled from 'styled-components';
 
@@ -53,6 +53,29 @@ const Btn = styled.button`
   color: var(--color-white);
 `;
 
+const BtnWrapper = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+`;
+
+const BigBtn = styled(Link)`
+  width: 30%;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  color: var(--color-black2);
+  background-color: var(--color-white2);
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  &:hover {
+    color: var(--color-white);
+    background-color: var(--color-black2);
+    transition: all 0.5s;
+  }
+`;
+
 export const MyAccount = () => {
   const { accessToken, myAccount } = useOutletContext();
   const handleDelete = (event) => {
@@ -65,7 +88,8 @@ export const MyAccount = () => {
 
   return (
     <Section>
-      <H3 className="fah">MY ACCOUNT</H3>
+      <Outlet />
+      <H3 className="fah">MY ACCOUNTS</H3>
       <div>
         <TableHead>
           <li>BANK ACCOUNT NUM.</li>
@@ -91,6 +115,9 @@ export const MyAccount = () => {
           <p>There is no account connected. Please add your account.</p>
         )}
       </div>
+      <BtnWrapper>
+        <BigBtn to="addaccount">Add account</BigBtn>
+      </BtnWrapper>
     </Section>
   );
 };

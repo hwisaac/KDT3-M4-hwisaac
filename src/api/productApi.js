@@ -107,6 +107,9 @@ export async function updateProduct(id, payload) {
   });
   const json = await res.json();
   console.log('updateProduct >> ', json);
+
+  // 구매할 때 배송비 수정 로직으로 사용
+  return json;
 }
 
 export const deleteAll = async () => {

@@ -1,29 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import style from './BuyItem.module.css';
+import styled from 'styled-components';
 
 const BuyItem = ({ id, photo, title, quantity, price }) => {
   return (
-    <tr className={style.wrap}>
-      <td>
-        <div className={style.productInfo}>
-          <Link to={`/products/${id}`} state={{ id }}>
-            <img src={photo} alt={title} />
-          </Link>
-          <div className={style.productTitle}>
-            <p>[스마트스토어] 프레시멘토</p>
-            <Link to={`/products/${id}`} state={{ id }}>
-              <strong>{title}</strong>
-            </Link>
-          </div>
-        </div>
-      </td>
-
-      <td>프레시멘토</td>
-      <td>{quantity}개</td>
-      <td>{(price * quantity).toLocaleString()}원</td>
-    </tr>
+    <ProductItem>
+      <img src={photo} alt={title} />
+      <ProductText>
+        <Link to={`/products/${id}`} state={{ id }}>
+          <h2>{title}</h2>
+        </Link>
+        <p>
+          <span>{quantity} EA</span>
+          <span>$ {(price * quantity).toLocaleString()}</span>
+        </p>
+      </ProductText>
+    </ProductItem>
   );
 };
+
+const ProductItem = styled.li`
+  display: flex;
+  width: 100%;
+  padding: 30px 0;
+  img {
+    width: 150px;
+  }
+`;
+const ProductText = styled.div`
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  h2 {
+    font-weight: 500;
+  }
+  span {
+    margin-right: 30px;
+  }
+`;
 
 export default BuyItem;

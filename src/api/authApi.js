@@ -34,3 +34,16 @@ export const logIn = async ({ email, password }) => {
     }
   }
 };
+
+export const logOut = async ({ accessToken }) => {
+  try {
+    const res = await fetch(`${authUrl}/logout`, {
+      method: 'POST',
+      headers: { ...HEADERS_USER, Authorization: accessToken },
+    });
+    const json = await res.json();
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
+};

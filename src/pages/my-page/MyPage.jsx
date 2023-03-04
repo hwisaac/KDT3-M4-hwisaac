@@ -1,13 +1,12 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import MyAccount from '../../components/my-page/MyAccount';
-import MyOrder from '../../components/my-page/MyOrder';
-import { alternativeImg, getCookie, userInfoState } from '../../recoil/userInfo';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { alternativeImg, deleteCookie, getCookie, loginState, userInfoState } from '../../recoil/userInfo';
 import { Link, Outlet } from 'react-router-dom';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { getAccountInfo } from '../../api/accountApi';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { logOut } from 'api/authApi';
 
 const Section = styled.section`
   margin: auto;
@@ -16,8 +15,8 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5rem;
-  padding: 7rem 1rem;
+  gap: 3rem;
+  padding: 4rem 1rem;
 `;
 
 const H3 = styled.h3`
@@ -32,6 +31,14 @@ const H4 = styled.h4`
   font-size: 1rem;
   font-weight: 400;
   color: var(--color-gray1);
+  ::after {
+    padding-left: 2rem;
+    content: '|';
+  }
+  :last-child::after {
+    content: none;
+  }
+  cursor: pointer;
 `;
 
 const Container = styled.div`
@@ -101,9 +108,23 @@ const Details = styled.div`
   padding: 1.5rem;
 `;
 
+const BlackLink = styled(Link)`
+  color: var(--color-black1);
+`;
+
+const Button = styled.button`
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: var(--color-white);
+  cursor: pointer;
+`;
+
 export const MyPage = () => {
-  const userInfo = useRecoilValue(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const accessToken = getCookie('accessToken');
+  const subMenu = ['account', 'order', 'post', 'review'];
 
   const { isLoading, data: myAccount, refetch } = useQuery(['myAccount'], () => getAccountInfo({ accessToken }));
 
@@ -112,8 +133,17 @@ export const MyPage = () => {
     <Section>
       <H3 className="fah">MY PAGE</H3>
       <Container>
-        <H4 className="fah">MY ACCOUNT </H4>|<H4 className="fah">MY ORDER</H4>|<H4 className="fah">MY POST</H4>|
-        <H4 className="fah">MY REVIEW</H4>
+        {subMenu.map((submenu) => (
+          <H4 className="fah" submenu={submenu} key={submenu}>
+            <BlackLink
+              to={{
+                pathname: `/mypage/my${submenu}`,
+              }}
+            >
+              MY {`${submenu}`.toUpperCase()}
+            </BlackLink>
+          </H4>
+        ))}
       </Container>
 
       <Container>
@@ -121,7 +151,23 @@ export const MyPage = () => {
           <H5 className="fah">MY INFO</H5>
           <Between>
             <span>Welcome, {userInfo.displayName}</span>
-            <span>Log Out</span>
+            <Button
+              onClick={async () => {
+                const res = await logOut({ accessToken });
+                console.log(res);
+                if (res) {
+                  deleteCookie('accessToken');
+                  setIsLoggedIn(false);
+                  setUserInfo({
+                    email: '',
+                    displayName: '',
+                    profileImg: '',
+                  });
+                }
+              }}
+            >
+              Log Out
+            </Button>
           </Between>
 
           <HorizontalLine />
@@ -149,9 +195,7 @@ export const MyPage = () => {
             </Between>
           </div>
 
-          <Btn to="addaccount" className="haf">
-            Add my account
-          </Btn>
+          <Btn to="/">Edit My Info</Btn>
         </Profile>
 
         <Details>
