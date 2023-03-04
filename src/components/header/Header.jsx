@@ -4,10 +4,12 @@ import { BsBag } from 'react-icons/bs';
 import { CiSearch } from 'react-icons/ci';
 import { adminUser } from '../../api/adminUser';
 import RecentlyViewed from '../recently-viewed/RecentlyViewed';
-import { useForm } from 'react-hook-form';
+import { useController, useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
+import { AiOutlineSearch } from 'react-icons/ai';
+import useInputFocus from 'hooks/useInputFocus';
 import { useRecoilValue } from 'recoil';
 import { loginState } from 'recoil/userInfo';
 import useCart from 'hooks/useCart';
@@ -19,23 +21,44 @@ export default function Header() {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const { register, handleSubmit, setValue } = useForm();
+  // const [isFocused, setIsFocused] = useState(false);
+
+  const inputAnimation = useAnimation();
+
+  const toggleSearch = () => {
+    if (searchOpen) {
+      inputAnimation.start({
+        scaleX: 0,
+      });
+    } else {
+      inputAnimation.start({ scaleX: 1 });
+    }
+    setSearchOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const inputField = document.getElementById('search');
+    if (searchOpen) inputField.focus();
+  }, [searchOpen]);
 
   const onValid = ({ search }) => {
+    console.log('data', search);
     navigate(`/search?q=${search}`);
-    setValue('search');
-    setSearchOpen(false);
+    // setValue(search);
+    // setSearchOpen(false);
   };
-  const onInvalid = () => {
+  const onInvalid = (data) => {
+    console.log('invalid data', data);
     return alert('검색어를 입력해주세요');
   };
   const onSearchBtn = () => {
     setSearchOpen((prev) => !prev);
   };
 
-  useEffect(() => {
-    if (searchOpen) document.body.style = 'overflow: hidden';
-    else document.body.style = 'overflow: auto';
-  }, [searchOpen]);
+  // useEffect(() => {
+  //   if (searchOpen) document.body.style = 'overflow: hidden';
+  //   else document.body.style = 'overflow: auto';
+  // }, [searchOpen]);
 
   const {
     cartQuery: { isLoading, data: products },
@@ -64,30 +87,18 @@ export default function Header() {
             </Menues>
           </Left>
           <Right>
-            <Search onClick={onSearchBtn}>
-              <CiSearch size={22} />
+            <Search onSubmit={handleSubmit(onValid, onInvalid)} searchOpen={searchOpen}>
+              <motion.div onClick={toggleSearch} animate={{ x: searchOpen ? 20 : 170 }}>
+                <AiOutlineSearch size={22} />
+              </motion.div>
+              <Input
+                {...register('search', { required: true, minLength: 2 })}
+                animate={inputAnimation}
+                initial={{ scaleX: 0 }}
+                id="search"
+                placeholder="Search"
+              />
             </Search>
-            <AnimatePresence>
-              {searchOpen && (
-                <SearchModal initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                  <motion.div initial={{ height: 0 }} animate={{ height: 200 }} exit={{ height: 0 }}>
-                    <form onSubmit={handleSubmit(onValid, onInvalid)}>
-                      <input
-                        {...register('search', {
-                          required: '검색어를 입력해주세요',
-                        })}
-                        type="search"
-                        placeholder="SEARCH"
-                      />
-                      <button type="submit">
-                        <CiSearch size={28} />
-                      </button>
-                    </form>
-                  </motion.div>
-                </SearchModal>
-              )}
-            </AnimatePresence>
-
             <User>
               {isLoggedIn ? (
                 <Link to="/mypage/myaccount">
@@ -112,9 +123,6 @@ export default function Header() {
     </>
   );
 }
-const Dummy = styled.div`
-  height: 100px;
-`;
 const HeaderComponent = styled.div`
   z-index: 1000;
   background-color: var(--color-white);
@@ -165,17 +173,28 @@ const Menues = styled.ul`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  /* border: 1px solid red; */
+  gap: 30px;
 `;
-
-const Search = styled.button`
-  margin-right: 30px;
+const Search = styled.form`
+  /* border: 1px solid red; */
   display: flex;
   align-items: center;
-  font-size: 25px;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  cursor: pointer;
+  height: 30px;
+  width: 180px;
+  div {
+    width: auto;
+    height: auto;
+    position: relative;
+    /* border: 1px solid blue; */
+    top: 4px;
+  }
+  svg {
+    opacity: ${(props) => (props.searchOpen ? 0.5 : 1)};
+    cursor: pointer;
+  }
+  input {
+  }
 `;
 
 const SearchModal = styled(motion.div)`
@@ -222,7 +241,21 @@ const SearchModal = styled(motion.div)`
     }
   }
 `;
-
+const Input = styled(motion.input)`
+  transform-origin: right center;
+  width: 100%;
+  height: 100%;
+  padding-left: 26px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  border-bottom: 1px solid black;
+  font-weight: 300;
+  font-size: 16px;
+  ::placeholder {
+    color: var(--color-gray2);
+  }
+`;
 const Logo = styled.div`
   font-size: 27px;
   margin-right: 40px;

@@ -6,6 +6,7 @@ import './App.css';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'typeface-fahkwang';
+// import GlobalStyle from './styles/GlobalStyle';
 
 const queryClient = new QueryClient();
 
