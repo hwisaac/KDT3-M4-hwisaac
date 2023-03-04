@@ -157,18 +157,18 @@ const GridLayout = ({ n }) => {
 const Bestseller = () => {
   const [active, setActive] = useState(1);
   // 3초마다 바꾸기
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setActive((prev) => {
-  //       if (prev < 3) return prev + 1;
-  //       return 1;
-  //     });
-  //   }, 3000);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActive((prev) => {
+        if (prev < 3) return prev + 1;
+        return 1;
+      });
+    }, 5000);
 
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
   const [clicked, setClicked] = useState(false);
   const toggleClicked = () => setClicked((prev) => !prev);
   return (
