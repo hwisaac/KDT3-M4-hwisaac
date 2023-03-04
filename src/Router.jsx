@@ -40,12 +40,22 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            index: true,
+            path: 'myaccount',
             element: (
               <ProtectedRoute>
                 <MyAccount />
               </ProtectedRoute>
             ),
+            children: [
+              {
+                path: 'addaccount',
+                element: (
+                  <ProtectedRoute>
+                    <AddAccount />
+                  </ProtectedRoute>
+                ),
+              },
+            ],
           },
           {
             path: 'myorder',
@@ -54,14 +64,16 @@ const router = createBrowserRouter([
                 <MyOrder />
               </ProtectedRoute>
             ),
-          },
-          {
-            path: 'addaccount',
-            element: (
-              <ProtectedRoute>
-                <AddAccount />
-              </ProtectedRoute>
-            ),
+            children: [
+              {
+                path: 'transactions/:detailId',
+                element: (
+                  <ProtectedRoute>
+                    <TransactionDetail />
+                  </ProtectedRoute>
+                ),
+              },
+            ],
           },
         ],
       },

@@ -8,11 +8,13 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
+import { useRecoilValue } from 'recoil';
+import { loginState } from 'recoil/userInfo';
 import useCart from 'hooks/useCart';
 
 export default function Header() {
   const { scrollY } = useScroll();
-
+  const isLoggedIn = useRecoilValue(loginState);
   /* 검색 기능 */
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -87,9 +89,15 @@ export default function Header() {
             </AnimatePresence>
 
             <User>
-              <Link to="/mypage">
-                <li>ACCOUNT</li>
-              </Link>
+              {isLoggedIn ? (
+                <Link to="/mypage/myaccount">
+                  <li>ACCOUNT</li>
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <li>LOGIN</li>
+                </Link>
+              )}
 
               <Link to="/mycart">
                 <li>
