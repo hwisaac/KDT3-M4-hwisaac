@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { MdOutlineClear } from 'react-icons/md';
 import { HiMinusSm, HiOutlinePlusSm } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
-import useCart from '../../hooks/useCart';
+import useCart from '../../util/useCart';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '../../api/productApi';
 import styled from 'styled-components';

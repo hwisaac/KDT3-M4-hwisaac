@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { decimalPointConversion } from './../../util/decimalPointConversion';
 
 const Product = ({ grid, id, thumbnail, title, price, description, isSoldOut }) => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Product = ({ grid, id, thumbnail, title, price, description, isSoldOut }) 
       </ImgArea>
       <TextArea grid={grid}>
         <h2>{title}</h2>
-        <p>{price && price.toLocaleString()}원</p>
+        <p>${decimalPointConversion(price)}</p>
         {grid === 'list' ? <span>{description}...</span> : null}
       </TextArea>
     </Wrap>

@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { BiHeartCircle } from 'react-icons/bi';
 import styled from 'styled-components';
-import useCart from '../../hooks/useCart';
+import useCart from '../../util/useCart';
 
 const SHIPPING = 3000;
 export default function ProductDetail() {

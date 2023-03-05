@@ -9,10 +9,10 @@ import styled from 'styled-components';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { AiOutlineSearch } from 'react-icons/ai';
-import useInputFocus from 'hooks/useInputFocus';
+import useInputFocus from 'util/useInputFocus';
 import { useRecoilValue } from 'recoil';
 import { loginState } from 'recoil/userInfo';
-import useCart from 'hooks/useCart';
+import useCart from 'util/useCart';
 
 export default function Header() {
   const { scrollY } = useScroll();

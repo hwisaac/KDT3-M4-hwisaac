@@ -3,7 +3,7 @@ import CartItem from '../../components/my-cart/CartItem';
 import PriceCard from '../../components/my-cart/PriceCard';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useCart from '../../hooks/useCart';
+import useCart from '../../util/useCart';
 import SmallButton from '../../components/ui/button/SmallButton';
 import styled from 'styled-components';
 
