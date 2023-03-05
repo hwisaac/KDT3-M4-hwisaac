@@ -5,12 +5,12 @@ export const ACCOUNT_URL = `https://asia-northeast3-heropy-api.cloudfunctions.ne
 export const HEADERS_USER = {
   'content-type': 'application/json',
   apikey: 'FcKdtJs202209',
-  username: 'KDT3_TEAM-4',
+  username: 'KDT3-TEAM4',
 };
 
 export const HEADERS = {
   'content-type': 'application/json',
   apikey: 'FcKdtJs202209',
-  username: 'KDT3_TEAM-4',
+  username: 'KDT3-TEAM4',
   masterKey: 'true',
 };

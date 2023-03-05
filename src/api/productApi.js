@@ -53,7 +53,7 @@ export async function getCategorizedProducts(searchText, searchTags) {
     headers: {
       'content-type': 'application/json',
       apikey: 'FcKdtJs202209',
-      username: 'KDT3_TEAM-4',
+      username: 'KDT3-TEAM4',
     },
     body: JSON.stringify({ searchText, searchTags }),
   });

@@ -110,7 +110,6 @@ const EcoSectionComponent = styled.section`
   height: auto;
   padding: 100px 0;
   gap: 100px;
-  border: 1px solid black;
   margin: 0 auto;
   justify-content: center;
   align-items: center;

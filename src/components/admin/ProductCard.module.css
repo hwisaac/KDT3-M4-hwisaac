@@ -1,21 +1,21 @@
 .item {
-  display: flex;
+  /* display: flex;
   border-bottom: 1px solid #eee;
   align-items: center;
   justify-content: space-between;
   color: #666;
-  position: relative;
+  position: relative; */
 }
 .checked {
-  background-color: beige;
+  /* background-color: beige; */
 }
 .item .left {
-  display: flex;
+  /* display: flex;
   align-items: center;
-  margin-left: 10px;
+  margin-left: 10px; */
 }
 .item .right {
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 .index {
   margin: 10px;

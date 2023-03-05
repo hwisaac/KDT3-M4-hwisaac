@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { myAtom } from '../../recoil/atoms';
 import LoadingModal from '../ui/loading/LoadingModal';
+import styled from 'styled-components';
 
 const ProductCard = ({
   index,
@@ -42,12 +43,13 @@ const ProductCard = ({
     setChecked(selectAll);
     assignCheckList(id, selectAll);
   }, [selectAll]);
-
+  // index, 사진, id, title, tags , 수정버튼, 삭제버튼
   return (
-    <li className={`${style.item} ${checked ? style.checked : null}`}>
+    <Item className={`${checked ? 'checked' : null}`}>
       {removeProduct.isLoading ? <LoadingModal /> : null}
+
       {isSoldOut ? <div className={`${style.soldOut}`}></div> : null}
-      <div className={style.left}>
+      <div className="left">
         <input type="checkbox" onChange={handleChange} checked={checked} />
         <span className={style.index}>{index + 1}</span>
         {thumbnail ? (
@@ -65,7 +67,7 @@ const ProductCard = ({
           ))}
         </div>
       </div>
-      <div className={style.right}>
+      <div className="right">
         <Link to={`edit/${id}`} state={{ index, id, title, price, description, tags, isSoldOut, thumbnail }}>
           <button className={style.btn}>수정</button>
         </Link>
@@ -73,8 +75,28 @@ const ProductCard = ({
           삭제
         </button>
       </div>
-    </li>
+    </Item>
   );
 };
 
 export default ProductCard;
+
+const Item = styled.li`
+  display: flex;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  justify-content: space-between;
+  color: #666;
+  position: relative;
+  &.checked {
+    background-color: beige;
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+  .right {
+    margin-right: 10px;
+  }
+`;

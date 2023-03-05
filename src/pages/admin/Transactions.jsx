@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './Transactions.module.css';
+// import style from './Transactions.module.css';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getTransactionsAll } from '../../api/productApi';
@@ -9,7 +9,14 @@ import LoadingModal from '../../components/ui/loading/LoadingModal';
 import TransactionCard from '../../components/admin/TransactionCard';
 import OverviewCard from './OverviewCard';
 import BankIcon from '../../components/ui/bank-icon/BankIcon';
+import TableHeader from 'components/admin/TableHeader';
+import TableFooter from 'components/admin/TableFooter';
+import styled from 'styled-components';
 
+const OverView = styled.div`
+  display: flex;
+  gap: 20px;
+`;
 const Transactions = () => {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalCanceled, setTotalCanceled] = useState(0);
@@ -46,20 +53,15 @@ const Transactions = () => {
   return (
     <>
       {isLoading && <LoadingModal />}
-      <div className={style.overview}>
+      <OverView>
         <OverviewCard title={'Total transactions'} content={totalTransactions} />
         <OverviewCard title={'Earned'} content={totalEarned} />
         <OverviewCard title={'Canceled'} content={totalCanceled} />
         <OverviewCard title={'Done'} content={totalDone} />
-      </div>
+      </OverView>
 
-      <ul className={style.transactionsList}>
-        <TransactionCard
-          payload={{
-            tableHeader: true,
-            tableFooter: false,
-          }}
-        />
+      <ul>
+        <TableHeader />
         {!isLoading &&
           filteredTransactions?.map((transaction, index) => {
             const { account, detailId, done, isCanceled, product, timePaid, user } = transaction;
@@ -82,12 +84,7 @@ const Transactions = () => {
               />
             );
           })}
-        <TransactionCard
-          payload={{
-            tableFooter: true,
-            tableHeader: false,
-          }}
-        />
+        <TableFooter />
       </ul>
     </>
   );

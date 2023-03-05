@@ -8,6 +8,7 @@ import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { useSetRecoilState } from 'recoil';
 import { myAtom } from '../../recoil/atoms';
 import ConfirmModal from '../../components/ui/ConfirmModal';
+import styled from 'styled-components';
 
 const ProductManagement = () => {
   const [selectAll, setSelectAll] = useState(false);
@@ -53,13 +54,8 @@ const ProductManagement = () => {
     }
   }, [answer]);
 
-  // TODO: 상품목록 초기화 기능 나중에 구현
-  // const handleResetProducts = () => {
-  //   resetAllProducts();
-  // };
-
   return (
-    <ul className={style.productList}>
+    <ProductList>
       {openConfirmModal ? (
         <ConfirmModal
           title={'선택삭제'}
@@ -77,12 +73,7 @@ const ProductManagement = () => {
             checked={selectAll}
             onChange={() => setSelectAll((prev) => !prev)}
           />
-          <span className={style.interfaceMenu} onClick={handleSelectDelete}>
-            선택삭제
-          </span>
-          {/* <span className={style.interfaceMenu} onClick={handleResetProducts}>
-            상품리셋
-          </span> */}
+          <InterfaceMenu onClick={handleSelectDelete}>선택삭제</InterfaceMenu>
         </div>
 
         <Link to="add">
@@ -114,8 +105,46 @@ const ProductManagement = () => {
           );
         })
       )}
-    </ul>
+    </ProductList>
   );
 };
 
 export default ProductManagement;
+
+const ProductList = styled.ul`
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  padding: 30px;
+  -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  .listHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    div span {
+      margin-right: 15px;
+    }
+
+    .btn {
+      border: none;
+      width: 50px;
+      height: 30px;
+      border-radius: 10px;
+      background-color: #2196f3;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover {
+        background-color: #0e436c;
+      }
+    }
+  }
+`;
+
+const SelectAllInput = styled.input`
+  margin-right: 30px;
+`;
+const InterfaceMenu = styled.span`
+  cursor: pointer;
+`;

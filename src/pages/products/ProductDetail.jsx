@@ -14,6 +14,7 @@ import LoadingModal from '../../components/ui/loading/LoadingModal';
 import { BiHeartCircle } from 'react-icons/bi';
 import styled from 'styled-components';
 import useCart from '../../hooks/useCart';
+import { formatPrice } from 'utils/util';
 
 const SHIPPING = 3000;
 export default function ProductDetail() {
@@ -98,7 +99,7 @@ export default function ProductDetail() {
       <RightContainer>
         <Nav onClick={() => navigate(-1)}>← back to shop</Nav>
         <h2>{title}</h2>
-        <Price>{price?.toLocaleString() || Number(price).toLocaleString()}원</Price>
+        <Price>{price && formatPrice(price)}</Price>
         <Description>{description}</Description>
         {!isSoldOut ? (
           <BtnGroup>
