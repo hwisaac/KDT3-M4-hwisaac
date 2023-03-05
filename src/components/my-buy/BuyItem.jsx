@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import formatPrice from '../../util/formatPrice';
 
 const BuyItem = ({ id, photo, title, quantity, price }) => {
   return (
@@ -12,7 +13,7 @@ const BuyItem = ({ id, photo, title, quantity, price }) => {
         </Link>
         <p>
           <span>{quantity} EA</span>
-          <span>$ {(price * quantity).toLocaleString()}</span>
+          <span>{formatPrice(price * quantity)}</span>
         </p>
       </ProductText>
     </ProductItem>
