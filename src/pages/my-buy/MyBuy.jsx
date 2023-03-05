@@ -13,7 +13,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import LoadingModal from './../../components/ui/loading/LoadingModal';
 import styled from 'styled-components';
 import PaymentForm from './../../components/my-buy/PaymentForm';
-import { decimalPointConversion } from './../../util/decimalPointConversion';
+import formatPrice from '../../util/formatPrice';
 
 const MyBuy = () => {
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
@@ -93,7 +93,7 @@ const MyBuy = () => {
           quantity--;
         }
       }
-      alert(`$${decimalPointConversion(productsPrice)} 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+      alert(`${formatPrice(productsPrice)} 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
       productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
     } catch (error) {
       alert(errorMessage);
@@ -157,7 +157,7 @@ const MyBuy = () => {
             </ProductWrap>
             <TotalPrice>
               <span>TOTAL</span>
-              <span>$ {decimalPointConversion(productsPrice)}</span>
+              <span>{formatPrice(productsPrice)}</span>
             </TotalPrice>
 
             <ButtonArea>

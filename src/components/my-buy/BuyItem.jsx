@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { decimalPointConversion } from './../../util/decimalPointConversion';
+import formatPrice from '../../util/formatPrice';
 
 const BuyItem = ({ id, photo, title, quantity, price }) => {
   return (
@@ -13,7 +13,7 @@ const BuyItem = ({ id, photo, title, quantity, price }) => {
         </Link>
         <p>
           <span>{quantity} EA</span>
-          <span>$ {decimalPointConversion(price * quantity)}</span>
+          <span>{formatPrice(price * quantity)}</span>
         </p>
       </ProductText>
     </ProductItem>
