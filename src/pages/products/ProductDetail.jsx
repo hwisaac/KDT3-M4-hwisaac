@@ -11,12 +11,10 @@ import { BsCartX } from 'react-icons/bs';
 import { viewedListState } from '../../recoil/viewedListState';
 import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
-import { BiHeartCircle } from 'react-icons/bi';
 import styled from 'styled-components';
-import useCart from '../../hooks/useCart';
+import useCart from '../../util/useCart';
 import { formatPrice } from 'utils/util';
 
-const SHIPPING = 3000;
 export default function ProductDetail() {
   const {
     cartQuery: { data: cartItems },
@@ -99,7 +97,7 @@ export default function ProductDetail() {
       <RightContainer>
         <Nav onClick={() => navigate(-1)}>← back to shop</Nav>
         <h2>{title}</h2>
-        <Price>{price && formatPrice(price)}</Price>
+        <Price>{price?.toLocaleString() || Number(price).toLocaleString()}원</Price>
         <Description>{description}</Description>
         {!isSoldOut ? (
           <BtnGroup>

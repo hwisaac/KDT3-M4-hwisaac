@@ -1,12 +1,11 @@
 import React from 'react';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { updateProduct } from '../../api/productApi';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getBuy, getAccountInfo } from '../../api/accountApi';
 import { userInfoState } from '../../recoil/userInfo';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import BuyItem from '../../components/my-buy/BuyItem';
-import useCart from '../../hooks/useCart';
+import useCart from '../../util/useCart';
 import { getCookie } from './../../recoil/userInfo';
 import ShippingForm from '../../components/my-buy/ShippingForm';
 import { useForm } from 'react-hook-form';
@@ -14,6 +13,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import LoadingModal from './../../components/ui/loading/LoadingModal';
 import styled from 'styled-components';
 import PaymentForm from './../../components/my-buy/PaymentForm';
+import formatPrice from '../../util/formatPrice';
 
 const MyBuy = () => {
   /* 장바구니와 상세페이지에서 전달받은 제품 정보 */
@@ -71,11 +71,6 @@ const MyBuy = () => {
       return alert(errorMessage);
     },
   });
-  const editProduct = useMutation(([id, price]) => updateProduct(id, price), {
-    onError: () => {
-      return alert(errorMessage);
-    },
-  });
 
   // 배송지 정보 O && 결제 로직 실행
   const onValid = async (data) => {
@@ -90,34 +85,15 @@ const MyBuy = () => {
       return;
     }
 
-    // try catch 문 없어도 작동, 명시적으로 보이기 위해 작성
     try {
       for (let i = 0; i < products.length; i++) {
         let quantity = products[i].quantity || 1;
         while (quantity > 0) {
-          if (i === 0 && quantity === 1) {
-            const test = await editProduct.mutateAsync([
-              products[i].productId || products[i].id,
-              {
-                price: products[i].price + 3000,
-              },
-            ]);
-            await productBuy.mutateAsync([test.id, accountId, accessToken]);
-            await editProduct.mutateAsync([
-              test.id,
-              {
-                price: products[i].price,
-              },
-            ]);
-            quantity--;
-          } else {
-            await productBuy.mutateAsync([products[i].productId || products[i].id, accountId, accessToken]);
-            quantity--;
-          }
+          await productBuy.mutateAsync([products[i].productId || products[i].id, accountId, accessToken]);
+          quantity--;
         }
       }
-
-      alert(`${(productsPrice + 3000).toLocaleString()}원 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
+      alert(`${formatPrice(productsPrice)} 결제가 완료되었습니다. 주문해주셔서 감사합니다.`);
       productIds.map(async (id) => (id ? removeItems.mutate(id) : navigate('/')));
     } catch (error) {
       alert(errorMessage);
@@ -181,7 +157,7 @@ const MyBuy = () => {
             </ProductWrap>
             <TotalPrice>
               <span>TOTAL</span>
-              <span>$ {productsPrice + 3000}</span>
+              <span>{formatPrice(productsPrice)}</span>
             </TotalPrice>
 
             <ButtonArea>

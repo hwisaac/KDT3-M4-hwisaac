@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import SortButton from '../../components/ui/button/SortButton';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
-import useFilter from '../../hooks/useFilter';
+import useFilter from '../../util/useFilter';
 import { useQuery } from '@tanstack/react-query';
 import { getCategorizedProducts, getProducts } from '../../api/productApi';
 import { useParams } from 'react-router-dom';
 import GridButton from './../../components/ui/button/GridButton';
-import useGridFilter from './../../hooks/useGridFilter';
+import useGridFilter from '../../util/useGridFilter';
 import styled from 'styled-components';
 import ProductWrap from './../../components/total-product/ProductWrap';
 
@@ -17,13 +17,7 @@ export default function Category() {
   const searchTags = [tag];
   const searchText = '';
 
-  const {
-    isLoading,
-    error,
-    data: products,
-  } = useQuery([searchTags], () =>
-    tag === '전체상품' || tag === '베스트' ? getProducts() : getCategorizedProducts(searchText, searchTags),
-  );
+  const { isLoading, error, data: products } = useQuery([searchTags], () => getProducts());
   // console.log('category', products)
 
   // const {filters, filter, setFilter, filtered} = useFilter(products);

@@ -107,9 +107,6 @@ export async function updateProduct(id, payload) {
   });
   const json = await res.json();
   console.log('updateProduct >> ', json);
-
-  // 구매할 때 배송비 수정 로직으로 사용
-  return json;
 }
 
 export const deleteAll = async () => {
@@ -145,13 +142,14 @@ export const deleteSelectedProducts = (checkList) => {
 };
 
 // 검색
-export async function getSearch(title = '', tags = '') {
+export async function getSearch(title = '', tag = '') {
+  console.log('title:', title, 'tag:', tag);
   const res = await fetch(API_URL + 'products/search', {
     method: 'POST',
     headers: HEADERS,
     body: JSON.stringify({
-      searchText: `${title}`,
-      searchTags: [`${tags}`],
+      searchText: `${title.toUpperCase()}`,
+      searchTags: [`${tag}`],
     }),
   });
 

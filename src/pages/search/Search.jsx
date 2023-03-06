@@ -3,38 +3,23 @@ import { getSearch } from '../../api/productApi';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
-import useFilter from '../../hooks/useFilter';
+import useFilter from '../../util/useFilter';
 import SortButton from '../../components/ui/button/SortButton';
 import GridButton from '../../components/ui/button/GridButton';
 import styled from 'styled-components';
 import { CiSearch } from 'react-icons/ci';
-import useGridFilter from './../../hooks/useGridFilter';
+import useGridFilter from '../../util/useGridFilter';
 import { useForm } from 'react-hook-form';
 import ProductWrap from '../../components/total-product/ProductWrap';
 
 const Search = () => {
   const navigate = useNavigate();
   // 쿼리 값 가져오기
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const title = searchParams.get('q');
 
   // 태그 탐색을 위한 태그데이터
-  const TAGS = [
-    '농산물',
-    '과일',
-    '채소',
-    '곡물',
-    '수산물',
-    '제철',
-    '건어물',
-    '축산물',
-    '가공식품',
-    '일반',
-    '반찬',
-    '차류',
-    '벌꿀',
-    '간편간식',
-  ];
+  const TAGS = ['kitchen', 'cleaning', 'body', 'shaving'];
 
   let titleArr;
   let tag = TAGS.find((tag) => title.includes(tag));
@@ -48,11 +33,18 @@ const Search = () => {
   }
 
   // api 호출
-  const { isLoading, data: search } = useQuery([title], () => {
-    if (findTitle && tag) return getSearch(findTitle, tag);
-    else if (tag) return getSearch('', tag);
-    else return getSearch(title);
-  });
+  const { isLoading, data: search } = useQuery(
+    ['search', title],
+    () => {
+      if (findTitle && tag) return getSearch(findTitle, tag);
+      else if (tag) return getSearch('', tag);
+      else return getSearch(title);
+    },
+    {
+      staleTime: 1000 * 60 * 60 * 24,
+      cacheTime: Infinity,
+    },
+  );
 
   // 정렬
   // const {filters, filter, setFilter, filtered} = useFilter(search)

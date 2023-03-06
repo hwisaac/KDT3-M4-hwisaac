@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import formatPrice from 'util/formatPrice';
 
 export default function PriceCard({ text, price }) {
   return (
     <Price>
       <PriceSummaryT text={text === 'Total' ? 'total' : null}>{text}</PriceSummaryT>
-      <PriceSummaryD text={text === 'Total' ? 'total' : null}>{`${price && price.toLocaleString()}원`}</PriceSummaryD>
+      <PriceSummaryD text={text === 'Total' ? 'total' : null}>{`${formatPrice(price)}`}</PriceSummaryD>
     </Price>
   );
 }

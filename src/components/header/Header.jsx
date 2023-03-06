@@ -9,10 +9,10 @@ import styled from 'styled-components';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { AiOutlineSearch } from 'react-icons/ai';
-import useInputFocus from 'hooks/useInputFocus';
+import useInputFocus from 'util/useInputFocus';
 import { useRecoilValue } from 'recoil';
 import { loginState } from 'recoil/userInfo';
-import useCart from 'hooks/useCart';
+import useCart from 'util/useCart';
 
 export default function Header() {
   const { scrollY } = useScroll();
@@ -24,7 +24,7 @@ export default function Header() {
   // const [isFocused, setIsFocused] = useState(false);
 
   const inputAnimation = useAnimation();
-
+  console.log(isLoggedIn);
   const toggleSearch = () => {
     if (searchOpen) {
       inputAnimation.start({
@@ -65,8 +65,6 @@ export default function Header() {
     cartQuery: { isLoading, data: products },
   } = useCart();
 
-  if (isLoading) return;
-
   const countCartItems = products && products.length;
 
   return (
@@ -102,21 +100,22 @@ export default function Header() {
             </Search>
             <User>
               {isLoggedIn ? (
-                <Link to="/mypage/myaccount">
-                  <li>ACCOUNT</li>
-                </Link>
+                <>
+                  <Link to="/mypage/myaccount">
+                    <li>ACCOUNT</li>
+                  </Link>
+                  <Link to="/mycart">
+                    <li>
+                      <BsBag />
+                      <span>({countCartItems})</span>
+                    </li>
+                  </Link>
+                </>
               ) : (
                 <Link to="/login">
                   <li>LOGIN</li>
                 </Link>
               )}
-
-              <Link to="/mycart">
-                <li>
-                  <BsBag />
-                  <span>({countCartItems})</span>
-                </li>
-              </Link>
             </User>
           </Right>
         </Wrapper>
@@ -264,7 +263,7 @@ const Logo = styled.div`
 
 const User = styled.ul`
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: center;
   li {
     display: flex;
