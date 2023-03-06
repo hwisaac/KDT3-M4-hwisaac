@@ -6,6 +6,7 @@ import useCart from '../../util/useCart';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '../../api/productApi';
 import styled from 'styled-components';
+import formatPrice from 'util/formatPrice';
 
 export default function CartItem({
   product,
@@ -74,7 +75,7 @@ export default function CartItem({
       </ImageContainer>
       <Product>
         <Text>{title}</Text>
-        <Text>{`${(price * quantity).toLocaleString()}원`}</Text>
+        <Text>{`${formatPrice(price * quantity)}원`}</Text>
         <Quantity>
           <HiMinusSm onClick={handleMinus} />
           <span>{quantity}</span>
