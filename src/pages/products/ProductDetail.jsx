@@ -97,7 +97,7 @@ export default function ProductDetail() {
       <RightContainer>
         <Nav onClick={() => navigate(-1)}>← back to shop</Nav>
         <h2>{title}</h2>
-        <Price>{price?.toLocaleString() || Number(price).toLocaleString()}원</Price>
+        <Price>{price && formatPrice(price)}</Price>
         <Description>{description}</Description>
         {!isSoldOut ? (
           <BtnGroup>
