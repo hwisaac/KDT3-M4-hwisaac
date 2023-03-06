@@ -35,8 +35,8 @@ export default function Home() {
         <span>ABOUT US</span>
       </DescriptionUs>
       <Bestseller />
-      <EcoSection />
       <Slider />
+      <EcoSection />
     </HomePage>
   );
 }

@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import styled from 'styled-components';
 import useCart from '../../util/useCart';
-import formatPrice from '../../util/formatPrice';
+import { formatPrice } from 'utils/util';
 
 export default function ProductDetail() {
   const {
@@ -97,7 +97,7 @@ export default function ProductDetail() {
       <RightContainer>
         <Nav onClick={() => navigate(-1)}>← back to shop</Nav>
         <h2>{title}</h2>
-        <Price>{formatPrice(price)}원</Price>
+        <Price>{price && formatPrice(price)}</Price>
         <Description>{description}</Description>
         {!isSoldOut ? (
           <BtnGroup>

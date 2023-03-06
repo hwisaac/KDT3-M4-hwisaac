@@ -1,43 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import BestsellerCard from './BestsellerCard';
+
+const prods = [
+  {
+    id: '0bye2zVJjds84GA13WtP',
+    title: 'ORGANIC ROSE CHARCOAL FACIAL BAR',
+    price: 1000,
+    photo: 'https://storage.googleapis.com/heropy-api/vHhIVjJEJ2v081228.webp',
+  },
+  {
+    id: 'fe2uCOYvlCRBBMS3m2Vs',
+    title: 'FACIAL ROUNDS',
+    price: 1800,
+    photo: 'https://storage.googleapis.com/heropy-api/vX7RWkuFsrv081912.webp',
+  },
+  {
+    id: 'lLiCQWxj8XcC8pHNm5I4',
+    title: 'STAINLESS STEEL STRAWS',
+    price: 300,
+    photo: 'https://storage.googleapis.com/heropy-api/vqzf2gBCGxv082045.webp',
+  },
+  {
+    id: 'QprtQhuW6AOxPYaBbaex',
+    title: 'THE UNWASTE SHOP TOTE BAG',
+    price: 1399,
+    photo: 'https://storage.googleapis.com/heropy-api/vhbYqPphyIDv082303.webp',
+  },
+  {
+    id: 'pg0bxoehtMlBVf93iiBt',
+    title: 'SALT SCRUB',
+    price: 1899,
+    photo: 'https://storage.googleapis.com/heropy-api/vOE455GMq6v081958.webp',
+  },
+  {
+    id: 'JykGB7uoFM3HStOk90LF',
+    title: 'BODY SOAP BAR',
+    price: 799,
+    photo: 'https://storage.googleapis.com/heropy-api/v7jTN-ig4Av081635.webp',
+  },
+  {
+    id: 'pEXa9hKh8xai1nEkYS0n',
+    title: 'BATH BOMBS',
+    price: 900,
+    photo: 'https://storage.googleapis.com/heropy-api/vIgEyk7gAB2v081542.webp',
+  },
+  {
+    id: 'KF8Gj2WX9i4KHbWNxFp7',
+    title: 'WOOL DRYER BALLS',
+    price: 2000,
+    photo: 'https://storage.googleapis.com/heropy-api/vABkoSXZaLHv081404.webp',
+  },
+  {
+    id: 'GNrSJPxPuBGcCoqbauPE',
+    title: 'BEESWAX WRAPS',
+    price: 1900,
+    photo: 'https://storage.googleapis.com/heropy-api/vIflFj5spmFv081010.webp',
+  },
+];
 
 const GridLayout = ({ n }) => {
-  const imageURL = (idx) => {
-    let path = '';
-    switch (idx) {
-      case 0:
-        path = 'https://i.postimg.cc/KYvqp6bc/home-slider0.jpg';
-        break;
-      case 1:
-        path = 'https://i.postimg.cc/4x125JrF/home-slider1.jpg';
-        break;
-      case 2:
-        path = 'https://i.postimg.cc/htn3TJ3d/home-slider2.jpg';
-        break;
-      case 3:
-        path = 'https://i.postimg.cc/k51j0TMQ/home-slider7.jpg';
-        break;
-      case 4:
-        path = 'https://i.postimg.cc/J4Z2s3K8/home-slider4.jpg';
-        break;
-      case 5:
-        path = 'https://i.postimg.cc/y6J5HCZk/home-slider5.jpg';
-        break;
-      case 6:
-        path = 'https://i.postimg.cc/d1hWwGDz/home-slider6.jpg';
-        break;
-      case 7:
-        path = 'https://i.postimg.cc/k51j0TMQ/home-slider7.jpg';
-        break;
-      default:
-        path = 'https://i.postimg.cc/KYvqp6bc/home-slider0.jpg';
-        return;
-    }
-
-    return `url(${path})`;
-  };
-  console.log('n', n);
   switch (n) {
     case 1:
       return (
@@ -45,33 +68,30 @@ const GridLayout = ({ n }) => {
           <motion.div
             layoutId="firstGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '1 / 2',
               gridRow: '1 / 2',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(0),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[0]} />
+          </motion.div>
           <motion.div
             layoutId="secondGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '2 / -1',
               gridRow: '1 / -1',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(1),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[1]} />
+          </motion.div>
           <motion.div
             layoutId="thirdGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '1 / 2',
               gridRow: '2 / 3',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(2),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[2]} />
+          </motion.div>
         </>
       );
     case 2:
@@ -80,33 +100,30 @@ const GridLayout = ({ n }) => {
           <motion.div
             layoutId="firstGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '1 / 3',
               gridRow: '2 / 3',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(3),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[3]} />
+          </motion.div>
           <motion.div
             layoutId="secondGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '1 / 3',
               gridRow: '1 / 2',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(4),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[4]} />
+          </motion.div>
           <motion.div
             layoutId="thirdGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '3 / -1',
               gridRow: '1 / -1',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(5),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[5]} />
+          </motion.div>
         </>
       );
     case 3:
@@ -115,48 +132,51 @@ const GridLayout = ({ n }) => {
           <motion.div
             layoutId="firstGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '1 / -1',
               gridRow: '2 / -1',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(6),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[6]} />
+          </motion.div>
           <motion.div
             layoutId="secondGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '1 / 2',
               gridRow: '1 / 2',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(7),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[7]} />
+          </motion.div>
           <motion.div
             layoutId="thirdGrid"
             style={{
-              border: '1px solid var(--color-black1)',
               gridColumn: '2 / -1',
               gridRow: '1 / 2',
-              backgroundSize: 'cover',
-              backgroundImage: imageURL(1),
             }}
-          ></motion.div>
+          >
+            <BestsellerCard product={prods[8]} />
+          </motion.div>
         </>
       );
     default:
       return (
         <>
-          <motion.div className="third-1"></motion.div>
-          <motion.div className="third-2"></motion.div>
-          <motion.div className="third-3"></motion.div>
+          <motion.div className="third-1">
+            <BestsellerCard product={prods[6]} />
+          </motion.div>
+          <motion.div className="third-2">
+            <BestsellerCard product={prods[7]} />
+          </motion.div>
+          <motion.div className="third-3">
+            <BestsellerCard product={prods[8]} />
+          </motion.div>
         </>
       );
   }
 };
 const Bestseller = () => {
   const [active, setActive] = useState(1);
-  // 3초마다 바꾸기
+  // 5초마다 바꾸기
   useEffect(() => {
     const intervalId = setInterval(() => {
       setActive((prev) => {
