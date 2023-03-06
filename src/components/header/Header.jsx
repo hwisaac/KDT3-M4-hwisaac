@@ -38,6 +38,7 @@ export default function Header() {
 
   useEffect(() => {
     const inputField = document.getElementById('search');
+
     if (searchOpen) inputField.focus();
   }, [searchOpen]);
 

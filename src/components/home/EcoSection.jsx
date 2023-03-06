@@ -46,11 +46,11 @@ export default function EcoSection() {
   const EcoImageSrc = (menuId) => {
     switch (menuId) {
       case 0:
-        return ecoimg0;
+        return 'https://i.postimg.cc/HsQ9DLY5/sustainable.jpg';
       case 1:
-        return ecoimg1;
+        return 'https://i.postimg.cc/Z54FThnQ/vegan.jpg';
       case 2:
-        return ecoimg2;
+        return 'https://i.postimg.cc/0ynGjHJy/plastic.jpg';
       default:
         return ecoimg0;
     }

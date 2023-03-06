@@ -10,6 +10,7 @@ import { useRecoilValue } from 'recoil';
 import BankIcon from '../ui/bank-icon/BankIcon';
 import { editTransaction } from '../../api/productApi';
 import styled from 'styled-components';
+import { formatPrice } from 'utils/util';
 
 function TransactionCard({ payload }) {
   const {
@@ -83,12 +84,12 @@ function TransactionCard({ payload }) {
         </div>
       </div>
       <div className="price">
-        <span className={done ? 'done' : null}>₩ {price.toLocaleString()}</span>
+        <span className={done ? 'done' : null}> {formatPrice(price)}</span>
       </div>
       <div className="product">
         <span className="title">
           {title}
-          {detailId}
+          {/* {detailId} */}
         </span>
       </div>
       <div className="status">

@@ -5,21 +5,20 @@ import { IoIosClose } from 'react-icons/io';
 
 /**
  * 질문을 던지고 확인or취소를 결정하는 모달창
- * @param {*} {title: 제목, question: 질문내용, setOpenModal: 모달을 여닫을지 정해주는 함수, setAnswer: 대답을 정해주는 함수}
+ * @param {*} {title: 제목, question: 질문내용, onCancel: no일시 작동하는 함수, onConfirm: yes일시 작동하는 함수}
  * @returns
  */
-const ConfirmModal = ({ title, question, setOpenModal, setAnswer }) => {
+const ConfirmModal = ({ title, question, onCancel, onConfirm }) => {
   const sayNo = (event) => {
     event.preventDefault();
     console.log('sayNo');
-    setOpenModal(false);
-    setAnswer(false);
+    onCancel(false);
   };
   const sayYes = (event) => {
     event.preventDefault();
     console.log('sayYes');
-    setOpenModal(false);
-    setAnswer(true);
+    onCancel(false);
+    onConfirm();
   };
 
   return (

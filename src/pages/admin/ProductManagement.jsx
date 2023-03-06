@@ -1,5 +1,5 @@
 import ProductCard from '../../components/admin/ProductCard';
-import style from './ProductManagement.module.css';
+// import style from './ProductManagement.module.css';
 import { Link, Outlet } from 'react-router-dom';
 import { getProducts, deleteSelectedProducts } from '../../api/productApi';
 import { useState, useEffect } from 'react';
@@ -9,9 +9,12 @@ import { useSetRecoilState } from 'recoil';
 import { myAtom } from '../../recoil/atoms';
 import ConfirmModal from '../../components/ui/ConfirmModal';
 import styled from 'styled-components';
+import ProductTableHeader from 'components/admin/ProdudctTableHeader';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 const ProductManagement = () => {
   const [selectAll, setSelectAll] = useState(false);
+
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [answer, setAnswer] = useState(false);
 
@@ -46,13 +49,6 @@ const ProductManagement = () => {
     // console.log(checkList);
     setOpenConfirmModal(true);
   };
-  /** 확인창에서 answer = true 가 세팅되면 체크된 제품의 삭제를 진행한다 */
-  useEffect(() => {
-    if (answer) {
-      // confirm
-      removeSelectedProducts.mutate(checkList);
-    }
-  }, [answer]);
 
   return (
     <ProductList>
@@ -60,63 +56,70 @@ const ProductManagement = () => {
         <ConfirmModal
           title={'선택삭제'}
           question={'선택된 요소를 삭제하시겠습니까?'}
-          setOpenModal={setOpenConfirmModal}
-          setAnswer={setAnswer}
+          onCancel={() => setOpenConfirmModal(false)}
+          onConfirm={() => {
+            console.log(checkList);
+            alert('현재 전부 삭제는 막혀있습니다.');
+          }}
+          // onConfirm={() => removeSelectedProducts.mutate(checkList)}
         />
       ) : null}
+
       {removeSelectedProducts.isLoading ? <LoadingModal /> : null}
-      <li className={style.listHeader}>
+
+      <li className="listHeader">
         <div>
-          <input
-            type="checkbox"
-            className={style.selectAll}
-            checked={selectAll}
-            onChange={() => setSelectAll((prev) => !prev)}
-          />
-          <InterfaceMenu onClick={handleSelectDelete}>선택삭제</InterfaceMenu>
+          <CheckboxContainer>
+            <CustomCheckbox
+              type="checkbox"
+              id="title"
+              checked={selectAll}
+              onChange={() => setSelectAll((prev) => !prev)}
+            />
+
+            <AiOutlineDelete onClick={handleSelectDelete} size="20" />
+          </CheckboxContainer>
         </div>
 
         <Link to="add">
-          <button className={style.btn}>Add</button>
+          <button className="btn">Add</button>
         </Link>
         <Outlet />
       </li>
-      {gettingProducts ? (
-        <LoadingModal />
-      ) : (
-        products.map((product, index) => {
-          const { id, title, price, description, tags, isSoldOut, thumbnail, isC } = product;
-          return (
-            <ProductCard
-              key={`productCard-${id}`}
-              id={id}
-              index={index}
-              title={title}
-              price={price}
-              description={description}
-              tags={tags}
-              isSoldOut={isSoldOut}
-              thumbnail={thumbnail}
-              selectAll={selectAll}
-              assignCheckList={assignCheckList}
-              checkList={checkList}
-              isC={isC}
-            />
-          );
-        })
-      )}
+      <ProductsWrapper>
+        {gettingProducts
+          ? 'loading..'
+          : products?.map((product, index) => {
+              const { id, title, price, description, tags, isSoldOut, thumbnail, isC } = product;
+              return (
+                <ProductCard
+                  key={`productCard-${id}`}
+                  id={id}
+                  index={index}
+                  title={title}
+                  price={price}
+                  description={description}
+                  tags={tags}
+                  isSoldOut={isSoldOut}
+                  thumbnail={thumbnail}
+                  selectAll={selectAll}
+                  assignCheckList={assignCheckList}
+                  checkList={checkList}
+                  isC={isC}
+                />
+              );
+            })}
+      </ProductsWrapper>
     </ProductList>
   );
 };
 
 export default ProductManagement;
 
-const ProductList = styled.ul`
-  border-radius: 30px;
-  border: 1px solid #ccc;
+const ProductList = styled.div`
+  /* border: 1px solid #ccc; */
+  margin-bottom: 100px;
   padding: 30px;
-  -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   .listHeader {
     display: flex;
     justify-content: space-between;
@@ -131,13 +134,11 @@ const ProductList = styled.ul`
       width: 50px;
       height: 30px;
       border-radius: 10px;
-      background-color: #2196f3;
-      color: white;
       cursor: pointer;
       transition: 0.3s;
-      &:hover {
-        background-color: #0e436c;
-      }
+      /* &:hover { */
+      /* background-color: #eee; */
+      /* } */
     }
   }
 `;
@@ -147,4 +148,35 @@ const SelectAllInput = styled.input`
 `;
 const InterfaceMenu = styled.span`
   cursor: pointer;
+  border: 1px solid blue;
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  svg {
+    cursor: pointer;
+  }
+`;
+const CustomCheckbox = styled.input`
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color-light-gray3);
+
+  &:checked {
+    border-color: transparent;
+    background-image: url('https://aromatica.co.kr/layout/basic/img/ico_checkbox.svg');
+    background-size: 100% 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-color: var(--color-brown);
+  }
+`;
+
+const ProductsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 `;
