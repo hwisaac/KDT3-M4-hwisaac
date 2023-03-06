@@ -7,7 +7,7 @@ import useCart from '../../util/useCart';
 import SmallButton from '../../components/ui/button/SmallButton';
 import styled from 'styled-components';
 
-const SHIPPING = 3000;
+const SHIPPING = 0;
 
 export default function MyCart() {
   const {
@@ -63,7 +63,6 @@ export default function MyCart() {
   const numberCheckedItems = checkedItems.length;
   const soldOutItem = getSoldOutId.length;
   const totalPrice = checkedItems.reduce((prev, current) => prev + parseInt(current.price) * current.quantity, 0);
-  const shippingPrice = totalPrice >= 30000 ? 0 : SHIPPING;
 
   /** 구매페이지 이동 */
   const handleToBuy = (event) => {
@@ -134,11 +133,11 @@ export default function MyCart() {
               <PriceCardContainer>
                 <PriceInfo>
                   <PriceCard text="Price" price={totalPrice} />
-                  <PriceCard text="Shipping" price={shippingPrice} />
+                  <PriceCard text="Shipping" price={SHIPPING} />
                 </PriceInfo>
-                <ShipMsg>* 30,000원 이상 구매시 무료배송 혜택</ShipMsg>
+                <ShipMsg>* 공식몰에서 구매하신 고객님들께 무료배송 해드립니다.</ShipMsg>
                 <TotalPrice>
-                  <PriceCard text="Total" price={totalPrice && totalPrice + shippingPrice} />
+                  <PriceCard text="Total" price={totalPrice && totalPrice + SHIPPING} />
                 </TotalPrice>
               </PriceCardContainer>
             </PriceContainer>
@@ -239,7 +238,7 @@ const TotalPrice = styled.div`
 `;
 
 const ShipMsg = styled.div`
-  border-top: 1px solid var(--color-gray1);
+  border-top: 1px solid var(--color-light-gray3);
   border-bottom: 1px solid var(--color-light-gray3);
   padding: 2rem 0;
   color: var(--color-brown);

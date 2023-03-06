@@ -106,8 +106,9 @@ const AddModal = () => {
               <span className={style.listName}>가격 *</span>
               <input
                 {...register('price', { required: '가격은 필수입니다.' })}
-                type="number"
                 placeholder="제품 가격(필수)"
+                type="number"
+                step="0.01"
               />
               <span className={style.errorMessage}>{errors?.price?.message}</span>
             </li>
