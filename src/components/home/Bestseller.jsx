@@ -2,63 +2,63 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import BestsellerCard from './BestsellerCard';
-
-const prods = [
-  {
-    id: '0bye2zVJjds84GA13WtP',
-    title: 'ORGANIC ROSE CHARCOAL FACIAL BAR',
-    price: 1000,
-    photo: 'https://storage.googleapis.com/heropy-api/vHhIVjJEJ2v081228.webp',
-  },
-  {
-    id: 'fe2uCOYvlCRBBMS3m2Vs',
-    title: 'FACIAL ROUNDS',
-    price: 1800,
-    photo: 'https://storage.googleapis.com/heropy-api/vX7RWkuFsrv081912.webp',
-  },
-  {
-    id: 'lLiCQWxj8XcC8pHNm5I4',
-    title: 'STAINLESS STEEL STRAWS',
-    price: 300,
-    photo: 'https://storage.googleapis.com/heropy-api/vqzf2gBCGxv082045.webp',
-  },
-  {
-    id: 'QprtQhuW6AOxPYaBbaex',
-    title: 'THE UNWASTE SHOP TOTE BAG',
-    price: 1399,
-    photo: 'https://storage.googleapis.com/heropy-api/vhbYqPphyIDv082303.webp',
-  },
-  {
-    id: 'pg0bxoehtMlBVf93iiBt',
-    title: 'SALT SCRUB',
-    price: 1899,
-    photo: 'https://storage.googleapis.com/heropy-api/vOE455GMq6v081958.webp',
-  },
-  {
-    id: 'JykGB7uoFM3HStOk90LF',
-    title: 'BODY SOAP BAR',
-    price: 799,
-    photo: 'https://storage.googleapis.com/heropy-api/v7jTN-ig4Av081635.webp',
-  },
-  {
-    id: 'pEXa9hKh8xai1nEkYS0n',
-    title: 'BATH BOMBS',
-    price: 900,
-    photo: 'https://storage.googleapis.com/heropy-api/vIgEyk7gAB2v081542.webp',
-  },
-  {
-    id: 'KF8Gj2WX9i4KHbWNxFp7',
-    title: 'WOOL DRYER BALLS',
-    price: 2000,
-    photo: 'https://storage.googleapis.com/heropy-api/vABkoSXZaLHv081404.webp',
-  },
-  {
-    id: 'GNrSJPxPuBGcCoqbauPE',
-    title: 'BEESWAX WRAPS',
-    price: 1900,
-    photo: 'https://storage.googleapis.com/heropy-api/vIflFj5spmFv081010.webp',
-  },
-];
+import prods from './_prod.json';
+// const prods = [
+//   {
+//     id: 'PJ0aRY2h5WIAZRySh2cc',
+//     title: 'ORGANIC ROSE CHARCOAL FACIAL BAR',
+//     price: 1000,
+//     photo: 'https://storage.googleapis.com/heropy-api/vHhIVjJEJ2v081228.webp',
+//   },
+//   {
+//     id: 'gAn5renmhTVg5ypqBF7j',
+//     title: 'FACIAL ROUNDS',
+//     price: 1800,
+//     photo: 'https://storage.googleapis.com/heropy-api/vX7RWkuFsrv081912.webp',
+//   },
+//   {
+//     id: 'lLiCQWxj8XcC8pHNm5I4',
+//     title: 'STAINLESS STEEL STRAWS',
+//     price: 300,
+//     photo: 'https://storage.googleapis.com/heropy-api/vqzf2gBCGxv082045.webp',
+//   },
+//   {
+//     id: 'QprtQhuW6AOxPYaBbaex',
+//     title: 'THE UNWASTE SHOP TOTE BAG',
+//     price: 1399,
+//     photo: 'https://storage.googleapis.com/heropy-api/vhbYqPphyIDv082303.webp',
+//   },
+//   {
+//     id: 'kd2zQlyo1AuHaQfjhgdf',
+//     title: 'SALT SCRUB',
+//     price: 1899,
+//     photo: 'https://storage.googleapis.com/heropy-api/vOE455GMq6v081958.webp',
+//   },
+//   {
+//     id: 'bJpVEAJ1WaFPRlBudXry',
+//     title: 'BODY SOAP BAR',
+//     price: 799,
+//     photo: 'https://storage.googleapis.com/heropy-api/v7jTN-ig4Av081635.webp',
+//   },
+//   {
+//     id: 'yrR2QeoZy2kD4gN4wOcG',
+//     title: 'BATH BOMBS',
+//     price: 900,
+//     photo: 'https://storage.googleapis.com/heropy-api/vIgEyk7gAB2v081542.webp',
+//   },
+//   {
+//     id: 'KF8Gj2WX9i4KHbWNxFp7',
+//     title: 'WOOL DRYER BALLS',
+//     price: 2000,
+//     photo: 'https://storage.googleapis.com/heropy-api/vABkoSXZaLHv081404.webp',
+//   },
+//   {
+//     id: 'GNrSJPxPuBGcCoqbauPE',
+//     title: 'BEESWAX WRAPS',
+//     price: 1900,
+//     photo: 'https://storage.googleapis.com/heropy-api/vIflFj5spmFv081010.webp',
+//   },
+// ];
 
 const GridLayout = ({ n }) => {
   switch (n) {

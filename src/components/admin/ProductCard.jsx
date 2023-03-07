@@ -27,6 +27,7 @@ const ProductCard = ({
   selectAll,
   isC,
 }) => {
+  const navgiate = useNavigate();
   const atom = useRecoilValue(myAtom);
   const removeProduct = useMutation((id) => deleteProduct(id), {
     // 성공하면 닫고 데이터 refetch
@@ -48,11 +49,11 @@ const ProductCard = ({
   }, [selectAll]);
   // // index, 사진, id, title, tags , 수정버튼, 삭제버튼
   return (
-    <Card isSoldOut>
+    <Card>
       <CheckboxContainer>
         <CustomCheckbox type="checkbox" onChange={handleChange} checked={checked} />
       </CheckboxContainer>
-      <ImageContainer>
+      <ImageContainer onClick={() => navgiate(`/products/${id}`)}>
         <img src={thumbnail} alt={title} />
       </ImageContainer>
       <Product isSoldOut={isSoldOut}>
@@ -112,11 +113,16 @@ const CustomCheckbox = styled.input`
 `;
 
 const ImageContainer = styled.div`
+  cursor: pointer;
   width: 30%;
   margin-right: 1.5rem;
   margin-left: 1rem;
+  border: 1px solid var(--color-white);
   img {
     width: 100%;
+  }
+  &:hover {
+    border: 1px solid var(--color-gray2);
   }
 `;
 
