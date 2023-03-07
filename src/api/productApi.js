@@ -241,7 +241,8 @@ export const getOrderList = async ({ accessToken }) => {
  * @param {detailId} detailId
  */
 export const handleOrder = async ({ menu, accessToken, detailId }) => {
-  const res = await fetch(`${API_URL}products/${menu === '구매확정' ? 'ok' : 'cancel'}`, {
+  // console.log(menu === 'Confirm');
+  const res = await fetch(`${API_URL}products/${menu === 'Confirm' ? 'ok' : 'cancel'}`, {
     method: 'POST',
     headers: { ...HEADERS_USER, Authorization: accessToken },
     body: JSON.stringify({ detailId }),

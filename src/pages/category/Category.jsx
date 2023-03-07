@@ -3,7 +3,7 @@ import SortButton from '../../components/ui/button/SortButton';
 import LoadingModal from '../../components/ui/loading/LoadingModal';
 import useFilter from '../../util/useFilter';
 import { useQuery } from '@tanstack/react-query';
-import { getCategorizedProducts, getProducts } from '../../api/productApi';
+import { getCategorizedProducts } from '../../api/productApi';
 import { useParams } from 'react-router-dom';
 import GridButton from './../../components/ui/button/GridButton';
 import useGridFilter from '../../util/useGridFilter';
@@ -11,16 +11,10 @@ import styled from 'styled-components';
 import ProductWrap from './../../components/total-product/ProductWrap';
 
 export default function Category() {
-  // const {loading, products, tag} = useProducts('category');
-
   const { tag } = useParams();
-  const searchTags = [tag];
-  const searchText = '';
 
-  const { isLoading, error, data: products } = useQuery([searchTags], () => getProducts());
-  // console.log('category', products)
+  const { isLoading, error, data: products } = useQuery([tag], () => getCategorizedProducts('', [tag]));
 
-  // const {filters, filter, setFilter, filtered} = useFilter(products);
   const response = useFilter(products);
   const { filters, filter, setFilter, filtered } = { ...response };
 

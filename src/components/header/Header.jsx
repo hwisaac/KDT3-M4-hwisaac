@@ -76,13 +76,18 @@ export default function Header() {
               <Logo className="fah">NOWASTE</Logo>
             </Link>
             <Menues>
-              <NavLink to="category/농산물">
-                <li>ZERO WASTE KITS</li>
+              <NavLink to="category/kitchen">
+                <li>KITCHEN</li>
               </NavLink>
-              <NavLink to="category/수산물">
-                <li>HOUSEHOLD</li>
+              <NavLink to="category/cleaning">
+                <li>CLEANING</li>
               </NavLink>
-              <li>BATH AND BODY</li>
+              <NavLink to="category/body">
+                <li>BODY CARE</li>
+              </NavLink>
+              <NavLink to="category/shaving">
+                <li>SHAVING AND BEARD</li>
+              </NavLink>
             </Menues>
           </Left>
           <Right>

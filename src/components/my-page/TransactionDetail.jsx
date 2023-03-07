@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getOrderDetail, handleOrder } from '../../api/productApi';
 import LoadingModal from '../ui/loading/LoadingModal';
 import styled from 'styled-components';
@@ -10,12 +10,15 @@ export const TransactionDetail = () => {
   const location = useLocation();
   const detailId = location.state.detailId;
   const accessToken = location.state.accessToken;
+  const navigate = useNavigate();
 
-  const orderButton = ['구매확정', '구매취소'];
+  const orderButton = ['Confirm', 'Cancel'];
   const handleClick = async (event) => {
-    const button = event.target.innerText;
+    const menu = event.target.innerText;
+
     const detailId = event.target.dataset.id;
-    await handleOrder({ button, accessToken, detailId });
+    await handleOrder({ menu, accessToken, detailId });
+    navigate('/mypage/myorder');
   };
 
   const { isLoading, data: orderDetail } = useQuery(['myOrder', `${detailId}`], () =>
@@ -37,14 +40,16 @@ export const TransactionDetail = () => {
           <Table>
             <li>Order ID</li>
             <li>{detailId}</li>
-            <li>Date</li>
-            <li>{new Date(orderDetail.timePaid).toLocaleString('en-GB', { timeZone: 'UTC' })}</li>
-            <li>Status</li>
-            <li>{orderDetail.done ? '구매확정' : orderDetail.isCanceled ? '구매취소' : '미확정'}</li>
             <li>Product</li>
             <li>{orderDetail.product?.title}</li>
             <li>Price</li>
-            <li>₩ {orderDetail.product?.price.toLocaleString()}</li>
+            <li>
+              {(orderDetail.product?.price / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+            </li>
+            <li>Date of Purchase</li>
+            <li>{new Date(orderDetail.timePaid).toLocaleString('en-GB', { timeZone: 'UTC' })}</li>
+            <li>Status</li>
+            <li>{orderDetail.done ? 'Confirmed' : orderDetail.isCanceled ? 'Cancelled' : 'Pending'}</li>
             <li>Payment account</li>
             {orderDetail.account?.bankName} {orderDetail.account.accountNumber}
           </Table>
@@ -128,6 +133,7 @@ const Table = styled.ul`
 `;
 
 const Btns = styled.div`
+  margin-top: 1.5rem;
   display: flex;
   gap: 1rem;
 `;
