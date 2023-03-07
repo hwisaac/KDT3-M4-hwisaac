@@ -26,7 +26,7 @@ const TableHead = styled.ul`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   place-items: center;
-  margin: 0.3rem 0;
+  margin: 0.2rem 0;
   color: var(--color-white);
   font-weight: 400;
 `;
@@ -59,16 +59,16 @@ const Nothing = styled.div`
 `;
 
 export const MyOrder = () => {
-  const { accessToken } = useOutletContext();
+  const { accessToken, myOrder } = useOutletContext();
   const navigate = useNavigate();
 
-  const { isLoading, data: myOrder, refetch } = useQuery(['myOrder'], () => getOrderList({ accessToken }));
-  if (isLoading) return <LoadingModal />;
+  // const { isLoading, data: myOrder, refetch } = useQuery(['myOrder'], () => getOrderList({ accessToken }));
+  // if (isLoading) return <LoadingModal />;
 
   return (
     <Section>
       <Outlet />
-      <H3 className="fah">MY ORDERS ({myOrder ? myOrder.length : '0'})</H3>
+      <H3 className="fah">MY ORDERS ({myOrder ? myOrder?.length : '0'})</H3>
       <TableHead>
         <li>PRODUCT</li>
         <li>PRICE</li>
@@ -86,7 +86,7 @@ export const MyOrder = () => {
             }}
           >
             <li>{order.product.title}</li>
-            <li>₩ {order.product.price.toLocaleString()}</li>
+            <li>{(order.product.price / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
             <li> {new Date(order.timePaid).toLocaleString('en-GB', { timeZone: 'UTC' })}</li>
             <li>{order.done ? 'Confirmed' : order.isCanceled ? 'Cancelled' : `Pending`}</li>
           </TableRow>

@@ -3,7 +3,7 @@ import style from './sortButton.module.css';
 import { useState } from 'react';
 
 const SortButton = ({ filters, onFilterChange }) => {
-  const [select, setSelect] = useState('정확도순');
+  const [select, setSelect] = useState('Best Selling');
 
   return (
     <ul className={style.btns}>
@@ -23,6 +23,5 @@ const SortButton = ({ filters, onFilterChange }) => {
     </ul>
   );
 };
-
 
 export default SortButton;

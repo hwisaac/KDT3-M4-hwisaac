@@ -7,6 +7,7 @@ import { getAccountInfo } from '../../api/accountApi';
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { logOut } from 'api/authApi';
+import { getOrderList } from 'api/productApi';
 
 const Section = styled.section`
   margin: auto;
@@ -44,6 +45,9 @@ const H4 = styled.h4`
 const Container = styled.div`
   display: flex;
   gap: 2rem;
+  &:last-child {
+    gap: 1rem;
+  }
 `;
 
 const Profile = styled.div`
@@ -126,7 +130,8 @@ export const MyPage = () => {
   const accessToken = getCookie('accessToken');
   const subMenu = ['account', 'order', 'post', 'review'];
 
-  const { isLoading, data: myAccount, refetch } = useQuery(['myAccount'], () => getAccountInfo({ accessToken }));
+  const { isLoading, data: myAccount } = useQuery(['myAccount'], () => getAccountInfo({ accessToken }));
+  const { data: myOrder } = useQuery(['myOrder'], () => getOrderList({ accessToken }));
 
   if (isLoading) return <LoadingModal />;
   return (
@@ -154,7 +159,6 @@ export const MyPage = () => {
             <Button
               onClick={async () => {
                 const res = await logOut({ accessToken });
-                console.log(res);
                 if (res) {
                   deleteCookie('accessToken');
                   setIsLoggedIn(false);
@@ -177,13 +181,22 @@ export const MyPage = () => {
               <span>E-mail</span>
               <span>{userInfo.email}</span>
             </Between>
+
+            <Between>
+              <span>My Accounts</span>
+              <span>{myAccount ? myAccount.accounts.length : '0'}</span>
+            </Between>
             <Between>
               <span>Total Balance</span>
-              <span>₩ {myAccount.totalBalance ? myAccount.totalBalance.toLocaleString() : 0}</span>
+              <span>
+                {myAccount.totalBalance
+                  ? (myAccount.totalBalance / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                  : 0}
+              </span>
             </Between>
             <Between>
               <span>My Orders</span>
-              <span>{0}</span>
+              <span>{myOrder ? myOrder.length : '0'}</span>
             </Between>
             <Between>
               <span>My Posts</span>
@@ -195,11 +208,11 @@ export const MyPage = () => {
             </Between>
           </div>
 
-          <Btn to="/">Edit My Info</Btn>
+          <Btn>Edit My Info</Btn>
         </Profile>
 
         <Details>
-          <Outlet context={{ accessToken, myAccount }} />
+          <Outlet context={{ accessToken, myAccount, myOrder }} />
         </Details>
       </Container>
     </Section>

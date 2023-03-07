@@ -1,28 +1,24 @@
 import { useState } from 'react';
 
-function getFilteredProducts (filter, products) {
+function getFilteredProducts(filter, products) {
   let copy = [...products];
-  if (filter === "낮은 가격순") {
+  if (filter === 'Price : Low to High') {
     copy.sort((a, b) => a.price - b.price);
   }
-  if (filter === "높은 가격순") {
+  if (filter === 'Price : High to Low') {
     copy.sort((a, b) => b.price - a.price);
   }
   return copy;
 }
 
-export default function useFilter (products) { 
-  const filters = ['정확도순', '낮은 가격순', '높은 가격순'];
+export default function useFilter(products) {
+  const filters = ['Best Selling', 'Price : Low to High', 'Price : High to Low'];
   const [filter, setFilter] = useState(filters[0]);
-  if(!products) {
-    console.log('products가 없습니다')
-    return 
+  if (!products) {
+    console.log('products가 없습니다');
+    return;
   }
-  const filtered = getFilteredProducts(filter, products)
+  const filtered = getFilteredProducts(filter, products);
 
-  return {filters, filter, setFilter, filtered};
+  return { filters, filter, setFilter, filtered };
 }
-
-
-
-

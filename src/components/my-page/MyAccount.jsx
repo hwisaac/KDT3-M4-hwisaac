@@ -103,7 +103,7 @@ export const MyAccount = () => {
               <li>
                 {account?.bankName} {account?.accountNumber}
               </li>
-              <li>₩ {account?.balance.toLocaleString()}</li>
+              <li>{(account?.balance / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>
               <li>
                 <Btn onClick={handleDelete} data-id={account.id}>
                   [ Delete ]
