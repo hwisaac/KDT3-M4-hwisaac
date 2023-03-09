@@ -122,6 +122,7 @@ export const LogIn = () => {
               })}
               type="text"
               placeholder="email"
+              value="admin@admin.com"
             />
             <Input
               {...register('password', {
@@ -129,6 +130,7 @@ export const LogIn = () => {
               })}
               placeholder="password"
               type="password"
+              value="adminadmin"
             />
           </InputContainer>
 

@@ -21,6 +21,7 @@ import TransactionDetail from './components/my-page/TransactionDetail';
 import MyAccount from './components/my-page/MyAccount';
 import MyOrder from './components/my-page/MyOrder';
 import AddAccount from './components/my-page/AddAccount';
+import NotFound from 'pages/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -155,6 +156,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/*',
+    element: <NotFound />,
   },
 ]);
 
