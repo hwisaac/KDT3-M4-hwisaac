@@ -21,14 +21,6 @@
 |메인페이지<br />관리자페이지<br />코드리뷰/컨벤션|로그인<br />회원가입|검색페이지<br />주문페이지|메인페이지|장바구니<br />상세페이지|
 
 ## 사용
-<img src="https://img.shields.io/badge/framermotion-0055FF?style=for-the-badge&logo=framer&logoColor=white">
-<img src="https://img.shields.io/badge/ReactHookForm-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white">
-<img src="https://img.shields.io/badge/reacticons-1FB141?style=for-the-badge&logo=reacticons&logoColor=white">
-<img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
-<img src="https://img.shields.io/badge/reactrouterdom-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
-<img src="https://img.shields.io/badge/recoil-F7F7F?style=for-the-badge&logo=recoil&logoColor=white">
-<img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
-<img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white">
 
 - `CRA` : React 개발 환경
 - `framer-motion` : 애니메이션 효과 구현
