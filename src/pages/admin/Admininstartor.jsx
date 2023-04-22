@@ -1,8 +1,4 @@
 import React from 'react';
-import style from './Administrator.module.css';
-import { useState, useEffect } from 'react';
-import { getProducts } from '../../api/productApi';
-import ProductCard from '../../components/admin/ProductCard';
 import { Outlet, Link, useMatch, NavLink } from 'react-router-dom';
 import { AiOutlineProject, AiOutlineSchedule, AiOutlineBarChart } from 'react-icons/ai';
 import styled from 'styled-components';

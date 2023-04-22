@@ -9,7 +9,6 @@ import { useSetRecoilState } from 'recoil';
 import { myAtom } from '../../recoil/atoms';
 import ConfirmModal from '../../components/ui/ConfirmModal';
 import styled from 'styled-components';
-import ProductTableHeader from 'components/admin/ProdudctTableHeader';
 import { AiOutlineDelete } from 'react-icons/ai';
 
 const ProductManagement = () => {

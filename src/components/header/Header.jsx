@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams, useLocation, NavLink } from 'react-router-dom';
 import { BsBag } from 'react-icons/bs';
-import { CiSearch } from 'react-icons/ci';
-import { adminUser } from '../../api/adminUser';
-import RecentlyViewed from '../recently-viewed/RecentlyViewed';
 import { useController, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
@@ -55,11 +52,6 @@ export default function Header() {
   const onSearchBtn = () => {
     setSearchOpen((prev) => !prev);
   };
-
-  // useEffect(() => {
-  //   if (searchOpen) document.body.style = 'overflow: hidden';
-  //   else document.body.style = 'overflow: auto';
-  // }, [searchOpen]);
 
   const {
     cartQuery: { isLoading, data: products },
