@@ -90,6 +90,17 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  text-decoration: none;
+}
+a:hover,
+a:visited,
+a:link,
+a:active {
+  text-decoration: none;
+  color: var(--color-black2);
+}
+a:hover {
+  color: none;
 }
 /* HTML5 display-role reset for older browsers */
 article,

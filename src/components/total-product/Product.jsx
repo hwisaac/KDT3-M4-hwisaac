@@ -1,43 +1,88 @@
-import React from 'react';
-import style from './Product.module.css';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import formatPrice from '../../util/formatPrice';
 
-const Product = ({ id, title, img, price }) => {
-  const [heart, setHeart] = useState(false);
+const Product = ({ grid, id, thumbnail, title, price, description, isSoldOut }) => {
   const navigate = useNavigate();
-  function onClick() {
-    setHeart((cur) => !cur);
-  }
+  const onClickItem = (e) => {
+    if (e.target.nodeName !== 'BUTTON' && !isSoldOut) {
+      navigate(`/products/${id}`, { state: { id, title, thumbnail, price } });
+    }
+  };
 
   return (
-    <li
-      className={style.wrap}
-      onClick={() => {
-        navigate(`/products/${id}`, { state: { id, title, img, price } });
-      }}
-    >
-      <img className={style.img} src={img} alt={title} />
-      <div className={style.btns}>
-        <button onClick={onClick} className={heart ? style.btn_heart__red : style.btn_heart}>
-          찜
-        </button>
-        <button className={style.btn_detail}>상세</button>
-      </div>
-      <div className={style.txt}>
-        <p className={style.title}>{title}</p>
-        <button onClick={onClick} className={heart ? style.heart__red : style.heart}>
-          찜
-        </button>
-
-        <p>
-          <span className={style.rower_price}>{price.toLocaleString()}원</span>
-          <span className={style.price}>20,000원</span>
-          <span className={style.sale}>30%</span>
-        </p>
-      </div>
-    </li>
+    <Wrap onClick={onClickItem} grid={grid}>
+      <ImgArea grid={grid}>
+        <img src={thumbnail} alt={title} />
+      </ImgArea>
+      <TextArea grid={grid}>
+        <h2>{title}</h2>
+        <p>{formatPrice(price)}</p>
+        {grid === 'list' ? <span>{description}...</span> : null}
+      </TextArea>
+    </Wrap>
   );
 };
 
+const gridStyle = {
+  list: {
+    imgHeight: '200px',
+    titleWidth: '',
+  },
+  image: {
+    imgHeight: '200px',
+    titleWidth: '210px',
+  },
+  bigImage: {
+    imgHeight: '300px',
+    titleWidth: '270px',
+  },
+  gallery: {
+    imgHeight: '',
+    titleWidth: '380px',
+  },
+};
+
+const Wrap = styled.li`
+  display: ${({ grid }) => (grid === 'list' ? 'flex' : 'block')};
+  align-items: ${({ grid }) => (grid === 'list' ? 'center' : '')};
+  padding: ${({ grid }) => (grid === 'list' ? '0 20px' : '')};
+  cursor: pointer;
+`;
+
+const ImgArea = styled.div`
+  height: ${({ grid }) => (grid ? gridStyle[grid].imgHeight : '200px')};
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: ${({ grid }) => (grid === 'list' ? '30px' : '')};
+
+  img {
+    width: ${({ grid }) => (grid === 'list' ? '200px' : '100%')};
+  }
+`;
+
+const TextArea = styled.div`
+  margin-top: 20px;
+  h2 {
+    width: ${({ grid }) => (grid ? gridStyle[grid].titleWidth : '200px')};
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: ${({ grid }) => (grid === 'gallery' ? '25px' : '')};
+  }
+  p {
+    font-size: 13px;
+    line-height: 30px;
+    font-size: ${({ grid }) => (grid === 'gallery' ? '15px' : '')};
+  }
+  span {
+    display: block;
+    font-size: 12px;
+    margin-top: 30px;
+  }
+`;
 export default Product;
