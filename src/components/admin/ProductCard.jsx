@@ -35,6 +35,7 @@ const ProductCard = ({
       atom.myFn(); // refetch 함수
     },
   });
+  console.log('assignCheckList함수: ', typeof assignCheckList);
   const handleChange = (event) => {
     setChecked((prev) => !prev);
     assignCheckList(id, event.currentTarget.checked);
@@ -45,7 +46,9 @@ const ProductCard = ({
   // // 전체박스 체크유무에 의존한 체킹
   useEffect(() => {
     setChecked(selectAll);
-    assignCheckList(id, selectAll);
+    // console.log('id와 selectAll', id, selectAll);
+    // TODO: 체크박스로 모두 선택하는 기능
+    // assignCheckList(id, selectAll);
   }, [selectAll]);
   // // index, 사진, id, title, tags , 수정버튼, 삭제버튼
   return (

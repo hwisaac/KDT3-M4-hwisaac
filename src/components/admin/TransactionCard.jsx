@@ -74,7 +74,6 @@ function TransactionCard({ payload }) {
     <Card>
       <div className="select">
         <input type="checkbox" />
-        {index}
       </div>
       <div className="user">
         <img className="profileImg" src={profileImg ? profileImg : alternativeImg} />
